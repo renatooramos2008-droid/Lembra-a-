@@ -375,6 +375,7 @@ function vConfig(){
   <label style="margin-top:8px">Avisar das contas quantos dias antes<input name="dias" type="number" min="0" max="30" value="${S.cfg.dias}"></label><div class="acts" style="border:0;padding:0"><button class="btn pri">Salvar</button><button type="button" class="btn" data-testalarm>Ouvir o som</button></div>
   <div class="box" style="margin-top:14px;box-shadow:none"><h3>Notificações neste celular</h3><p class="mut" id="pushst" style="margin:4px 0 12px">${pushStatus()}</p><button type="button" class="btn pri" data-push>Ativar notificações aqui</button></div>
   <p class="mut" style="font-size:13px;margin-top:12px">Tudo é enviado sozinho, na hora certa, pelos canais marcados. Assinaturas são avisadas só pelo app, com a pergunta "você ainda usa?".</p></form>
+  <div class="box" style="margin-top:12px"><h3>Entrar com ${bioNome}</h3><p class="mut" style="margin:4px 0 12px">${!BIO_OK?'Este aparelho ou navegador não tem leitura de rosto ou digital disponível.':bioMap()[S.user.email]?'Ativado neste aparelho ✓ Na tela de entrada, toque em "Entrar com '+bioNome+'".':'Entre sem digitar a senha, usando o '+bioNome+' deste aparelho.'}</p>${BIO_OK?(bioMap()[S.user.email]?'<button type="button" class="btn dang" data-biooff>Desativar neste aparelho</button>':`<button type="button" class="btn pri" data-bioon>Ativar ${bioNome}</button>`):''}</div>
   <div class="box" style="margin-top:12px"><h3>Aparência</h3><p class="mut" style="margin:4px 0 14px">Escolha a cor do fundo do app.</p><div class="themes">${[['light','Fundo branco','padrão'],['dark','Fundo preto','']].map(([k,t,n])=>`<button type="button" class="theme-opt ${getTheme()===k?'on':''}" data-themeset="${k}" aria-pressed="${getTheme()===k}"><span class="prev ${k}"><i></i><i></i><i></i></span><strong>${t}</strong>${n?`<span class="mut" style="font-size:13px">${n}</span>`:''}</button>`).join('')}</div></div>
   <div class="box" style="margin-top:12px"><h3>Backup</h3><p class="mut" style="margin:4px 0 12px">Seus dados ficam salvos no servidor e aparecem em qualquer aparelho em que você entrar. O backup é uma cópia extra.</p><div class="acts" style="border:0;padding:0"><button class="btn" data-copy-bk>Copiar backup</button><button class="btn" data-imp>Importar backup</button><button class="btn" data-resetup>Refazer perguntas iniciais</button><button class="btn dang" data-wipe>Apagar tudo</button></div></div>`;
 }
@@ -409,6 +410,7 @@ function vLogin(){
   if(mode==='entrar'){
     if(has&&!O.alt){const ini=acc.nome.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase(),w=digits(acc.whats),others=ACC.list.filter(a=>a.id!==acc.id);
       return wrap(`<div class="who-card"><span class="av">${esc(ini)}</span><div><h1 style="margin:0;font-size:clamp(26px,4vw,34px)">Olá, ${esc(first(acc.nome))}</h1><p class="sub">WhatsApp (${esc(w.slice(0,2))}) •••••-${esc(w.slice(-4))}</p></div></div>
+      ${BIO_OK&&bioMap()[acc.email]?`<button type="button" class="btn pri" data-biologin="${esc(acc.email)}" style="width:100%;margin-top:22px;min-height:58px;font-size:17px;justify-content:center">${isIOS?'🙂':'👆'} Entrar com ${bioNome}</button><p class="mut" style="text-align:center;margin:14px 0 0;font-size:14px">ou use sua senha</p>`:''}
       <form id="fentrar" style="margin-top:22px"><label>Digite sua senha${pwField('senha','Sua senha','current-password')}</label><p id="lerr" style="color:var(--badk);font-size:14px;min-height:20px"></p><button class="btn pri" style="width:100%">Entrar</button></form>
       ${others.length?`<p style="font-weight:700;margin:22px 0 8px">Outras contas salvas neste aparelho</p><div class="acts" style="border:0;padding:0">${others.map(a=>`<button type="button" class="btn" data-pick="${a.id}">${esc(first(a.nome))} · ${esc(a.email)}</button>`).join('')}</div>`:''}
       <p class="mut" style="margin-top:18px;font-size:14px">Não é você? <a href="#" data-alt>Entrar com e-mail e senha</a></p>`)}
@@ -603,6 +605,39 @@ async function ativarPush(silent){
 }
 if('serviceWorker' in navigator&&location.protocol==='https:'){navigator.serviceWorker.register('sw.js').catch(()=>{});
   navigator.serviceWorker.addEventListener('message',ev=>{const m=ev.data||{};if(m.type==='push'){beep();toast((m.title||'Lembrete')+(m.body?' · '+m.body:''))}if(m.type==='open'&&m.url&&S.session)abrirDet(m.url)})}
+/* ===== Entrar com Face ID / digital ===== */
+const BIO_K='lembraai_bio',bioMap=()=>ld(BIO_K)||{};let BIO_OK=false;
+const bioNome=isIOS?'Face ID':'digital ou rosto';
+(async()=>{try{BIO_OK=!!(window.PublicKeyCredential&&await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable())}catch(e){}if(BIO_OK&&!S.session)render()})();
+const ab2u=b=>btoa(String.fromCharCode(...new Uint8Array(b))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+function credJSON(c){const r=c.response,o={id:c.id,rawId:ab2u(c.rawId),type:c.type,clientExtensionResults:c.getClientExtensionResults?c.getClientExtensionResults():{},response:{clientDataJSON:ab2u(r.clientDataJSON)}};
+  if(c.authenticatorAttachment)o.authenticatorAttachment=c.authenticatorAttachment;
+  if(r.attestationObject){o.response.attestationObject=ab2u(r.attestationObject);o.response.transports=r.getTransports?r.getTransports():[]}
+  if(r.authenticatorData){o.response.authenticatorData=ab2u(r.authenticatorData);o.response.signature=ab2u(r.signature);if(r.userHandle)o.response.userHandle=ab2u(r.userHandle)}
+  return o}
+async function pkCall(body){const {data,error}=await sb.functions.invoke('passkey',{body});if(error){let m=error.message;try{const j=await error.context.json();m=j.erro||m}catch(_){ }throw new Error(m)}if(data&&data.erro)throw new Error(data.erro);return data}
+async function ativarBio(){
+  try{const r=await pkCall({acao:'cadastro-opcoes'}),o=r.options;
+    const cred=await navigator.credentials.create({publicKey:{...o,challenge:b64u(o.challenge),user:{...o.user,id:b64u(o.user.id)},excludeCredentials:(o.excludeCredentials||[]).map(c=>({...c,id:b64u(c.id)}))}});
+    const v=await pkCall({acao:'cadastro-verificar',did:r.did,resposta:credJSON(cred),aparelho:(isIOS?'iPhone':/android/i.test(navigator.userAgent)?'Android':'Computador')});
+    const m=bioMap();m[S.user.email]=v.id;st(BIO_K,m);closeM();render();toast(`Pronto! Agora você entra com ${bioNome} ✓`);
+  }catch(e){toast(e.name==='NotAllowedError'?'Ativação cancelada.':e.name==='InvalidStateError'?`${bioNome} já está ativo neste aparelho.`:'Não foi possível ativar: '+e.message)}
+}
+async function desativarBio(){const m=bioMap(),id=m[S.user.email];try{if(id)await pkCall({acao:'remover',id})}catch(e){}delete m[S.user.email];st(BIO_K,m);render();toast(`${bioNome} desativado neste aparelho`)}
+async function entrarBio(email){
+  const err=t=>{const e=$('#lerr');if(e)e.textContent=t};
+  try{err('');const r=await pkCall({acao:'entrada-opcoes',email}),o=r.options;
+    const cred=await navigator.credentials.get({publicKey:{...o,challenge:b64u(o.challenge),allowCredentials:(o.allowCredentials||[]).map(c=>({...c,id:b64u(c.id)}))}});
+    const v=await pkCall({acao:'entrada-verificar',did:r.did,resposta:credJSON(cred)});
+    const {error}=await sb.auth.verifyOtp({token_hash:v.token_hash,type:'magiclink'});if(error)throw error;
+    await loadUser();O.alt=false;O.mode='';location.hash='hoje';render();toast('Bem-vindo, '+first(S.user.nome));ativarPush(true);if(PEND){abrirDet(PEND);PEND=''}
+  }catch(e){err(e.name==='NotAllowedError'?`${bioNome} cancelado. Tente de novo ou use a senha.`:netMsg(e)||e.message||`Não foi possível entrar com ${bioNome}.`)}
+}
+function oferecerBio(){
+  if(!BIO_OK||bioMap()[S.user.email]||S.cfg.bioPerguntado)return;S.cfg.bioPerguntado=true;save();
+  openM(`<div style="text-align:center"><div class="logo" style="justify-content:center;margin:0 0 10px">${logoSvg}</div><h3 style="font-size:22px">Entrar com ${bioNome}?</h3><p class="mut" style="margin:8px 0 18px">Na próxima vez, é só olhar para o celular${isIOS?'':' ou encostar o dedo'}. Mais rápido e seguro que digitar a senha.</p><div class="acts" style="border:0;padding:0;justify-content:center"><button class="btn pri" data-bioon>Ativar ${bioNome}</button><button class="btn" data-close>Agora não</button></div></div>`);
+}
+
 /* ===== Detalhes (abre ao tocar na notificação) ===== */
 let PEND=location.hash.startsWith('#det-')?location.hash:'';
 function abrirDet(h){
@@ -770,7 +805,7 @@ function seqNext(){
 
 document.addEventListener('click',e=>{
   if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(x){}}
-  const t=e.target.closest('[data-av],[data-pago],[data-pix],[data-go],[data-new-conta],[data-edit-conta],[data-del-conta],[data-new-cli],[data-edit-cli],[data-del-cli],[data-assin],[data-day],[data-close],[data-seq],[data-seqgo],[data-seqskip],[data-sair],[data-copy-bk],[data-imp],[data-seed],[data-wipe],[data-ev],[data-new-ev],[data-edit-ev],[data-del-ev],[data-nav],[data-vw],[data-sel],[data-cals],[data-togcal],[data-delcal],[data-mode],[data-alt],[data-ofconn],[data-ofsync],[data-ofdel],[data-newinv],[data-editinv],[data-delinv],[data-qsel],[data-qgo],[data-qskip],[data-qback],[data-qpass],[data-qdone],[data-resetup],[data-pick],[data-themeset],[data-testalarm],[data-push],[data-showpw],[data-tipo],[data-back],[data-tab]');
+  const t=e.target.closest('[data-av],[data-pago],[data-pix],[data-go],[data-new-conta],[data-edit-conta],[data-del-conta],[data-new-cli],[data-edit-cli],[data-del-cli],[data-assin],[data-day],[data-close],[data-seq],[data-seqgo],[data-seqskip],[data-sair],[data-copy-bk],[data-imp],[data-seed],[data-wipe],[data-ev],[data-new-ev],[data-edit-ev],[data-del-ev],[data-nav],[data-vw],[data-sel],[data-cals],[data-togcal],[data-delcal],[data-mode],[data-alt],[data-bioon],[data-biooff],[data-biologin],[data-ofconn],[data-ofsync],[data-ofdel],[data-newinv],[data-editinv],[data-delinv],[data-qsel],[data-qgo],[data-qskip],[data-qback],[data-qpass],[data-qdone],[data-resetup],[data-pick],[data-themeset],[data-testalarm],[data-push],[data-showpw],[data-tipo],[data-back],[data-tab]');
   if(!t){if(e.target.id==='modal')closeM();return}
   const d=t.dataset;
   if(d.qsel){const k=d.qsel;Q.sel=Q.sel.includes(k)?Q.sel.filter(x=>x!==k):SEC.map(x=>x[0]).filter(x=>x===k||Q.sel.includes(x));t.classList.toggle('on');t.setAttribute('aria-pressed',Q.sel.includes(k));return}
@@ -780,6 +815,9 @@ document.addEventListener('click',e=>{
   if('qpass' in d){Q.i++;return render()}
   if('qdone' in d){S.needSetup=false;save();location.hash='hoje';render();return toast('Lembretes ativados ✓')}
   if('resetup' in d){Q.i=0;Q.sel=[...new Set(S.contas.filter(x=>x.src==='setup').map(x=>x.sec))];S.needSetup=true;save();return render()}
+  if('bioon' in d)return ativarBio();
+  if('biooff' in d)return ask(`Desativar ${bioNome} neste aparelho?`,desativarBio);
+  if(d.biologin)return entrarBio(d.biologin);
   if('ofconn' in d)return ofConectar();
   if(d.ofsync)return ofSync(d.ofsync);
   if(d.ofdel)return ask('Desconectar este banco? Os dados dele saem do Lembra Aí.',async()=>{try{await ofCall({acao:'remover',itemId:d.ofdel});await loadFin();render();toast('Banco desconectado')}catch(e){toast(e.message)}});
@@ -869,7 +907,7 @@ document.addEventListener('submit',e=>{
     const {error}=await sb.auth.signInWithPassword({email,password:v.senha});b.disabled=false;b.textContent='Entrar';
     if(error)return fail(netMsg(error)||(/confirm/i.test(error.message)?'Confirme seu e-mail pelo link que enviamos antes de entrar.':byMail?'E-mail ou senha incorretos.':'Senha incorreta. Tente de novo.'));
     try{await loadUser()}catch(x){return fail(netMsg(x)||'Não foi possível carregar seus dados. Tente de novo.')}
-    O.alt=false;O.mode='';location.hash='hoje';render();toast('Bem-vindo, '+first(S.user.nome));ativarPush(true);if(PEND){abrirDet(PEND);PEND=''}})()}
+    O.alt=false;O.mode='';location.hash='hoje';render();toast('Bem-vindo, '+first(S.user.nome));ativarPush(true);if(PEND){abrirDet(PEND);PEND=''}else setTimeout(oferecerBio,900)})()}
   if(f.id==='fme'){const pe=phoneErr(v.ddd,v.num);if(pe)return toast(pe);const d=digits(v.ddd)+digits(v.num);if(v.senha&&v.senha.length<6)return toast('A senha precisa de 6 caracteres');
     (async()=>{const {error}=await sb.from('profiles').update({nome:v.nome,whatsapp:d}).eq('id',UID);if(error)return toast(netMsg(error)||'Não foi possível salvar: '+error.message);
       if(v.senha){const r=await sb.auth.updateUser({password:v.senha});if(r.error)return toast('Senha não alterada: '+r.error.message)}
