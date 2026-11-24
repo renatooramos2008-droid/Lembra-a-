@@ -150,6 +150,12 @@ details.more{margin:4px 0 14px;border-top:1px solid var(--line);padding-top:10px
 [data-tema=dark] .steps i{background:#2a2d2e}[data-tema=dark] .steps i.on{background:#fff}
 [data-tema=dark] #toast{background:#fff;color:#111}
 [data-tema=dark] aside{box-shadow:8px 0 30px -20px #000}
+/* investimentos */
+.health{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.gauge{--p:0;--c:var(--g);width:112px;height:112px;border-radius:50%;flex:none;display:grid;place-items:center;align-content:center;background:radial-gradient(closest-side,var(--card) 79%,transparent 80% 100%),conic-gradient(var(--c) calc(var(--p)*1%),var(--line) 0)}
+.gauge b{font-size:34px;line-height:1}.gauge span{font-size:12px;color:var(--mute)}
+.hitem{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}.hitem:last-child{border:0}
+.hico{width:26px;height:26px;border-radius:50%;color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px;flex:none}
 /* perguntas iniciais */
 .setup{max-width:720px;margin:0 auto;padding:clamp(20px,5vw,56px) clamp(16px,4vw,32px) 60px}
 .setup h1{margin:6px 0 8px}
@@ -202,6 +208,7 @@ const CATS=['Casa','Cartão','Imposto','Veículo','Assinatura','Parcela','Outro'
 const ic={bell:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></svg>',
 users:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M16 4a4 4 0 0 1 0 8M22 21a7 7 0 0 0-4-6.3"/></svg>',
 list:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>',
+inv:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>',
 chart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
 gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-2.9-1.2l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 3 15H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.2-2.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.7 1.7 0 0 0 9 3.1V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 2.9 1.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0 1.2 2.9H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>',
 mail:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>',
@@ -231,7 +238,7 @@ async function loadUser(){
   if(pe||ae)throw pe||ae;const empty=!a||!a.data||!Object.keys(a.data).length;
   S=norm(empty?null:a.data);S.user={nome:p.nome,whats:p.whatsapp,email:user.email,tipo:p.tipo};if(p.canais)S.cfg.canais=p.canais;
   if(!S.clients.some(c=>c.me))S.clients.unshift({id:uid(),nome:S.user.nome,whats:S.user.whats,tipo:S.user.tipo,status:'Em teste',inicio:today(),me:true});
-  if(empty)S.needSetup=true;S.session=true;remember();
+  if(empty)S.needSetup=true;S.session=true;remember();loadFin();
 }
 const netMsg=e=>/fetch|network|Load failed/i.test(e&&e.message||'')?'Sem conexão com o servidor. Verifique a internet e tente de novo.':'';
 const getTheme=()=>{try{return localStorage.getItem('lembraai_theme')||'light'}catch(e){return 'light'}};
@@ -299,6 +306,7 @@ function vHoje(){
   const atr=open.filter(x=>diff(x.venc)<0),av=open.filter(x=>x.status==='Pendente'&&diff(x.venc)>=0&&diff(x.venc)<=x.dias),ja=open.filter(x=>x.status==='Avisado'&&diff(x.venc)>=0&&diff(x.venc)<=7),px=open.filter(x=>x.status==='Pendente'&&diff(x.venc)>x.dias&&diff(x.venc)<=7);
   const tot=[...atr,...av].reduce((s,x)=>s+x.valor,0),h=new Date().getHours();
   return `<div class="top"><div><h1>${h<12?'Bom dia':h<18?'Boa tarde':'Boa noite'}, ${esc(first(S.user.nome))}</h1><p class="sub">${new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'})} · lembretes para ${esc(fmtTel(S.user.whats))}</p></div></div>
+  ${(()=>{const g=analiseGastos();return g.var!=null&&g.var>.15?`<a href="#resumo" class="box" style="display:block;margin-bottom:14px;border-color:var(--badk);color:inherit;text-decoration:none"><strong>⚠️ Seus gastos do dia a dia subiram ${pct(g.var)} este mês.</strong><span class="mut"> Toque para ver o que aumentou.</span></a>`:''})()}
   <div class="quick"><button class="btn pri" data-new-conta>+ Conta a pagar</button><button class="btn" data-new-ev>+ Compromisso</button><a class="btn" href="#agenda">Ver agenda</a></div>
   ${(()=>{const its=dayItems(today()).filter(t=>t.k==='e');return `<h2 style="margin-top:0">Sua agenda de hoje <span class="tag soft">${its.length}</span></h2>${its.length?its.map(t=>item(t,today())).join(''):'<p class="empty">Nenhum compromisso hoje.</p>'}<div style="height:16px"></div>`})()}
   <div class="banner"><b>${av.length+atr.length}</b><p><strong>contas pedindo atenção hoje</strong><br>${brl(tot)} entre contas atrasadas e vencendo nos próximos dias.</p>${av.length+atr.length?`<button class="btn" data-seq>Enviar todos, um por um</button>`:''}</div>
@@ -353,9 +361,10 @@ function vResumo(){
   const mx=Math.max(1,...Object.values(cat)),subs=S.contas.filter(x=>x.cat==='Assinatura'&&x.status!=='Pago').sort((a,b)=>a.venc.localeCompare(b.venc));
   return `<div class="top"><div><h1>Resumo do mês</h1><p class="sub">O valor que o Lembra Aí está entregando</p></div></div>
   <div class="stats">${[['A pagar em 30 dias',brl(open.reduce((s,x)=>s+x.valor,0)),open.length+' contas'],['Assinaturas',brl(subs.reduce((s,x)=>s+x.valor,0))+'/mês',subs.length+' ativas'],['Lembretes no mês',av.length,brl(lemb)+' em contas lembradas'],['Juros evitados',brl(juros),'2% multa + 1% juros, contas pagas em dia'],['Tempo poupado',min>=60?Math.floor(min/60)+'h '+(min%60)+'min':min+' min','5 min por conta lembrada']].map(([a,b,c])=>`<div class="box stat"><p class="mut">${a}</p><b>${b}</b><p class="mut" style="font-size:13px">${c}</p></div>`).join('')}</div>
+  ${vGastos()}
   <h2>Contas dos próximos 30 dias, por categoria</h2><div class="box">${Object.keys(cat).length?Object.entries(cat).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="bar"><span>${esc(k)}</span><i style="width:${Math.max(4,v/mx*100)}%"></i><span>${brl(v)}</span></div>`).join(''):'<p class="mut">Sem contas.</p>'}</div>
   <h2>Assinaturas para revisar <span class="tag soft">${subs.length}</span></h2>${subs.length?subs.map(x=>`<div class="row"><div><h3>${esc(x.nome)}</h3><p class="mut">Renova ${fmtD(x.venc)}</p></div><div class="r"><b>${brl(x.valor)}</b>${x.cancel?`<p><a href="${esc(x.cancel)}" target="_blank" rel="noopener">Página de cancelamento</a></p>`:''}</div></div>`).join(''):'<p class="empty">Nenhuma assinatura cadastrada.</p>'}
-  <p class="mut" style="font-size:13px;margin-top:16px">Os números são calculados a partir dos dados cadastrados neste aparelho.</p>`;
+  <p class="mut" style="font-size:13px;margin-top:16px">Os números são calculados com os seus dados no Lembra Aí.</p>`;
 }
 
 function vConfig(){
@@ -609,13 +618,107 @@ function abrirDet(h){
 window.addEventListener('hashchange',()=>{if(S.session&&location.hash.startsWith('#det-'))abrirDet(location.hash)});
 
 const F={};let seqList=[];
-const NAV=[['hoje','Hoje',ic.bell],['agenda','Agenda',ic.cal],['contas','Contas',ic.list],['resumo','Resumo',ic.chart],['config','Config',ic.gear]];
+/* ===== Bancos, investimentos e gastos ===== */
+const OF={items:[],invs:[],tx:[],ok:false};
+async function loadFin(){
+  if(!UID)return;const de=addD(-125);
+  const [a,b,c]=await Promise.all([sb.from('bank_items').select('*').eq('user_id',UID),sb.from('investimentos').select('*').eq('user_id',UID),sb.from('transacoes').select('data,descricao,valor,tipo,categoria').eq('user_id',UID).gte('data',de).limit(5000)]);
+  OF.items=a.data||[];OF.invs=b.data||[];OF.tx=c.data||[];OF.ok=true;
+  const r=(location.hash||'#hoje').slice(1);if(r==='invest'||r==='resumo')render();
+}
+const TIPOS={FIXED_INCOME:'Renda fixa',SECURITY:'Previdência e títulos',MUTUAL_FUND:'Fundos',EQUITY:'Ações',ETF:'ETFs',COE:'COE',OTHER:'Outros'};
+const TIPOS_M=['Poupança','Renda fixa','Tesouro Direto','Fundos','Ações','FIIs','Previdência','Cripto','Outros'];
+const CATS_PT=[[/groceries|supermarket/i,'Mercado'],[/eating|restaurant|food|delivery/i,'Restaurantes e delivery'],[/transport|uber|taxi|fuel|gas station|parking/i,'Transporte'],[/health|pharmac|drug/i,'Saúde e farmácia'],[/shopping|clothing|electronics/i,'Compras'],[/entertainment|leisure|streaming|digital services/i,'Lazer e streaming'],[/housing|rent|utilit|electric|water/i,'Casa'],[/telecom|internet|phone|mobile/i,'Telefone e internet'],[/education/i,'Educação'],[/travel|airline|hotel/i,'Viagem'],[/tax/i,'Impostos'],[/insurance/i,'Seguros'],[/bank fee|fee/i,'Tarifas'],[/pet/i,'Pets']];
+const catPT=c=>{for(const [re,t] of CATS_PT)if(re.test(c||''))return t;return c?'Outros':'Sem categoria'};
+const naoGasto=t=>/transfer|credit card payment|investment|loan payment|same person|pagamento de fatura|aplica/i.test((t.categoria||'')+' '+(t.descricao||''));
+const gastosTx=()=>OF.tx.filter(t=>(t.tipo==='DEBIT'||(!t.tipo&&t.valor<0))&&!naoGasto(t)).map(t=>({...t,v:Math.abs(+t.valor)}));
+const mesStr=(off=0)=>{const d=new Date();d.setDate(1);d.setMonth(d.getMonth()+off);return iso(d).slice(0,7)};
+const nomeMes=m=>new Date(m+'-15T12:00:00').toLocaleDateString('pt-BR',{month:'short'}).replace('.','');
+function analiseGastos(){
+  const g=gastosTx(),dia=+today().slice(8),m0=mesStr(0),m1=mesStr(-1);
+  const ate=(arr,m)=>arr.filter(t=>t.data.startsWith(m)&&+t.data.slice(8)<=dia);
+  const soma=a=>a.reduce((s,t)=>s+t.v,0);
+  const atual=soma(ate(g,m0)),ant=soma(ate(g,m1));
+  const meses=[-3,-2,-1,0].map(o=>{const m=mesStr(o);return [m,soma(g.filter(t=>t.data.startsWith(m)))]});
+  const cA={},cB={};ate(g,m0).forEach(t=>{const k=catPT(t.categoria);cA[k]=(cA[k]||0)+t.v});ate(g,m1).forEach(t=>{const k=catPT(t.categoria);cB[k]=(cB[k]||0)+t.v});
+  const subiu=Object.keys(cA).map(k=>[k,cA[k],cB[k]||0]).filter(([,a,b])=>a-b>30&&(!b||a/b>1.15)).sort((x,y)=>(y[1]-y[2])-(x[1]-x[2])).slice(0,3);
+  // contas: valor atual vs último pagamento registrado de cada conta
+  const contasSubiram=S.contas.filter(x=>x.status!=='Pago'&&x.valor).map(x=>{const h=S.hist.filter(h=>h.contaId===x.id&&h.tipo==='Pago').sort((a,b)=>b.data.localeCompare(a.data))[0];return h&&h.valor?[x,h.valor]:null}).filter(Boolean).filter(([x,v])=>x.valor>v*1.05);
+  const pagoMes=m=>S.hist.filter(h=>h.tipo==='Pago'&&h.data.startsWith(m)&&+h.data.slice(8)<=dia).reduce((s,h)=>s+(+h.valor||0),0);
+  const media3=g.length?meses.slice(0,3).reduce((s,[,v])=>s+v,0)/Math.max(1,meses.slice(0,3).filter(([,v])=>v>0).length):0;
+  return {tem:g.length>0,atual,ant,var:ant?(atual-ant)/ant:null,meses,subiu,contasSubiram,contasA:pagoMes(m0),contasB:pagoMes(m1),media3};
+}
+const pct=v=>(v>0?'+':'')+Math.round(v*100)+'%';
+function vGastos(){
+  const a=analiseGastos(),varC=a.contasB?(a.contasA-a.contasB)/a.contasB:null,mx=Math.max(1,...a.meses.map(([,v])=>v));
+  const tag=v=>v==null?'<span class="tag soft">sem comparação</span>':`<span class="tag ${v>0.15?'bad':v>0?'warn':''}">${v>0?'▲ ':v<0?'▼ ':''}${pct(v)}</span>`;
+  return `<h2>Seus gastos</h2><div class="stats">
+   <div class="box stat"><p class="mut">Dia a dia (até hoje, no mês)</p>${a.tem?`<b>${brl(a.atual)}</b><p class="mut" style="font-size:13px">${tag(a.var)} vs ${brl(a.ant)} no mesmo período do mês passado</p>`:`<b style="font-size:18px">Conecte seu banco</b><p class="mut" style="font-size:13px">Para ver os gastos do cartão e da conta. <a href="#invest">Conectar</a></p>`}</div>
+   <div class="box stat"><p class="mut">Contas pagas (até hoje, no mês)</p><b>${brl(a.contasA)}</b><p class="mut" style="font-size:13px">${tag(varC)} vs ${brl(a.contasB)} no mês passado</p></div></div>
+   ${a.var!=null&&a.var>0.15?`<div class="box" style="margin-top:12px;border-color:var(--badk)"><strong>⚠️ Seus gastos do dia a dia subiram ${pct(a.var)}.</strong><p class="mut" style="margin-top:4px">${a.subiu.length?'O que mais subiu: '+a.subiu.map(([k,x,y])=>`${esc(k)} (${brl(y)} → ${brl(x)})`).join(', ')+'.':'Vale olhar as últimas compras.'}</p></div>`:a.subiu.length?`<div class="box" style="margin-top:12px"><strong>O que mais subiu este mês</strong><p class="mut" style="margin-top:4px">${a.subiu.map(([k,x,y])=>`${esc(k)}: ${brl(y)} → ${brl(x)}`).join(' · ')}</p></div>`:''}
+   ${a.contasSubiram.length?`<div class="box" style="margin-top:12px"><strong>Contas que ficaram mais caras</strong>${a.contasSubiram.map(([x,v])=>`<p class="qdone"><span>${esc(x.nome)}</span><b style="color:var(--badk)">${brl(v)} → ${brl(x.valor)} (${pct((x.valor-v)/v)})</b></p>`).join('')}</div>`:''}
+   ${a.tem?`<div class="box" style="margin-top:12px"><strong>Gastos do dia a dia por mês</strong>${a.meses.map(([m,v])=>`<div class="bar"><span>${nomeMes(m).replace(/^./,c=>c.toUpperCase())}${m===mesStr(0)?' (até hoje)':''}</span><i style="width:${Math.max(3,v/mx*100)}%"></i><span>${brl(v)}</span></div>`).join('')}</div>`:''}`;
+}
+/* ----- saúde dos investimentos ----- */
+const allInvs=()=>[...OF.invs.map(i=>({id:i.ext_id,nome:i.nome,tipo:TIPOS[i.tipo]||i.tipo||'Outros',sub:i.subtipo,inst:i.instituicao,saldo:+i.saldo||0,venc:i.vencimento,r12:i.rent_12m,banco:true})),...(S.invs||[]).map(i=>({...i,saldo:+i.saldo||0,banco:false}))];
+const liquido=i=>i.liq==='diaria'||/poupan|savings|selic|liquidez di|conta remunerada/i.test(i.nome+' '+(i.sub||'')+' '+i.tipo)||(i.banco&&i.tipo==='Renda fixa'&&!i.venc);
+function saude(){
+  const inv=allInvs(),tot=inv.reduce((s,i)=>s+i.saldo,0),a=analiseGastos();
+  const contasMes=S.contas.filter(x=>x.status!=='Pago'&&(x.rec==='Mensal'||x.rec==='Parcelada')).reduce((s,x)=>s+(+x.valor||0),0);
+  const gastoMes=Math.max(a.media3||0,contasMes)||0,liq=inv.filter(liquido).reduce((s,i)=>s+i.saldo,0),meses=gastoMes?liq/gastoMes:null;
+  const maior=inv.slice().sort((x,y)=>y.saldo-x.saldo)[0],conc=tot&&maior?maior.saldo/tot:0;
+  const comR=inv.filter(i=>i.r12!=null&&i.r12!==''),neg=tot?comR.filter(i=>+i.r12<0).reduce((s,i)=>s+i.saldo,0)/tot:0;
+  const itens=[];let pts=0;
+  const r1=meses==null?0:Math.min(1,meses/6);pts+=r1*40;
+  itens.push([r1>=1?'ok':r1>=.5?'mid':'bad','Reserva de emergência',meses==null?'Cadastre suas contas mensais ou conecte o banco para calcularmos.':`Seu dinheiro de resgate rápido cobre ${meses.toFixed(1).replace('.',',')} ${meses>=1.95?'meses':'mês'} de gastos (${brl(liq)} para ${brl(gastoMes)}/mês). O ideal costuma ser 6 meses.`]);
+  const r2=inv.length<2?(inv.length?0.3:0):conc<=.35?1:conc>=.8?0:(.8-conc)/.45;pts+=r2*25;
+  itens.push([r2>=.8?'ok':r2>=.4?'mid':'bad','Diversificação',!inv.length?'Nenhum investimento cadastrado ainda.':`O maior investimento (${esc(maior.nome)}) é ${Math.round(conc*100)}% do total.${conc>.5?' Muito dinheiro num lugar só aumenta o risco.':''}`]);
+  const r3=!comR.length?.66:1-neg;pts+=r3*15;
+  itens.push([!comR.length?'mid':neg>.2?'bad':neg>0?'mid':'ok','Rendimento',!comR.length?'Sem dados de rendimento ainda (chegam pelo banco conectado).':neg?`${Math.round(neg*100)}% do valor está com rendimento negativo nos últimos 12 meses.`:'Nenhum investimento com rendimento negativo em 12 meses.']);
+  const v=a.var,r4=v==null?.5:v>.15?0:v>0?.5:1;pts+=r4*20;
+  itens.push([v==null?'mid':v>.15?'bad':v>0?'mid':'ok','Gastos do mês',v==null?'Conecte o banco para acompanharmos se os gastos estão subindo.':v>0?`Seus gastos do dia a dia estão ${pct(v)} acima do mês passado.`:`Seus gastos estão ${pct(v)} em relação ao mês passado. Ótimo!`]);
+  const score=Math.round(pts),nivel=score>=70?['Saudável','ok']:score>=45?['Atenção','mid']:['Precisa de cuidado','bad'];
+  return {inv,tot,score,nivel,itens,gastoMes,liq};
+}
+function vInvest(){
+  const h=saude(),venc=h.inv.filter(i=>i.venc&&diff(i.venc)>=0&&diff(i.venc)<=90).sort((a,b)=>a.venc.localeCompare(b.venc));
+  const cor={ok:'var(--g)',mid:'#d99a00',bad:'var(--badk)'},ico={ok:'✓',mid:'!',bad:'✕'};
+  const grupos={};h.inv.forEach(i=>(grupos[i.tipo]=grupos[i.tipo]||[]).push(i));
+  return `<div class="top"><div><h1>Investimentos</h1><p class="sub">${h.inv.length?`Patrimônio investido: <strong>${brl(h.tot)}</strong>`:'Veja seus investimentos e a saúde do seu dinheiro'}</p></div><div class="acts" style="border:0;padding:0"><button class="btn pri" data-ofconn>Conectar meu banco</button><button class="btn" data-newinv>+ Manual</button></div></div>
+  <div class="box health"><div class="gauge" style="--p:${h.score};--c:${cor[h.nivel[1]]}"><b>${h.score}</b><span>de 100</span></div><div><p class="mut">Saúde do seu dinheiro</p><h2 style="margin:2px 0 6px;color:${cor[h.nivel[1]]}">${h.nivel[0]}</h2><p class="mut" style="font-size:13px">Indicador educativo, calculado com seus dados. Não é recomendação de investimento.</p></div></div>
+  <div class="box" style="margin-top:12px">${h.itens.map(([st,t,d])=>`<div class="hitem"><span class="hico" style="background:${cor[st]}">${ico[st]}</span><div><strong>${t}</strong><p class="mut" style="font-size:14px">${d}</p></div></div>`).join('')}</div>
+  ${venc.length?`<h2>Vencem nos próximos 90 dias</h2>${venc.map(i=>`<div class="row" style="cursor:default"><div><h3>${esc(i.nome)}</h3><p class="mut">${esc(i.inst||i.tipo)}</p></div><div class="r"><b>${brl(i.saldo)}</b><p><span class="tag ${diff(i.venc)<=7?'warn':'soft'}">vence ${fmtD(i.venc)}</span></p></div></div>`).join('')}`:''}
+  <h2>Sua carteira</h2>${h.inv.length?Object.entries(grupos).sort((a,b)=>b[1].reduce((s,i)=>s+i.saldo,0)-a[1].reduce((s,i)=>s+i.saldo,0)).map(([t,arr])=>{const st=arr.reduce((s,i)=>s+i.saldo,0);return `<p class="dayh">${esc(t)} · ${brl(st)} <span class="mut" style="font-weight:500">(${h.tot?Math.round(st/h.tot*100):0}%)</span></p>${arr.map(i=>`<div class="row" ${i.banco?'style="cursor:default"':`data-editinv="${i.id}"`}><div><h3>${esc(i.nome)}</h3><p class="mut">${esc(i.inst||'')}${i.venc?' · vence '+fmtD(i.venc):''}${liquido(i)?' · resgate rápido':''}</p></div><div class="r"><b>${brl(i.saldo)}</b><p>${i.r12!=null&&i.r12!==''?`<span class="tag ${+i.r12<0?'bad':''}">${(+i.r12).toFixed(1).replace('.',',')}% em 12m</span>`:''} <span class="tag soft">${i.banco?'banco':'manual'}</span></p></div></div>`).join('')}`}).join(''):`<p class="empty">Conecte seu banco para trazer seus investimentos automaticamente, ou cadastre à mão em "+ Manual".</p>`}
+  <h2>Bancos conectados</h2>${OF.items.length?OF.items.map(b=>`<div class="row" style="cursor:default"><div><h3>${esc(b.banco||'Banco')}</h3><p class="mut">Atualizado ${b.atualizado_em?new Date(b.atualizado_em).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'—'}</p></div><div class="acts" style="border:0;padding:0"><button class="btn" data-ofsync="${esc(b.item_id)}">Atualizar</button><button class="btn dang" data-ofdel="${esc(b.item_id)}">Desconectar</button></div></div>`).join(''):'<p class="empty">Nenhum banco conectado. A conexão é feita pelo Open Finance, do Banco Central: você autoriza no app do seu banco e o Lembra Aí só consegue ver, nunca mexer no seu dinheiro.</p>'}`;
+}
+function formInv(i){
+  const isNew=!i;i=i||{nome:'',tipo:'Renda fixa',inst:'',saldo:'',venc:'',liq:'vencimento'};
+  openM(`<form><h3 style="margin-bottom:14px">${isNew?'Novo investimento':'Editar investimento'}</h3><label>Nome<input name="nome" required placeholder="Ex.: CDB Banco X 110% CDI" value="${esc(i.nome)}"></label>
+  <div class="two"><label>Tipo<select name="tipo">${opts(TIPOS_M,i.tipo)}</select></label><label>Valor hoje (R$)<input name="saldo" type="number" step="0.01" min="0" inputmode="decimal" required value="${esc(i.saldo)}"></label>
+  <label>Onde está<input name="inst" placeholder="Ex.: Nubank" value="${esc(i.inst)}"></label><label>Vencimento (opcional)<input name="venc" type="date" value="${esc(i.venc||'')}"></label></div>
+  <label>Dá para resgatar a qualquer hora?<select name="liq"><option value="diaria" ${i.liq==='diaria'?'selected':''}>Sim, resgate rápido</option><option value="vencimento" ${i.liq!=='diaria'?'selected':''}>Não, só no vencimento ou com prazo</option></select></label>
+  <div class="acts" style="border:0;padding:0"><button class="btn pri">Salvar</button>${isNew?'':`<button type="button" class="btn dang" data-delinv="${i.id}">Excluir</button>`}<button type="button" class="btn" data-close>Cancelar</button></div></form>`,v=>{
+    S.invs=S.invs||[];const o={nome:v.nome.trim(),tipo:v.tipo,inst:v.inst.trim(),saldo:+v.saldo||0,venc:v.venc||'',liq:v.liq};
+    if(isNew)S.invs.push({id:uid(),...o});else Object.assign(S.invs.find(x=>x.id===i.id),o);save();closeM();render();toast('Investimento salvo');
+  });
+}
+async function ofCall(body){const {data,error}=await sb.functions.invoke('open-finance',{body});if(error){let m=error.message;try{const j=await error.context.json();m=j.erro||m}catch(_){ }throw new Error(m)}if(data&&data.erro)throw new Error(data.erro);return data}
+const loadScript=src=>new Promise((ok,no)=>{if(document.querySelector(`script[src="${src}"]`))return ok();const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=no;document.head.appendChild(s)});
+async function ofConectar(){
+  try{toast('Abrindo a conexão segura…');const t=await ofCall({acao:'token'});
+    await loadScript('https://cdn.pluggy.ai/pluggy-connect/v2.7.0/pluggy-connect.js');
+    new window.PluggyConnect({connectToken:t.accessToken,includeSandbox:!!t.sandbox,onSuccess:async d=>{const id=(d&&d.item&&d.item.id)||(d&&d.id);if(id)await ofSync(id)},onError:e=>toast('Conexão não concluída: '+((e&&e.message)||'tente de novo'))}).init();
+  }catch(e){if(/nao_configurado/.test(e.message))return openM(`<div><h3>Conexão com bancos em ativação</h3><p class="mut" style="margin:10px 0 16px">Estamos finalizando a ligação com o Open Finance. Enquanto isso, cadastre seus investimentos em "+ Manual" que a saúde do seu dinheiro já é calculada.</p><button class="btn pri" data-close>Entendi</button></div>`);toast('Não foi possível conectar: '+e.message)}
+}
+async function ofSync(id){try{toast('Buscando seus dados no banco…');const r=await ofCall({acao:'sync',itemId:id});await loadFin();render();toast(`${r.banco||'Banco'} conectado: ${r.investimentos} investimentos e ${r.transacoes} movimentações`)}catch(e){toast('Erro ao atualizar: '+e.message)}}
+
+const NAV=[['hoje','Hoje',ic.bell],['agenda','Agenda',ic.cal],['contas','Contas',ic.list],['invest','Investir',ic.inv],['resumo','Resumo',ic.chart],['config','Config',ic.gear]];
 function render(){
   const r=(location.hash||'#hoje').slice(1);
   if(!S.session){$('#root').innerHTML=vLogin();const f=$('#root input');if(f&&f.focus)f.focus();return}
   if(S.needSetup){$('#root').innerHTML=vSetup();window.scrollTo(0,0);return}
   const base=r.startsWith('cliente-')?'clientes':r;
-  const body=r.startsWith('cliente-')?vCliente(r.slice(8)):r==='clientes'?vClientes():r==='contas'?vContas():r==='resumo'?vResumo():r==='agenda'?vAgenda():r==='config'?vConfig():vHoje();
+  const body=r.startsWith('cliente-')?vCliente(r.slice(8)):r==='clientes'?vClientes():r==='contas'?vContas():r==='resumo'?vResumo():r==='invest'?vInvest():r==='agenda'?vAgenda():r==='config'?vConfig():vHoje();
   const nav=NAV.map(([h,t,i])=>`<a href="#${h}" class="${base===h?'on':''}">${i}${t}</a>`).join('');
   $('#root').innerHTML=`<div class="app"><aside><div class="logo">${logoSvg}Lembra Aí</div><nav>${nav}</nav></aside><main>${body}</main></div><nav class="mobnav">${nav}</nav>`;
 }
@@ -667,7 +770,7 @@ function seqNext(){
 
 document.addEventListener('click',e=>{
   if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(x){}}
-  const t=e.target.closest('[data-av],[data-pago],[data-pix],[data-go],[data-new-conta],[data-edit-conta],[data-del-conta],[data-new-cli],[data-edit-cli],[data-del-cli],[data-assin],[data-day],[data-close],[data-seq],[data-seqgo],[data-seqskip],[data-sair],[data-copy-bk],[data-imp],[data-seed],[data-wipe],[data-ev],[data-new-ev],[data-edit-ev],[data-del-ev],[data-nav],[data-vw],[data-sel],[data-cals],[data-togcal],[data-delcal],[data-mode],[data-alt],[data-qsel],[data-qgo],[data-qskip],[data-qback],[data-qpass],[data-qdone],[data-resetup],[data-pick],[data-themeset],[data-testalarm],[data-push],[data-showpw],[data-tipo],[data-back],[data-tab]');
+  const t=e.target.closest('[data-av],[data-pago],[data-pix],[data-go],[data-new-conta],[data-edit-conta],[data-del-conta],[data-new-cli],[data-edit-cli],[data-del-cli],[data-assin],[data-day],[data-close],[data-seq],[data-seqgo],[data-seqskip],[data-sair],[data-copy-bk],[data-imp],[data-seed],[data-wipe],[data-ev],[data-new-ev],[data-edit-ev],[data-del-ev],[data-nav],[data-vw],[data-sel],[data-cals],[data-togcal],[data-delcal],[data-mode],[data-alt],[data-ofconn],[data-ofsync],[data-ofdel],[data-newinv],[data-editinv],[data-delinv],[data-qsel],[data-qgo],[data-qskip],[data-qback],[data-qpass],[data-qdone],[data-resetup],[data-pick],[data-themeset],[data-testalarm],[data-push],[data-showpw],[data-tipo],[data-back],[data-tab]');
   if(!t){if(e.target.id==='modal')closeM();return}
   const d=t.dataset;
   if(d.qsel){const k=d.qsel;Q.sel=Q.sel.includes(k)?Q.sel.filter(x=>x!==k):SEC.map(x=>x[0]).filter(x=>x===k||Q.sel.includes(x));t.classList.toggle('on');t.setAttribute('aria-pressed',Q.sel.includes(k));return}
@@ -677,6 +780,12 @@ document.addEventListener('click',e=>{
   if('qpass' in d){Q.i++;return render()}
   if('qdone' in d){S.needSetup=false;save();location.hash='hoje';render();return toast('Lembretes ativados ✓')}
   if('resetup' in d){Q.i=0;Q.sel=[...new Set(S.contas.filter(x=>x.src==='setup').map(x=>x.sec))];S.needSetup=true;save();return render()}
+  if('ofconn' in d)return ofConectar();
+  if(d.ofsync)return ofSync(d.ofsync);
+  if(d.ofdel)return ask('Desconectar este banco? Os dados dele saem do Lembra Aí.',async()=>{try{await ofCall({acao:'remover',itemId:d.ofdel});await loadFin();render();toast('Banco desconectado')}catch(e){toast(e.message)}});
+  if('newinv' in d)return formInv();
+  if(d.editinv)return formInv((S.invs||[]).find(x=>x.id===d.editinv));
+  if(d.delinv)return ask('Excluir este investimento?',()=>{S.invs=(S.invs||[]).filter(x=>x.id!==d.delinv);save();render();toast('Investimento excluído')});
   if(d.pick){pickAcc(d.pick);O.alt=false;return render()}
   if(d.themeset){setTheme(d.themeset);return render()}
   if(d.mode){O.mode=d.mode;O.alt=false;if(d.mode==='novo')O.step=0;return render()}
