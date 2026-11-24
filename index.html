@@ -150,6 +150,8 @@ details.more{margin:4px 0 14px;border-top:1px solid var(--line);padding-top:10px
 [data-tema=dark] .steps i{background:#2a2d2e}[data-tema=dark] .steps i.on{background:#fff}
 [data-tema=dark] #toast{background:#fff;color:#111}
 [data-tema=dark] aside{box-shadow:8px 0 30px -20px #000}
+/* documentos */
+.doc{max-width:760px;margin:0 auto;padding:clamp(20px,5vw,56px) clamp(16px,4vw,32px) 80px}.doc h2{font-size:18px;margin:24px 0 6px}.doc p,.doc li{color:var(--ink);line-height:1.65}.doc ul{padding-left:20px}
 /* investimentos */
 .health{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
 .gauge{--p:0;--c:var(--g);width:112px;height:112px;border-radius:50%;flex:none;display:grid;place-items:center;align-content:center;background:radial-gradient(closest-side,var(--card) 79%,transparent 80% 100%),conic-gradient(var(--c) calc(var(--p)*1%),var(--line) 0)}
@@ -221,7 +223,9 @@ const COLORS=['#e5484d','#f76b15','#f5b800','#30a46c','#0f9d6b','#0090ff','#8e4e
 const defCals=()=>[{id:'pessoal',nome:'Pessoal',cor:'#0090ff',on:true},{id:'trabalho',nome:'Trabalho',cor:'#f76b15',on:true},{id:'familia',nome:'Família',cor:'#8e4ec6',on:true},{id:'contas',nome:'Contas',cor:'#0f9d6b',on:true,fixo:true}];
 function blank(){return{user:null,clients:[],contas:[],hist:[],cfg:{preco:14.9,link:'',dias:3},cals:defCals(),evs:[],fired:[]}}
 const SB_URL='https://ehooepmtzvjbwmnqenki.supabase.co',SB_KEY='sb_publishable_DxkmoQfEgjYwzvDRgw6ItQ_u8T_J-N6';
-const sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:false,autoRefreshToken:true}});
+const sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:false,autoRefreshToken:true,detectSessionInUrl:true,flowType:'implicit'}});
+let REC=/type=recovery/.test(location.hash);
+sb.auth.onAuthStateChange(ev=>{if(ev==='PASSWORD_RECOVERY'){REC=true;setTimeout(()=>render(),0)}});
 const KA='lembraai_contas_salvas',ld=k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},st=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 let ACC=ld(KA)||{list:[],last:null};
 const norm=x=>{x=x||blank();if(!x.cals)x.cals=defCals();if(!x.evs)x.evs=[];if(!x.fired)x.fired=[];if(!x.cfg)x.cfg=blank().cfg;if(!x.clients)x.clients=[];if(!x.contas)x.contas=[];if(!x.hist)x.hist=[];return x};
@@ -377,6 +381,7 @@ function vConfig(){
   <p class="mut" style="font-size:13px;margin-top:12px">Tudo é enviado sozinho, na hora certa, pelos canais marcados. Assinaturas são avisadas só pelo app, com a pergunta "você ainda usa?".</p></form>
   <div class="box" style="margin-top:12px"><h3>Entrar com ${bioNome}</h3><p class="mut" style="margin:4px 0 12px">${!BIO_OK?'Este aparelho ou navegador não tem leitura de rosto ou digital disponível.':bioMap()[S.user.email]?'Ativado neste aparelho ✓ Na tela de entrada, toque em "Entrar com '+bioNome+'".':'Entre sem digitar a senha, usando o '+bioNome+' deste aparelho.'}</p>${BIO_OK?(bioMap()[S.user.email]?'<button type="button" class="btn dang" data-biooff>Desativar neste aparelho</button>':`<button type="button" class="btn pri" data-bioon>Ativar ${bioNome}</button>`):''}</div>
   <div class="box" style="margin-top:12px"><h3>Aparência</h3><p class="mut" style="margin:4px 0 14px">Escolha a cor do fundo do app.</p><div class="themes">${[['light','Fundo branco','padrão'],['dark','Fundo preto','']].map(([k,t,n])=>`<button type="button" class="theme-opt ${getTheme()===k?'on':''}" data-themeset="${k}" aria-pressed="${getTheme()===k}"><span class="prev ${k}"><i></i><i></i><i></i></span><strong>${t}</strong>${n?`<span class="mut" style="font-size:13px">${n}</span>`:''}</button>`).join('')}</div></div>
+  <div class="box" style="margin-top:12px"><h3>Seus dados e privacidade</h3><p class="mut" style="margin:4px 0 12px">Leia como cuidamos das suas informações ou apague sua conta quando quiser.</p><div class="acts" style="border:0;padding:0"><a class="btn" href="#termos">Termos de Uso</a><a class="btn" href="#privacidade">Política de Privacidade</a><button type="button" class="btn dang" data-excluir>Excluir minha conta</button></div></div>
   <div class="box" style="margin-top:12px"><h3>Backup</h3><p class="mut" style="margin:4px 0 12px">Seus dados ficam salvos no servidor e aparecem em qualquer aparelho em que você entrar. O backup é uma cópia extra.</p><div class="acts" style="border:0;padding:0"><button class="btn" data-copy-bk>Copiar backup</button><button class="btn" data-imp>Importar backup</button><button class="btn" data-resetup>Refazer perguntas iniciais</button><button class="btn dang" data-wipe>Apagar tudo</button></div></div>`;
 }
 
@@ -411,17 +416,17 @@ function vLogin(){
     if(has&&!O.alt){const ini=acc.nome.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase(),w=digits(acc.whats),others=ACC.list.filter(a=>a.id!==acc.id);
       return wrap(`<div class="who-card"><span class="av">${esc(ini)}</span><div><h1 style="margin:0;font-size:clamp(26px,4vw,34px)">Olá, ${esc(first(acc.nome))}</h1><p class="sub">WhatsApp (${esc(w.slice(0,2))}) •••••-${esc(w.slice(-4))}</p></div></div>
       ${BIO_OK&&bioMap()[acc.email]?`<button type="button" class="btn pri" data-biologin="${esc(acc.email)}" style="width:100%;margin-top:22px;min-height:58px;font-size:17px;justify-content:center">${isIOS?'🙂':'👆'} Entrar com ${bioNome}</button><p class="mut" style="text-align:center;margin:14px 0 0;font-size:14px">ou use sua senha</p>`:''}
-      <form id="fentrar" style="margin-top:22px"><label>Digite sua senha${pwField('senha','Sua senha','current-password')}</label><p id="lerr" style="color:var(--badk);font-size:14px;min-height:20px"></p><button class="btn pri" style="width:100%">Entrar</button></form>
+      <form id="fentrar" style="margin-top:22px"><label>Digite sua senha${pwField('senha','Sua senha','current-password')}</label><p id="lerr" style="color:var(--badk);font-size:14px;min-height:20px"></p><button class="btn pri" style="width:100%">Entrar</button><p style="text-align:center;margin-top:14px"><a href="#" data-esqueci>Esqueci minha senha</a></p></form>
       ${others.length?`<p style="font-weight:700;margin:22px 0 8px">Outras contas salvas neste aparelho</p><div class="acts" style="border:0;padding:0">${others.map(a=>`<button type="button" class="btn" data-pick="${a.id}">${esc(first(a.nome))} · ${esc(a.email)}</button>`).join('')}</div>`:''}
       <p class="mut" style="margin-top:18px;font-size:14px">Não é você? <a href="#" data-alt>Entrar com e-mail e senha</a></p>`)}
     return wrap(`<h1>Entrar</h1><p class="sub">Use o e-mail e a senha da sua conta.</p>
-     <form id="fentrar" style="margin-top:22px"><label>E-mail<input class="big" name="email" type="email" required autocomplete="email"></label><label>Senha${pwField('senha','Sua senha','current-password')}</label><p id="lerr" style="color:var(--badk);font-size:14px;min-height:20px"></p><button class="btn pri" style="width:100%">Entrar</button></form>
+     <form id="fentrar" style="margin-top:22px"><label>E-mail<input class="big" name="email" type="email" required autocomplete="email"></label><label>Senha${pwField('senha','Sua senha','current-password')}</label><p id="lerr" style="color:var(--badk);font-size:14px;min-height:20px"></p><button class="btn pri" style="width:100%">Entrar</button><p style="text-align:center;margin-top:14px"><a href="#" data-esqueci>Esqueci minha senha</a></p></form>
      ${has?'<p class="mut" style="margin-top:18px;font-size:14px"><a href="#" data-alt>Voltar</a></p>':''}`);
   }
   const st=STEPS[O.step],last=O.step===STEPS.length-1;
   return wrap(`<div class="steps">${STEPS.map((_,i)=>`<i class="${i<=O.step?'on':''}"></i>`).join('')}</div><p class="mut" style="font-size:14px">Pergunta ${O.step+1} de ${STEPS.length}</p><h1>${st[1]}</h1><p class="sub">${st[2]}</p>
    <form id="fstep" style="margin-top:22px">${st[0]==='whats'?`<p style="font-size:14px;font-weight:600;margin-bottom:6px">DDD e número</p>${phoneField(O.v.whats||'',1)}`:st[3]==='password'?pwField('v',st[4],st[5]):`<input class="big" name="v" type="${st[3]}" required placeholder="${st[4]}" autocomplete="${st[5]}" value="${esc(O.v[st[0]]||'')}">`}
-   ${last?`<p style="font-weight:700;margin:18px 0 8px">Você vai usar para</p><div class="seg" style="margin-bottom:16px">${['Pessoa','Negócio'].map(t=>`<button type="button" data-tipo="${t}" class="${O.v.tipo===t?'on':''}">${t==='Pessoa'?'Minha vida':'Meu negócio'}</button>`).join('')}</div><label class="check"><input type="checkbox" name="lgpd" required><span>Aceito receber lembretes no meu WhatsApp e que meus dados sejam usados só para isso (LGPD).</span></label>`:''}
+   ${last?`<p style="font-weight:700;margin:18px 0 8px">Você vai usar para</p><div class="seg" style="margin-bottom:16px">${['Pessoa','Negócio'].map(t=>`<button type="button" data-tipo="${t}" class="${O.v.tipo===t?'on':''}">${t==='Pessoa'?'Minha vida':'Meu negócio'}</button>`).join('')}</div><label class="check"><input type="checkbox" name="lgpd" required><span>Li e aceito os <a href="#termos" target="_blank">Termos de Uso</a> e a <a href="#privacidade" target="_blank">Política de Privacidade</a>, e aceito receber lembretes no meu WhatsApp, e-mail e celular.</span></label>`:''}
    <p id="lerr" style="color:var(--badk);font-size:14px;min-height:20px;margin-top:8px"></p>
    <div style="display:flex;gap:10px">${O.step?'<button type="button" class="btn" data-back style="flex:0 0 auto;padding:0 20px">Voltar</button>':''}<button class="btn pri" style="flex:1">${last?'Criar conta e ativar lembretes':'Continuar'}</button></div></form>
    ${ACC.list.length?`<p class="mut" style="margin-top:14px;font-size:13px">As ${ACC.list.length>1?ACC.list.length+' contas já salvas continuam':'conta já salva continua'} guardadas neste aparelho.</p>`:''}`);
@@ -605,6 +610,59 @@ async function ativarPush(silent){
 }
 if('serviceWorker' in navigator&&location.protocol==='https:'){navigator.serviceWorker.register('sw.js').catch(()=>{});
   navigator.serviceWorker.addEventListener('message',ev=>{const m=ev.data||{};if(m.type==='push'){beep();toast((m.title||'Lembrete')+(m.body?' · '+m.body:''))}if(m.type==='open'&&m.url&&S.session)abrirDet(m.url)})}
+/* ===== Senha esquecida, exclusão de conta e documentos ===== */
+function esqueci(){
+  const em=(curAcc()?.email)||'';
+  openM(`<form><h3 style="margin-bottom:6px">Esqueci minha senha</h3><p class="mut" style="margin-bottom:14px">Enviamos um link para o seu e-mail. Toque nele para criar uma senha nova.</p><label>Seu e-mail<input name="email" type="email" required autocomplete="email" value="${esc(em)}"></label><p class="err" style="color:var(--badk);font-size:14px;min-height:20px"></p><div class="acts" style="border:0;padding:0"><button class="btn pri">Enviar link</button><button type="button" class="btn" data-close>Cancelar</button></div></form>`,async(v,f)=>{
+    const b=f.querySelector('button.pri');b.disabled=true;b.textContent='Enviando…';
+    const {error}=await sb.auth.resetPasswordForEmail(v.email.trim().toLowerCase(),{redirectTo:location.origin+location.pathname});
+    b.disabled=false;b.textContent='Enviar link';
+    if(error)return f.querySelector('.err').textContent=netMsg(error)||(/rate|limit/i.test(error.message)?'Muitos pedidos seguidos. Espere alguns minutos e tente de novo.':'Não foi possível enviar: '+error.message);
+    closeM();toast('Se esse e-mail tiver conta, o link chega em instantes. Veja também o spam.');
+  });
+}
+function vNovaSenha(){
+  return `<div class="onb"><div class="art">${ART}</div><div class="qa"><div class="logo" style="margin:0 0 18px">${logoSvg}Lembra Aí</div><h1>Crie uma senha nova</h1><p class="sub">Pelo menos 6 caracteres.</p>
+  <form id="fnova" style="margin-top:22px"><label>Nova senha${pwField('s1','Nova senha','new-password')}</label><label>Repita a senha${pwField('s2','Repita a senha','new-password')}</label><p id="lerr" style="color:var(--badk);font-size:14px;min-height:20px"></p><button class="btn pri" style="width:100%">Salvar e entrar</button></form></div></div>`;
+}
+function excluirConta(){
+  openM(`<form><h3 style="margin-bottom:6px;color:var(--badk)">Excluir minha conta</h3><p class="mut" style="margin-bottom:12px">Isso apaga para sempre seu cadastro, contas, agenda, lembretes, investimentos, gastos e desconecta seus bancos. Não dá para desfazer.</p><label>Para confirmar, digite EXCLUIR<input name="c" required autocomplete="off" autocapitalize="characters"></label><p class="err" style="color:var(--badk);font-size:14px;min-height:20px"></p><div class="acts" style="border:0;padding:0"><button class="btn dang">Excluir tudo</button><button type="button" class="btn" data-close>Cancelar</button></div></form>`,async(v,f)=>{
+    if(String(v.c).trim().toUpperCase()!=='EXCLUIR')return f.querySelector('.err').textContent='Digite EXCLUIR para confirmar.';
+    const b=f.querySelector('button.dang');b.disabled=true;b.textContent='Excluindo…';
+    const {data,error}=await sb.functions.invoke('conta',{body:{acao:'excluir',confirmacao:'EXCLUIR'}});
+    if(error||data?.erro){b.disabled=false;b.textContent='Excluir tudo';return f.querySelector('.err').textContent=(data&&data.erro)||'Não foi possível excluir agora. Tente de novo.'}
+    try{const reg=navigator.serviceWorker?await Promise.race([navigator.serviceWorker.ready,new Promise(r=>setTimeout(r,1500))]):null;const sub=await reg?.pushManager?.getSubscription();if(sub)await sub.unsubscribe()}catch(_){}
+    const em=S.user.email;ACC.list=ACC.list.filter(a=>a.email!==em);ACC.last=ACC.list[0]?.id||null;saveAcc();const m=bioMap();delete m[em];st(BIO_K,m);
+    await sb.auth.signOut();UID=null;S=norm(null);O.mode='';O.alt=false;closeM();location.hash='';render();toast('Sua conta e seus dados foram apagados.');
+  });
+}
+const CONTATO_EMAIL='';
+const contato=()=>CONTATO_EMAIL?`pelo e-mail <a href="mailto:${CONTATO_EMAIL}">${CONTATO_EMAIL}</a>`:'pelos canais de atendimento informados no app';
+function vDoc(k){
+  const T=k==='termos'?{t:'Termos de Uso',b:`
+<p>Bem-vindo ao <strong>Lembra Aí</strong>, um app que organiza suas contas, compromissos e investimentos e te avisa na hora certa. Ao criar sua conta, você concorda com estes termos.</p>
+<h2>1. O que o Lembra Aí faz</h2><p>O app guarda as contas, os compromissos e as informações que você cadastra e envia lembretes por notificação no celular, e-mail e WhatsApp, conforme as suas escolhas em Configurações. Também pode mostrar seus investimentos e gastos quando você conecta seu banco pelo Open Finance.</p>
+<h2>2. Sua conta</h2><p>Você precisa ter 18 anos ou mais e informar dados verdadeiros. A senha é pessoal: guarde-a bem. O acesso por Face ID ou digital usa a segurança do seu próprio aparelho.</p>
+<h2>3. Lembretes são uma ajuda</h2><p>Fazemos o possível para que todo lembrete chegue no horário, mas a entrega depende de serviços de terceiros (operadoras, Apple, Google, WhatsApp e provedores de e-mail) e da sua conexão. <strong>O pagamento das contas e o comparecimento aos compromissos continuam sendo sua responsabilidade.</strong> Não respondemos por multas, juros ou prejuízos causados por lembretes atrasados ou não entregues.</p>
+<h2>4. Teste grátis e assinatura</h2><p>Novos usuários podem usar o app de graça por 14 dias. Depois disso, o uso completo depende de uma assinatura mensal, com preço informado antes da cobrança. Você pode cancelar quando quiser, e o acesso continua até o fim do período já pago.</p>
+<h2>5. Bancos e Open Finance</h2><p>A conexão com bancos é opcional, feita pelo Open Finance do Banco Central, por meio de um parceiro autorizado (Pluggy). Você autoriza no app do seu banco, pode cancelar a autorização a qualquer momento e o Lembra Aí <strong>só consegue ver</strong> as informações. Nunca movimenta seu dinheiro.</p>
+<h2>6. Investimentos</h2><p>A nota de "saúde do seu dinheiro" e as análises de gastos são <strong>informativas e educativas</strong>. Não são recomendação de investimento, consultoria financeira ou oferta de produtos. Antes de decidir, procure um profissional habilitado.</p>
+<h2>7. Uso adequado</h2><p>Não é permitido usar o app para fins ilegais, tentar acessar dados de outras pessoas ou atrapalhar o funcionamento do serviço. Podemos suspender contas que descumprirem estes termos.</p>
+<h2>8. Encerramento</h2><p>Você pode excluir sua conta a qualquer momento em Configurações → Excluir minha conta. Seus dados serão apagados como descrito na Política de Privacidade.</p>
+<h2>9. Mudanças</h2><p>Podemos atualizar estes termos. Avisaremos no app quando houver mudança importante.</p>
+<h2>10. Lei e contato</h2><p>Estes termos seguem as leis do Brasil. Dúvidas: fale com a gente ${contato()}.</p>`}:{t:'Política de Privacidade',b:`
+<p>Esta política explica quais dados o <strong>Lembra Aí</strong> usa, por quê e quais são os seus direitos, de acordo com a Lei Geral de Proteção de Dados (LGPD, Lei 13.709/2018).</p>
+<h2>1. Dados que usamos</h2><ul><li><strong>Cadastro:</strong> nome, e-mail, WhatsApp e senha (guardada de forma criptografada).</li><li><strong>O que você cadastra:</strong> contas, valores, vencimentos, compromissos, assinaturas, investimentos manuais e, se quiser, placa e estado do veículo.</li><li><strong>Open Finance (opcional):</strong> se você conectar seu banco, recebemos saldos de investimentos e movimentações para mostrar seus gastos.</li><li><strong>Aparelho:</strong> o registro técnico para enviar notificações e, se você ativar, a chave do Face ID/digital. <strong>Seu rosto e sua digital nunca saem do seu celular.</strong></li></ul>
+<h2>2. Para que usamos</h2><p>Só para prestar o serviço: criar seus lembretes, enviar avisos pelos canais que você escolheu, mostrar sua agenda, seus gastos e seus investimentos. Não vendemos seus dados e não usamos suas informações financeiras para publicidade.</p>
+<h2>3. Base legal</h2><p>Usamos seus dados para cumprir o contrato com você (prestar o serviço que você pediu) e com o seu consentimento, que você dá no cadastro e ao conectar um banco, e pode retirar quando quiser.</p>
+<h2>4. Com quem compartilhamos</h2><p>Apenas com empresas que nos ajudam a operar o app, e só o necessário: Supabase (servidor e banco de dados), Resend (envio de e-mails), Meta/WhatsApp (envio de mensagens), Pluggy (conexão com bancos pelo Open Finance), Apple e Google (notificações no celular) e GitHub (hospedagem do site). Também podemos compartilhar dados quando a lei ou uma autoridade exigir.</p>
+<h2>5. Segurança</h2><p>Os dados trafegam criptografados, cada pessoa só acessa as próprias informações e as chaves de acesso ficam em cofre protegido. Nenhum sistema é 100% invulnerável, mas seguimos boas práticas para proteger suas informações.</p>
+<h2>6. Por quanto tempo guardamos</h2><p>Enquanto sua conta existir. Ao excluir a conta, apagamos seus dados do app e desconectamos seus bancos, exceto o que a lei nos obrigar a manter.</p>
+<h2>7. Seus direitos</h2><p>Você pode, a qualquer momento: ver e corrigir seus dados no próprio app, desconectar bancos, escolher os canais de aviso, retirar consentimentos e <strong>excluir sua conta e todos os dados</strong> em Configurações → Excluir minha conta.</p>
+<h2>8. Contato</h2><p>Para dúvidas ou pedidos sobre seus dados, fale com a gente ${contato()}. Responsável: Renato Ramos.</p>`};
+  return `<div class="doc"><p><a href="#hoje">← Voltar</a></p><div class="logo" style="margin:14px 0 18px">${logoSvg}Lembra Aí</div><h1>${T.t}</h1><p class="sub">Atualizado em 24 de novembro de 2026</p>${T.b}</div>`;
+}
+
 /* ===== Entrar com Face ID / digital ===== */
 const BIO_K='lembraai_bio',bioMap=()=>ld(BIO_K)||{};let BIO_OK=false;
 const bioNome=isIOS?'Face ID':'digital ou rosto';
@@ -750,6 +808,8 @@ async function ofSync(id){try{toast('Buscando seus dados no banco…');const r=a
 const NAV=[['hoje','Hoje',ic.bell],['agenda','Agenda',ic.cal],['contas','Contas',ic.list],['invest','Investir',ic.inv],['resumo','Resumo',ic.chart],['config','Config',ic.gear]];
 function render(){
   const r=(location.hash||'#hoje').slice(1);
+  if(r==='termos'||r==='privacidade'){$('#root').innerHTML=vDoc(r);window.scrollTo(0,0);return}
+  if(REC){$('#root').innerHTML=vNovaSenha();return}
   if(!S.session){$('#root').innerHTML=vLogin();const f=$('#root input');if(f&&f.focus)f.focus();return}
   if(S.needSetup){$('#root').innerHTML=vSetup();window.scrollTo(0,0);return}
   const base=r.startsWith('cliente-')?'clientes':r;
@@ -805,7 +865,7 @@ function seqNext(){
 
 document.addEventListener('click',e=>{
   if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(x){}}
-  const t=e.target.closest('[data-av],[data-pago],[data-pix],[data-go],[data-new-conta],[data-edit-conta],[data-del-conta],[data-new-cli],[data-edit-cli],[data-del-cli],[data-assin],[data-day],[data-close],[data-seq],[data-seqgo],[data-seqskip],[data-sair],[data-copy-bk],[data-imp],[data-seed],[data-wipe],[data-ev],[data-new-ev],[data-edit-ev],[data-del-ev],[data-nav],[data-vw],[data-sel],[data-cals],[data-togcal],[data-delcal],[data-mode],[data-alt],[data-bioon],[data-biooff],[data-biologin],[data-ofconn],[data-ofsync],[data-ofdel],[data-newinv],[data-editinv],[data-delinv],[data-qsel],[data-qgo],[data-qskip],[data-qback],[data-qpass],[data-qdone],[data-resetup],[data-pick],[data-themeset],[data-testalarm],[data-push],[data-showpw],[data-tipo],[data-back],[data-tab]');
+  const t=e.target.closest('[data-av],[data-pago],[data-pix],[data-go],[data-new-conta],[data-edit-conta],[data-del-conta],[data-new-cli],[data-edit-cli],[data-del-cli],[data-assin],[data-day],[data-close],[data-seq],[data-seqgo],[data-seqskip],[data-sair],[data-copy-bk],[data-imp],[data-seed],[data-wipe],[data-ev],[data-new-ev],[data-edit-ev],[data-del-ev],[data-nav],[data-vw],[data-sel],[data-cals],[data-togcal],[data-delcal],[data-mode],[data-alt],[data-esqueci],[data-excluir],[data-bioon],[data-biooff],[data-biologin],[data-ofconn],[data-ofsync],[data-ofdel],[data-newinv],[data-editinv],[data-delinv],[data-qsel],[data-qgo],[data-qskip],[data-qback],[data-qpass],[data-qdone],[data-resetup],[data-pick],[data-themeset],[data-testalarm],[data-push],[data-showpw],[data-tipo],[data-back],[data-tab]');
   if(!t){if(e.target.id==='modal')closeM();return}
   const d=t.dataset;
   if(d.qsel){const k=d.qsel;Q.sel=Q.sel.includes(k)?Q.sel.filter(x=>x!==k):SEC.map(x=>x[0]).filter(x=>x===k||Q.sel.includes(x));t.classList.toggle('on');t.setAttribute('aria-pressed',Q.sel.includes(k));return}
@@ -815,6 +875,8 @@ document.addEventListener('click',e=>{
   if('qpass' in d){Q.i++;return render()}
   if('qdone' in d){S.needSetup=false;save();location.hash='hoje';render();return toast('Lembretes ativados ✓')}
   if('resetup' in d){Q.i=0;Q.sel=[...new Set(S.contas.filter(x=>x.src==='setup').map(x=>x.sec))];S.needSetup=true;save();return render()}
+  if('esqueci' in d){e.preventDefault();return esqueci()}
+  if('excluir' in d)return excluirConta();
   if('bioon' in d)return ativarBio();
   if('biooff' in d)return ask(`Desativar ${bioNome} neste aparelho?`,desativarBio);
   if(d.biologin)return entrarBio(d.biologin);
@@ -879,6 +941,9 @@ document.addEventListener('change',e=>{
 });
 document.addEventListener('submit',e=>{
   const f=e.target;if(f.closest('#mbody'))return;e.preventDefault();const v=Object.fromEntries(new FormData(f));
+  if(f.id==='fnova'){(async()=>{const err=t=>$('#lerr').textContent=t;if(String(v.s1).length<6)return err('A senha precisa de pelo menos 6 caracteres.');if(v.s1!==v.s2)return err('As duas senhas não são iguais.');
+    const {error}=await sb.auth.updateUser({password:v.s1});if(error)return err(netMsg(error)||'O link expirou. Peça um novo em "Esqueci minha senha".');
+    REC=false;history.replaceState(null,'',location.pathname+'#hoje');try{await loadUser()}catch(x){return err('Senha salva! Entre com a senha nova.')}render();toast('Senha nova salva ✓')})()}
   if(f.id==='fsetup'){const k=f.dataset.sec;Q.ans[k]={};ROWS[k].forEach(r=>{const a={};['dia','valor','data','nome','parc','forma','on'].forEach(x=>{const val=v[r[0]+'__'+x];if(val!==undefined&&val!=='')a[x]=val});Q.ans[k][r[0]]=a});
     if(k==='carro'){S.carro={placa:String(v.placa||'').toUpperCase().replace(/[^A-Z0-9]/g,''),uf:v.uf||''}}
     S.contas=S.contas.filter(x=>!(x.src==='setup'&&x.sec===k)).concat(ROWS[k].map(r=>qBuild(k,r,Q.ans[k][r[0]])).filter(Boolean));
