@@ -320,6 +320,13 @@ label{font-weight:600;color:var(--mute);font-size:13px;text-transform:none;lette
 .setupc .top2{flex-wrap:wrap}.setupc .top2 b{font-size:22px}
 #splash .ico,.logo i{background:transparent!important}
 @media(max-width:600px){.vgrid{gap:8px}.vgrid div{padding:10px}.vgrid b{font-size:20px}}
+.plano{max-width:620px;margin:0 auto}.plano h1{margin-top:8px}
+.price{margin-top:14px;border-radius:26px;border:1px solid var(--line2);padding:22px;background:radial-gradient(120% 80% at 0% 0%,rgba(216,184,120,.12),transparent 60%),var(--card)}
+.price .k{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.price .pv{display:flex;align-items:baseline;gap:6px;margin:6px 0 8px}.price .pv .num{font-size:56px}.price .pv small{color:var(--mute);font-weight:600}
+.price ul{list-style:none;padding:0;margin:18px 0;display:grid;gap:10px}.price li{display:flex;gap:10px;font-size:14.5px}.price li span{color:var(--ok);font-weight:800}
+.trial{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:-8px 0 14px;padding:10px 14px;border-radius:14px;border:1px solid var(--line);font-size:13.5px;color:var(--mute);text-decoration:none}
+.trial b{color:var(--gold);white-space:nowrap}.trial.urg{border-color:rgba(255,196,87,.4);background:var(--warn);color:var(--ink)}
 </style>
 
 
@@ -393,7 +400,7 @@ async function loadUser(){
   if(pe||ae)throw pe||ae;const empty=!a||!a.data||!Object.keys(a.data).length;
   S=norm(empty?null:a.data);S.user={nome:p.nome,whats:p.whatsapp,email:user.email,tipo:p.tipo};if(p.canais)S.cfg.canais=p.canais;
   if(!S.clients.some(c=>c.me))S.clients.unshift({id:uid(),nome:S.user.nome,whats:S.user.whats,tipo:S.user.tipo,status:'Em teste',inicio:today(),me:true});
-  if(empty)S.needSetup=true;S.session=true;remember();loadFin();
+  if(empty)S.needSetup=true;S.session=true;remember();loadFin();await loadPlano();
 }
 const netMsg=e=>/fetch|network|Load failed/i.test(e&&e.message||'')?'Sem conexão com o servidor. Verifique a internet e tente de novo.':'';
 const getTheme=()=>{try{return localStorage.getItem('lembraai_theme')||'dark'}catch(e){return 'dark'}};
@@ -514,7 +521,7 @@ function vHoje(){
     <div class="acts2">${nx.cat==='Assinatura'?`<button class="btn pri" data-pago="${nx.id}">Ainda uso</button>`:`<button class="btn pri" data-pago="${nx.id}">Já paguei</button>`}${nx.pix?`<button class="btn" data-pix="${nx.id}">Copiar Pix</button>`:''}<button class="btn ghost" data-det="${nx.id}">Detalhes</button></div></section>`:'';
   const setup=pc<100?`<section class="setupc fade fade3"><div class="top2"><span style="font-weight:700">Seu Lembra Aí está</span><b class="gold">${pc}% configurado</b></div><div class="prog"><i style="width:${pc}%"></i></div><p class="mut" style="font-size:13px">Quanto mais completo, menos chance de uma conta passar.</p><div class="feat">${fl.map(([k,t,on])=>`<button type="button" class="${on?'on':''}" data-feat="${k}" ${on?'disabled':''}><span class="ck">${on?'✓':''}</span>${t}</button>`).join('')}</div></section>`:'';
   return `<header class="hdr fade">${emblema(40)}<div class="hi">${saud()},<b>${esc(first(S.user.nome))}</b></div><span class="shield">● ${V.atr?'Atenção':'Tudo protegido'}</span></header>
-  ${valor}${next}
+  ${trialBar()}${valor}${next}
   ${g.var!=null&&g.var>.15?`<a href="#patrimonio" class="banner" style="display:block;margin-top:14px;padding:14px 16px;text-decoration:none"><b>Seus gastos do dia a dia subiram ${pct(g.var)}</b><span class="mut"> este mês. Toque para ver o que aumentou.</span></a>`:''}
   <div class="quick fade fade3"><button class="btn pri" data-new-conta>${ic.plus}Conta</button><button class="btn" data-new-ev>${ic.cal}Compromisso</button><a class="btn" href="#agenda">${ic.clock}Agenda</a><a class="btn" href="#contas">${ic.list}Todas as contas</a></div>
   ${setup}
@@ -583,7 +590,7 @@ function vResumo(){
 function vConfig(){
   return `<div class="top"><div><h1>Configurações</h1></div></div>
   <form class="box" id="fme"><h3 style="margin-bottom:12px">Minha conta</h3><div class="two"><label>Nome<input name="nome" required value="${esc(S.user.nome)}"></label><label>WhatsApp que recebe os lembretes (DDD + número)${phoneField(S.user.whats)}</label><label>E-mail de acesso<input name="email" type="email" readonly value="${esc(S.user.email)}" title="O e-mail de login não pode ser trocado aqui"></label><label>Nova senha (opcional)<input name="senha" type="password" minlength="6" placeholder="Deixe em branco para manter" autocomplete="new-password"></label></div><div class="acts" style="border:0;padding:0"><button class="btn pri">Salvar</button><a class="btn" target="_blank" rel="noopener" href="${esc(wa(S.user.whats,'Oi! Meu Lembra Aí está ativo ✅'))}">${ic.wa}Testar no meu WhatsApp</a><button type="button" class="btn dang" data-sair>Sair</button></div></form>
-  <form class="box" id="fcan" style="margin-top:12px"><h3>Como quer receber os lembretes</h3><p class="mut" style="margin:4px 0 14px">Escolha um, dois ou os três.</p>
+  ${boxPlano()}<form class="box" id="fcan" style="margin-top:12px"><h3>Como quer receber os lembretes</h3><p class="mut" style="margin:4px 0 14px">Escolha um, dois ou os três.</p>
   ${[['alarme','Notificação no celular','Chega na tela do celular, com o som do Lembra Aí quando o app está aberto.'],['whats','Mensagem no WhatsApp','Para '+fmtTel(S.user.whats)+'.'],['email','E-mail','Para '+S.user.email+'.']].map(([k,t,d])=>`<label class="check row" style="cursor:pointer"><input type="checkbox" name="${k}" ${CH()[k]?'checked':''}><span><strong>${t}</strong><br><span class="mut" style="font-weight:500">${esc(d)}</span></span></label>`).join('')}
   <label style="margin-top:8px">Avisar das contas quantos dias antes<input name="dias" type="number" min="0" max="30" value="${S.cfg.dias}"></label><div class="acts" style="border:0;padding:0"><button class="btn pri">Salvar</button><button type="button" class="btn" data-testalarm>Ouvir o som</button></div>
   <div class="box" style="margin-top:14px;box-shadow:none"><h3>Notificações neste celular</h3><p class="mut" id="pushst" style="margin:4px 0 12px">${pushStatus()}</p><button type="button" class="btn pri" data-push>Ativar notificações aqui</button></div>
@@ -1031,7 +1038,7 @@ const CCKB=[
  [['banco','open finance','conectar','extrato','investimento','patrimonio','saude'],'Em <b>Patrimônio</b> você conecta seu banco pelo Open Finance (com autorização do próprio banco, e você pode desconectar quando quiser). Eu mostro seus investimentos, a nota de saúde do seu dinheiro e quando os gastos sobem.',[['Abrir Patrimônio','#patrimonio'],['Conectar banco','banco']]],
  [['gasto','gastos','aumento','subiu'],'Comparo seus gastos do mês com a média dos meses anteriores e aviso quando algo sobe mais de 15%. Fica em <b>Patrimônio</b>.',[['Ver meus gastos','#patrimonio']]],
  [['assinatura','netflix','spotify','cancelar assinatura'],'Assinaturas eu aviso só pelo app, antes da renovação, perguntando se você ainda usa. Se não usa, coloque o link de cancelamento na conta e cancele com um toque.',[['Adicionar assinatura','conta']]],
- [['preco','quanto custa','valor do app','plano','teste','gratis','pagar o app'],'Você tem <b>14 dias grátis</b> para testar tudo. Depois, o plano é '+brl(14.9)+' por mês.',[]],
+ [['preco','quanto custa','valor do app','plano','teste','gratis','pagar o app','assinar','assinatura do app','cancelar plano'],'Você tem <b>14 dias grátis</b> para testar tudo. Depois, o plano é '+brl(14.9)+' por mês, pago pelo Mercado Pago. Dá para cancelar quando quiser em Ajustes → Seu plano.',[['Ver plano','#plano']]],
  [['senha','esqueci','trocar senha'],'Para trocar a senha, vá em <b>Ajustes → Minha conta</b>. Se esqueceu, na tela de entrada toque em "Esqueci minha senha" e eu mando um link para o seu e-mail.',[['Abrir ajustes','#config']]],
  [['tema','escuro','claro','fundo','cor'],'Em <b>Ajustes → Aparência</b> você escolhe fundo escuro ou claro.',[['Abrir ajustes','#config']]],
  [['excluir','apagar conta','deletar','privacidade','lgpd','dados'],'Seus dados ficam protegidos e você pode apagar sua conta a qualquer momento em <b>Ajustes → Seus dados e privacidade</b>. Lá também estão os Termos e a Política de Privacidade.',[['Abrir ajustes','#config'],['Privacidade','#privacidade']]],
@@ -1078,6 +1085,50 @@ document.addEventListener('click',e=>{
 });
 document.addEventListener('submit',e=>{if(e.target.id!=='fcc')return;e.preventDefault();e.stopPropagation();const i=e.target.q;ccPerg(i.value);i.value=''},true);
 
+/* ===== Plano: 14 dias grátis, depois assinatura mensal (Mercado Pago) ===== */
+let PL=null;
+const acesso=()=>!PL||PL.status==='ativa'||Date.parse(PL.teste_fim)>Date.now();
+const diasTeste=()=>PL?Math.max(0,Math.ceil((Date.parse(PL.teste_fim)-Date.now())/864e5)):14;
+async function loadPlano(){try{const {data}=await sb.from('assinaturas').select('status,teste_fim,valor').eq('user_id',UID).maybeSingle();if(data)PL=data}catch(e){}
+  if(PL&&PL.status!=='ativa'&&!acesso())assCall({acao:'status'}).then(r=>{if(r&&r.status){PL={...PL,status:r.status};if(acesso())render()}}).catch(()=>{})}
+async function assCall(body){const {data,error}=await sb.functions.invoke('assinatura',{body});if(error){let m=error.message;try{const j=await error.context.json();m=j.erro||m}catch(_){ }throw new Error(m)}if(data&&data.erro)throw new Error(data.erro);return data}
+async function assinar(btn){if(btn){btn.disabled=true;btn.textContent='Abrindo o Mercado Pago…'}
+  try{const r=await assCall({acao:'assinar'});if(r.ja){PL.status='ativa';render();return toast('Sua assinatura já está ativa')}location.href=r.link}
+  catch(e){toast(netMsg(e)||e.message);if(btn){btn.disabled=false;btn.textContent='Assinar agora'}}}
+async function confirmarPlano(n){
+  try{const r=await assCall({acao:'status'});PL={...PL,status:r.status,teste_fim:r.teste_fim};
+    if(r.status==='ativa'){location.hash='hoje';render();return celebrar('Assinatura ativa.','Obrigado. Seus lembretes seguem chegando, todo mês.')}}catch(e){}
+  if((n||0)<6)return setTimeout(()=>confirmarPlano((n||0)+1),5000);
+  location.hash='hoje';render();toast('Pagamento em análise. Assim que o Mercado Pago confirmar, sua assinatura é ativada sozinha.');
+}
+const cancelarPlano=()=>ask('Cancelar a assinatura? Você continua com acesso até o fim do período já pago e não será cobrado de novo.',async()=>{try{const r=await assCall({acao:'cancelar'});PL={...PL,status:r.status};render();toast('Assinatura cancelada')}catch(e){toast(netMsg(e)||e.message)}});
+const precoDia=v=>brl(v/30).replace(/\s/g,' ');
+function vPlano(){
+  const V=valorMes(),preco=+(PL&&PL.valor)||14.9,venceu=!acesso(),d=diasTeste(),fim=PL?new Date(PL.teste_fim):null;
+  const nC=S.contas.filter(x=>x.status!=='Pago').length,nE=S.evs.length;
+  const inclui=['Avisos de todas as contas antes do vencimento','Notificação no celular, WhatsApp e e-mail','Agenda completa com alertas','Patrimônio: banco conectado, investimentos e saúde do dinheiro','Alerta quando seus gastos sobem','Concierge 24 horas','Entrar com '+bioNome+' e várias contas no mesmo aparelho'];
+  return `<div class="plano">
+  <div class="hdr">${emblema(40)}<div class="hi">Lembra Aí<b>Plano mensal</b></div>${venceu?'':`<span class="shield">● ${d} ${d===1?'dia':'dias'} de teste</span>`}</div>
+  <h1>${venceu?'Seus avisos estão <em>pausados.</em>':'Fique protegido <em>todo mês.</em>'}</h1>
+  <p class="sub" style="font-size:16px;margin:10px 0 20px">${venceu?`Seu teste grátis terminou. ${nC?`Suas ${nC} contas${nE?` e ${nE} compromissos`:''} continuam salvos, mas`:'Os'} lembretes no celular, no WhatsApp e no e-mail só voltam com a assinatura.`:`Faltam ${d} ${d===1?'dia':'dias'} do seu teste grátis. Assine agora e a primeira cobrança só acontece em ${fim.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'})}, quando o teste acabar.`}</p>
+  ${V.n?`<section class="value"><div class="k">O que o Lembra Aí cuida para você</div><div class="big num gold">${brl(V.total)}</div><p class="cap">em ${V.n} ${V.n===1?'conta':'contas'} acompanhadas este mês.</p>${V.total/preco>=2?`<div class="roi"><span class="x gold">${V.total/preco>=10?Math.round(V.total/preco):(V.total/preco).toFixed(1).replace('.',',')}×</span><span>o valor do plano, em contas protegidas contra esquecimento.</span></div>`:''}</section>`:''}
+  <section class="price"><div><span class="k">Plano mensal</span><div class="pv"><span class="num">${brl(preco)}</span><small>/mês</small></div><p class="mut">Menos de ${precoDia(preco)} por dia. Uma única multa de atraso de 2% numa conta de ${brl(preco*50)} já custa ${brl(preco)}.</p></div>
+  <ul>${inclui.map(t=>`<li><span>✓</span>${t}</li>`).join('')}</ul>
+  <button type="button" class="btn pri" data-assinar style="width:100%;min-height:58px;font-size:16px">Assinar agora</button>
+  <p class="mut" style="font-size:13px;text-align:center;margin-top:12px">Pagamento seguro pelo Mercado Pago. Você escolhe a forma de pagar lá. Cancele quando quiser, em Ajustes, sem multa.</p></section>
+  <p style="text-align:center;margin-top:18px;font-size:14px">${venceu?`<a href="#config">Ajustes</a> · <a href="#" data-sair>Sair</a>`:`<a href="#hoje">Agora não</a>`}</p></div>`;
+}
+function boxPlano(){
+  if(!PL)return '';const d=diasTeste(),st=PL.status;
+  const txt=st==='ativa'?'Assinatura ativa. Obrigado por confiar no Lembra Aí.':st==='cancelada'?(acesso()?`Assinatura cancelada. Seu acesso vai até ${fmtD(PL.teste_fim.slice(0,10))}.`:'Assinatura cancelada. Os avisos estão pausados.'):acesso()?`Teste grátis: ${d===0?'termina hoje':`faltam ${d} ${d===1?'dia':'dias'}`}.`:'Seu teste grátis terminou. Os avisos estão pausados.';
+  return `<div class="box" style="margin-top:12px"><h3>Seu plano</h3><p class="mut" style="margin:4px 0 12px">${txt}</p><div class="acts" style="border:0;padding:0">${st==='ativa'?`<button type="button" class="btn dang" data-cancplano>Cancelar assinatura</button>`:`<a class="btn pri" href="#plano">Ver plano · ${brl(+PL.valor||14.9)}/mês</a>`}</div></div>`;
+}
+function trialBar(){
+  if(!PL||PL.status==='ativa')return '';const d=diasTeste();
+  return `<a href="#plano" class="trial ${d<=3?'urg':''}"><span>${d<=3?`Seu teste grátis termina ${d===0?'hoje':d===1?'amanhã':`em ${d} dias`}.`:`Teste grátis · faltam ${d} dias`}</span><b>${d<=3?'Garantir meu plano':'Ver plano'} →</b></a>`;
+}
+document.addEventListener('click',e=>{const t=e.target.closest('[data-assinar],[data-cancplano]');if(!t)return;if('assinar' in t.dataset)return assinar(t);return cancelarPlano()});
+
 const NAV=[['hoje','Início',ic.home],['patrimonio','Patrimônio',ic.inv],['config','Ajustes',ic.gear]];
 const vPatrimonio=()=>vInvest()+vResumo().replace('<h1>Resumo do mês</h1>','<h2 style="margin-top:40px">Resumo do mês</h2>');
 function render(){
@@ -1085,9 +1136,13 @@ function render(){
   if(r==='termos'||r==='privacidade'){$('#root').innerHTML=vDoc(r);window.scrollTo(0,0);return}
   if(REC){$('#root').innerHTML=vNovaSenha();return}
   ccMount();
+  if(r==='plano-ok'&&!S.session)try{sessionStorage.setItem('lembraai_planook','1')}catch(e){}
   if(!S.session&&!ACC.list.length&&!tourVisto()){$('#root').innerHTML=vTour();return}
   if(!S.session){$('#root').innerHTML=vLogin();const f=$('#root input');if(f&&f.focus)f.focus();return}
   if(S.needSetup){$('#root').innerHTML=vSetup();window.scrollTo(0,0);return}
+  try{if(r!=='plano-ok'&&sessionStorage.getItem('lembraai_planook')){sessionStorage.removeItem('lembraai_planook');location.hash='plano-ok';return}}catch(e){}
+  if(r==='plano-ok'){$('#root').innerHTML=`<div class="plano" style="text-align:center;padding-top:20vh">${emblema(64)}<h1 style="margin-top:18px">Confirmando seu <em>pagamento…</em></h1><p class="sub">Leva só alguns segundos.</p></div>`;if(!render.conf){render.conf=1;confirmarPlano(0)}return}
+  if(r==='plano'||(!acesso()&&r!=='config')){$('#root').innerHTML=vPlano();document.querySelectorAll('.cc-btn,.cc').forEach(e=>e.remove());window.scrollTo(0,0);return}
   const base=['hoje','agenda','contas'].includes(r)?'hoje':['resumo','invest','patrimonio'].includes(r)?'patrimonio':r==='config'?'config':'hoje';
   const body=r.startsWith('cliente-')?vCliente(r.slice(8)):r==='clientes'?vClientes():r==='contas'?vContas():r==='resumo'||r==='invest'||r==='patrimonio'?vPatrimonio():r==='agenda'?vAgenda():r==='config'?vConfig():vHoje();
   const nav=NAV.map(([h,t,i])=>`<a href="#${h}" class="${base===h?'on':''}">${i}${t}</a>`).join('');

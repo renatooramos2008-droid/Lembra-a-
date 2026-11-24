@@ -32,6 +32,10 @@ Deno.serve(async (req) => {
         }
       }
     }
+    // 1b) cancela a assinatura no Mercado Pago, se houver
+    const { data: ass } = await admin.from("assinaturas").select("mp_id,status").eq("user_id", user.id).maybeSingle();
+    const tk = await segredo("mp_access_token");
+    if (ass?.mp_id && tk && ass.status !== "cancelada") await fetch(`https://api.mercadopago.com/preapproval/${encodeURIComponent(ass.mp_id)}`, { method: "PUT", headers: { Authorization: "Bearer " + tk, "Content-Type": "application/json" }, body: JSON.stringify({ status: "cancelled" }) }).catch(() => {});
     // 2) apaga o usuário: perfil, contas, agenda, notificações, Face ID, bancos e gastos saem juntos (cascata)
     const { error } = await admin.auth.admin.deleteUser(user.id);
     if (error) return json({ erro: "Não foi possível excluir: " + error.message }, 500);

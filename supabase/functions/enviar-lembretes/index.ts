@@ -122,7 +122,9 @@ Deno.serve(async (req) => {
   const agora = Date.now(), de = agora - JANELA_MIN * 60000;
   const { data: estados } = await sb.from("app_state").select("user_id,data");
   const { data: perfis } = await sb.from("profiles").select("id,nome,email,whatsapp,canais");
-  const P = new Map((perfis || []).map((p) => [p.id, p]));
+  const { data: ass } = await sb.from("assinaturas").select("user_id,status,teste_fim");
+  const ok = new Set((ass || []).filter((a) => a.status === "ativa" || Date.parse(a.teste_fim) > agora).map((a) => a.user_id));
+  const P = new Map((perfis || []).filter((p) => ok.has(p.id)).map((p) => [p.id, p]));
   const resumo = { pessoas: 0, alertas: 0, push: 0, email: 0, whatsapp: 0, erros: 0 };
 
   for (const st of estados || []) {
