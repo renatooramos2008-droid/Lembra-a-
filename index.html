@@ -748,6 +748,7 @@ document.addEventListener('submit',e=>{
     btn.disabled=false;btn.textContent='Criar conta e ativar lembretes';
     if(error)return err(netMsg(error)||(/registered|already/i.test(error.message)?'Esse e-mail já tem conta. Toque em "Entrar".':/password/i.test(error.message)?'Senha fraca. Use pelo menos 6 caracteres.':'Não foi possível criar a conta: '+error.message));
     if(data.user&&Array.isArray(data.user.identities)&&!data.user.identities.length)return err('Esse e-mail já tem conta. Toque em "Entrar".');
+    if(!data.session){const r2=await sb.auth.signInWithPassword({email:em,password:O.v.senha});if(!r2.error&&r2.data.session)data.session=r2.data.session}
     if(!data.session){let a=ACC.list.find(x=>x.id===em);if(!a){a={id:em};ACC.list.unshift(a)}Object.assign(a,{nome:O.v.nome,email:em,whats:O.v.whats});ACC.last=em;saveAcc();
       O.step=0;O.mode='entrar';O.alt=false;O.v={tipo:'Pessoa'};render();toast('Enviamos um link para '+em+'. Confirme o e-mail e depois entre com sua senha.');return}
     try{await loadUser()}catch(x){return err(netMsg(x)||'Conta criada, mas não deu para carregar os dados. Entre de novo.')}
