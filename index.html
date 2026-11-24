@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Lembra Aí</title>
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#E8643A">
+<meta name="theme-color" content="#0A0B0E">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Lembra Aí">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" href="icon-192.png">
 <script>try{document.documentElement.dataset.tema=localStorage.getItem('lembraai_theme')||'light'}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* VOICE: calmo, confiável, utilitário — uma secretária que não deixa nada passar
 IDEA: o talão de lembretes de bolso: cada conta é um canhoto com data, valor e ação
@@ -134,22 +134,7 @@ details.more{margin:4px 0 14px;border-top:1px solid var(--line);padding-top:10px
 .prev{display:grid;gap:5px;width:100%;padding:10px;border-radius:10px;border:1px solid #ddd}.prev i{display:block;height:8px;border-radius:9px}
 .prev.light{background:#fff}.prev.light i{background:#e8e8e8}.prev.light i:first-child{background:#111;width:50%}
 .prev.dark{background:#0e0f0f;border-color:#333}.prev.dark i{background:#2a2d2e}.prev.dark i:first-child{background:#fff;width:50%}
-:root[data-tema=dark]{color-scheme:dark;--bg:#0e0f0f;--card:#17191a;--ink:#f3f3f3;--mute:#a1a7a4;--line:#2a2d2e;--gd:#3fd39a;--g2:#163a2a;--warn:#3a2f12;--warnk:#f3c463;--bad:#3d1817;--badk:#ff8f85;--sh:0 12px 22px -8px rgba(0,0,0,.9);--sh2:0 18px 40px -18px rgba(0,0,0,.8)}
-[data-tema=dark] body,[data-tema=dark] #splash,[data-tema=dark] .onb{background:var(--bg)}
-[data-tema=dark] .bill,[data-tema=dark] .box,[data-tema=dark] .row,[data-tema=dark] .it{border-color:var(--line)}
-[data-tema=dark] .btn{background:var(--card);color:var(--ink);border-color:#f3f3f3}
-[data-tema=dark] .btn.pri,[data-tema=dark] nav a.on,[data-tema=dark] .mobnav a.on,[data-tema=dark] .seg .on{background:#fff;color:#111;border-color:#fff}
-[data-tema=dark] .btn.wa{background:var(--g);color:#fff}
-[data-tema=dark] .banner{background:var(--card);color:var(--ink);border-color:#f3f3f3}
-[data-tema=dark] .seg{border-color:#f3f3f3}
-[data-tema=dark] .logo i,[data-tema=dark] .who-card .av,[data-tema=dark] #splash .ico{background:#fff;color:#111}
-[data-tema=dark] #splash .ico svg{color:#111}
-[data-tema=dark] input,[data-tema=dark] select,[data-tema=dark] textarea{background:#202324;border-color:#2f3334;color:var(--ink)}
-[data-tema=dark] input:focus,[data-tema=dark] select:focus,[data-tema=dark] textarea:focus{border-color:#f3f3f3;background:#1a1c1d}
-[data-tema=dark] .art{background:#151717}
-[data-tema=dark] .steps i{background:#2a2d2e}[data-tema=dark] .steps i.on{background:#fff}
-[data-tema=dark] #toast{background:#fff;color:#111}
-[data-tema=dark] aside{box-shadow:8px 0 30px -20px #000}
+
 /* documentos */
 .doc{max-width:760px;margin:0 auto;padding:clamp(20px,5vw,56px) clamp(16px,4vw,32px) 80px}.doc h2{font-size:18px;margin:24px 0 6px}.doc p,.doc li{color:var(--ink);line-height:1.65}.doc ul{padding-left:20px}
 /* investimentos */
@@ -180,81 +165,167 @@ label.check.qrow{display:flex;gap:12px;align-items:flex-start}
 .qa .btn{min-height:54px;font-size:16px;justify-content:center}
 .pw{position:relative}.pw button{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:none;font:inherit;font-weight:700;color:var(--mute);cursor:pointer;min-height:44px;padding:0 10px}
 @media(max-width:820px){.onb{grid-template-columns:1fr}.art{padding:24px 24px 8px;min-height:0}.art svg{width:min(300px,80%)}}
-/* ============ LEMBRINHO ============ */
-:root,:root[data-theme=dark],:root[data-theme=light]{--bg:#FFF6F1;--card:#fff;--ink:#3A1A0E;--mute:#8C6A5D;--line:#F4DED3;--g:#E8643A;--gd:#B8461F;--g2:#FDE7DC;--ok:#17946C;--warn:#FFF0CC;--warnk:#8A5A00;--bad:#FDE3E0;--badk:#C2362B;--sh:0 4px 0 #3A1A0E;--sh2:0 6px 0 #F4DED3;--hd:'Fredoka',system-ui,sans-serif}
-body{background:var(--bg);font-family:'Nunito',system-ui,sans-serif;color:var(--ink)}
-h1,h2,h3,.logo,.stat b,.val,.banner b,.gauge b,.tk b,.qchip strong,.hero-bub{font-family:var(--hd);letter-spacing:0}
-h1{font-weight:700}h2,h3{font-weight:600}
-aside{background:var(--card);box-shadow:none;border-right:2px solid var(--line)}
-.logo{font-weight:700;font-size:21px}.logo i,.logo i.lg{background:transparent!important;box-shadow:none!important;width:auto;height:auto}
-nav a{font-weight:700;border-radius:14px}nav a.on,.mobnav a.on{background:var(--g)!important;color:#fff!important;box-shadow:0 3px 0 var(--gd)!important}
-.mobnav{border-top:2px solid var(--line);background:var(--card)}
-.btn{font-family:'Nunito',sans-serif;font-weight:800;border:2px solid var(--ink);background:var(--card);color:var(--ink);border-radius:16px;box-shadow:var(--sh);transition:transform .08s,box-shadow .08s}
-.btn:hover{transform:translateY(-1px);box-shadow:0 5px 0 var(--ink)}.btn:active{transform:translateY(4px);box-shadow:0 0 0 var(--ink)}
-.btn.pri{background:var(--g);color:#fff;border-color:var(--ink)}.btn.wa{background:var(--ok);color:#fff}.btn.dang{color:var(--badk);border-color:var(--badk);box-shadow:0 4px 0 var(--badk)}
-.btn.ghost{border-color:transparent;box-shadow:none;background:transparent;color:var(--gd);text-decoration:underline;text-underline-offset:3px;padding:0 6px}
-.bill,.box,.row,.it,.stat{background:var(--card);border:2px solid var(--line);border-radius:22px;box-shadow:var(--sh2)}
-.banner{background:var(--card);border:2px solid var(--ink);box-shadow:var(--sh);border-radius:22px;color:var(--ink)}.banner b{color:var(--g)}
-.tag{background:var(--g2);color:var(--gd);font-weight:800}.tag.soft{background:transparent;border:1.5px solid var(--line);color:var(--mute)}
-input,select,textarea{background:var(--card);border:2px solid var(--line);border-radius:14px;font-family:'Nunito',sans-serif}input:focus,select:focus,textarea:focus{border-color:var(--g);background:var(--card)}
-.seg{border:2px solid var(--ink);box-shadow:var(--sh);border-radius:16px}.seg .on{background:var(--g)!important;color:#fff!important}
-.sheet{border-radius:26px;border:2px solid var(--ink);box-shadow:0 8px 0 var(--ink)}
-#toast{background:var(--ink);color:#fff;border-radius:16px;font-weight:700}
-.empty{border:2px dashed var(--line);border-radius:22px;display:flex;align-items:center;gap:12px;justify-content:center;text-align:left;color:var(--mute);font-weight:600}
-.empty svg{flex:none}
-.steps i.on{background:var(--g)}.qchip.on{border-color:var(--ink);box-shadow:var(--sh)}.qchip{border:2px solid var(--line);border-radius:20px;box-shadow:var(--sh2)}.qchip.on strong::before{color:var(--g)}
-.gauge{background:radial-gradient(closest-side,var(--card) 79%,transparent 80% 100%),conic-gradient(var(--c) calc(var(--p)*1%),var(--line) 0)}
-.art{background:var(--g2)}.onb{background:var(--bg)}
-/* mascote */
-.lb-bob{animation:lbBob 3.2s ease-in-out infinite}.lb-ring{animation:lbRing 1.6s ease-in-out infinite;transform-origin:50% 12%}.lb-jump{animation:lbJump .9s cubic-bezier(.3,1.6,.5,1) infinite}
-@keyframes lbBob{50%{transform:translateY(-7px)}}@keyframes lbRing{0%,60%,100%{transform:rotate(0)}10%{transform:rotate(10deg)}20%{transform:rotate(-9deg)}30%{transform:rotate(6deg)}40%{transform:rotate(-4deg)}}
-@keyframes lbJump{0%,100%{transform:translateY(0) scale(1,1)}15%{transform:translateY(0) scale(1.08,.92)}45%{transform:translateY(-26px) scale(.96,1.05)}}
-/* tela hoje */
-.hero{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:end;margin-bottom:14px}
-.hero-bub{position:relative;background:var(--card);border:2px solid var(--ink);border-radius:22px 22px 22px 6px;padding:14px 16px;font-size:clamp(17px,2.4vw,21px);font-weight:600;line-height:1.3;box-shadow:var(--sh);margin-bottom:22px}
-.hero-bub small{display:block;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--mute);margin-top:4px}
-.kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:16px}
-.kpi{background:var(--card);border:2px solid var(--line);border-radius:22px;padding:14px;display:flex;gap:12px;align-items:center;box-shadow:var(--sh2)}
-.kpi b{font-family:var(--hd);font-size:26px;line-height:1;display:block}.kpi span{font-size:13px;color:var(--mute);font-weight:700}
-.ring{--p:0;width:58px;height:58px;border-radius:50%;flex:none;display:grid;place-items:center;font-family:var(--hd);font-weight:700;font-size:15px;background:radial-gradient(closest-side,var(--card) 72%,transparent 73% 100%),conic-gradient(var(--g) calc(var(--p)*1%),var(--line) 0)}
-.flame{width:46px;height:46px;flex:none;display:grid;place-items:center;border-radius:16px;background:#FFF0CC}
-.flame.off{background:var(--line);filter:grayscale(1)}
-/* bilhete da conta */
-.tk{position:relative;background:var(--card);border:2px solid var(--line);border-radius:22px;padding:14px 14px 14px 20px;box-shadow:var(--sh2);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;overflow:hidden}
-.tk::before{content:"";position:absolute;left:0;top:0;bottom:0;width:8px;background:var(--c)}
-.tk-cat{font-size:12px;font-weight:800;color:var(--c);text-transform:uppercase;letter-spacing:.04em}
-.tk h3{margin:2px 0}.tk small{color:var(--mute);font-weight:700}.tk b{font-size:20px;align-self:start;white-space:nowrap}
-.tk-when{font-weight:700;color:var(--mute);font-size:14px}.tk-when.warn{color:var(--warnk)}.tk-when.bad{color:var(--badk)}
-.tk-acts{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
-.mini{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 12px;background:var(--card);border:2px solid var(--line);border-radius:18px;margin-bottom:8px;cursor:pointer}
-.mini .dt{width:46px;text-align:center;border-radius:12px;background:var(--g2);padding:4px 0;line-height:1.1}.mini .dt b{font-family:var(--hd);font-size:19px;display:block;color:var(--gd)}.mini .dt small{font-size:11px;font-weight:800;color:var(--gd);text-transform:uppercase}
-.mini p{font-size:13px;color:var(--mute);font-weight:600}.mini>b{font-family:var(--hd)}
-/* festa */
-#party{position:fixed;inset:0;z-index:70;display:grid;place-items:center;background:rgba(255,246,241,.94);overflow:hidden;cursor:pointer;animation:fadeIn .2s}
-#party .msg{text-align:center;position:relative;z-index:2;padding:20px}#party h2{font-size:30px;margin:12px 0 4px}#party p{font-weight:700;color:var(--mute)}
-#party i{position:absolute;top:-24px;width:10px;height:16px;border-radius:3px;animation:fall linear forwards}
-@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}@keyframes fadeIn{from{opacity:0}}
-.conq{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,150px),1fr));gap:12px}
-.cq{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:14px;text-align:center;box-shadow:var(--sh2)}
-.cq .md{width:58px;height:58px;margin:0 auto 8px;border-radius:50%;display:grid;place-items:center;background:var(--g2);border:2px solid var(--g);font-size:26px}
-.cq.off{opacity:.55}.cq.off .md{background:var(--line);border-color:var(--line);filter:grayscale(1)}
-.cq strong{font-family:var(--hd);display:block}.cq span{font-size:12px;color:var(--mute);font-weight:600}
-.setup-hd{display:flex;gap:12px;align-items:flex-end;margin:6px 0 10px}.setup-hd>svg,.hero svg,#party svg{flex:none}.setup-hd .hero-bub{margin-bottom:12px;font-size:17px}
-.art-lb{position:relative;width:min(340px,90%);aspect-ratio:1;display:grid;place-items:center}
-.art-lb .bb{position:absolute;background:var(--card);border:2px solid var(--ink);border-radius:18px;padding:10px 12px;font-weight:800;font-size:13px;box-shadow:var(--sh);white-space:nowrap}
-.art-lb .bb small{display:block;font-weight:600;color:var(--mute)}
-.art-lb .b1{top:6%;left:0;transform:rotate(-4deg)}.art-lb .b2{top:20%;right:0;transform:rotate(5deg)}.art-lb .b3{bottom:8%;left:4%;transform:rotate(3deg)}
-@media(prefers-reduced-motion:reduce){.lb-bob,.lb-ring,.lb-jump,#party i{animation:none!important}}
-@media(max-width:600px){.hero-bub{font-size:17px}.kpi b{font-size:22px}.art-lb .bb{font-size:12px}}
-/* Lembrinho — modo escuro */
-:root[data-tema=dark]{--bg:#1A0E09;--card:#28160F;--ink:#FFEDE4;--mute:#C4A497;--line:#432719;--g2:#4A2416;--gd:#FF9B73;--warn:#3A2D10;--bad:#3D1714;--sh:0 4px 0 #000;--sh2:0 6px 0 #0E0705}
-[data-tema=dark] .btn{background:var(--card);color:var(--ink);border-color:var(--ink)}[data-tema=dark] .btn.pri{background:var(--g);color:#fff}
-[data-tema=dark] .btn:active{box-shadow:none}[data-tema=dark] .sheet{box-shadow:0 8px 0 #000}[data-tema=dark] #toast{background:#FFEDE4;color:#1A0E09}
-[data-tema=dark] #party{background:rgba(26,14,9,.94)}[data-tema=dark] .flame{background:#3A2D10}
+/* ============ AURUM — luxo tecnológico ============ */
+:root,:root[data-theme=dark],:root[data-theme=light],:root[data-tema=dark]{color-scheme:dark;--bg:#0A0B0E;--card:#121419;--card2:#181B22;--ink:#F3F0E9;--mute:#9C978C;--line:rgba(255,255,255,.08);--line2:rgba(216,184,120,.28);--g:#D8B878;--gd:#E9CF98;--gold:#D8B878;--goldg:linear-gradient(135deg,#F4DFAF 0%,#D8B878 45%,#A8823F 100%);--ok:#46D99B;--g2:rgba(216,184,120,.10);--warn:rgba(255,196,87,.12);--warnk:#FFC457;--bad:rgba(255,107,94,.12);--badk:#FF7B6E;--sh:none;--sh2:none;--sf:'Instrument Serif',Georgia,serif;--ss:'Manrope',system-ui,sans-serif;--glass:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.015))}
+:root[data-tema=light]{color-scheme:light;--bg:#F5F3EE;--card:#FFFFFF;--card2:#FBFAF7;--ink:#121212;--mute:#6B675F;--line:rgba(0,0,0,.08);--line2:rgba(156,122,60,.35);--g:#9C7A3C;--gd:#7E602A;--gold:#9C7A3C;--goldg:linear-gradient(135deg,#B8924E 0%,#8E6B2E 100%);--ok:#178A5B;--g2:rgba(156,122,60,.08);--warnk:#9A6A00;--badk:#C2362B;--glass:linear-gradient(180deg,#fff,#fff)}
+body{background:var(--bg);font:15.5px/1.6 var(--ss);color:var(--ink);-webkit-font-smoothing:antialiased;font-feature-settings:"tnum" 1}
+body::before{content:"";position:fixed;inset:-20% -10% auto;height:70vh;background:radial-gradient(60% 60% at 70% 0%,rgba(216,184,120,.10),transparent 70%);pointer-events:none;z-index:0}
+:root[data-tema=light] body::before{background:radial-gradient(60% 60% at 70% 0%,rgba(156,122,60,.08),transparent 70%)}
+.app,#root{position:relative;z-index:1}
+h1,h2,h3{font-family:var(--ss);letter-spacing:-.01em}
+h1{font-family:var(--sf);font-weight:400;font-size:clamp(36px,6vw,52px);line-height:1.02;letter-spacing:-.01em}
+h1 em,.serif{font-family:var(--sf);font-style:italic;font-weight:400}
+h2{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.2em;color:var(--mute);margin:34px 0 12px;display:flex;align-items:center;gap:10px}
+h2 .tag{margin-left:auto}
+h3{font-size:16.5px;font-weight:600}
+.sub,.mut{color:var(--mute)}
+main{max-width:820px;padding:clamp(20px,4vw,52px) clamp(16px,4vw,40px) 150px}
+aside{background:transparent;border-right:1px solid var(--line);padding:26px 16px}
+.logo{font-family:var(--sf);font-weight:400;font-size:25px;letter-spacing:0;gap:10px;margin:0 8px 34px}
+.logo i,.logo i.lg{background:transparent!important;box-shadow:none!important;width:auto!important;height:auto!important;color:var(--gold)}
+nav a{font-weight:600;font-size:14px;border-radius:12px;color:var(--mute);letter-spacing:0;text-transform:none;border:0}
+nav a svg{width:19px;height:19px;stroke-width:1.6}
+nav a.on{background:var(--g2)!important;color:var(--ink)!important;box-shadow:inset 0 0 0 1px var(--line2)!important}
+nav a.on svg{color:var(--gold)}
+.mobnav{background:rgba(12,13,17,.82);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-top:1px solid var(--line)}
+:root[data-tema=light] .mobnav{background:rgba(255,255,255,.86)}
+.mobnav a{font-size:11px;font-weight:600;border-radius:14px}.mobnav a.on{background:transparent!important;box-shadow:none!important;color:var(--ink)!important}.mobnav a.on svg{color:var(--gold)}
+.btn{font-family:var(--ss);font-weight:700;font-size:14px;letter-spacing:.01em;text-transform:none;border:1px solid var(--line);background:var(--card2);color:var(--ink);border-radius:14px;box-shadow:none;min-height:48px;padding:0 18px;transition:transform .15s,background .2s,border-color .2s}
+.btn:hover{transform:translateY(-1px);box-shadow:none;border-color:var(--line2);background:var(--card2);color:var(--ink)}.btn:active{transform:scale(.98);box-shadow:none}
+.btn.pri{background:var(--goldg);color:#17120A;border:0;box-shadow:0 10px 30px -12px rgba(216,184,120,.55)}.btn.pri:hover{filter:brightness(1.06);color:#17120A;background:var(--goldg)}
+:root[data-tema=light] .btn.pri{color:#fff}
+.btn.wa{background:transparent;color:var(--ok);border-color:rgba(70,217,155,.35)}
+.btn.dang{color:var(--badk);border-color:rgba(255,107,94,.35);background:transparent;box-shadow:none}.btn.dang:hover{background:var(--bad);color:var(--badk)}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--gold);padding:0 6px}.btn.ghost:hover{background:transparent;color:var(--gd)}
+.bill,.box,.row,.it,.stat,.cq,.qchip,.theme-opt,.kpi{background:var(--glass),var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:none!important}
+.row:hover,.it:hover{transform:none;border-color:var(--line2)}
+.banner{background:var(--card);border:1px solid var(--line);box-shadow:none;border-radius:20px;color:var(--ink)}.banner b{color:var(--gold);font-family:var(--sf)}
+.tag{background:var(--g2);border:1px solid var(--line2);color:var(--gd);font-weight:700;border-radius:99px;text-transform:none;letter-spacing:0;font-size:12px}
+.tag.soft{background:transparent;border-color:var(--line);color:var(--mute)}.tag.warn{background:var(--warn);border-color:transparent;color:var(--warnk)}.tag.bad{background:var(--bad);border-color:transparent;color:var(--badk)}
+input,select,textarea{background:var(--card2);border:1px solid var(--line);border-radius:14px;color:var(--ink);font-family:var(--ss)}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);background:var(--card2);outline:0;box-shadow:0 0 0 4px var(--g2)}
+label{font-weight:600;color:var(--mute);font-size:13px;text-transform:none;letter-spacing:0}label input,label select,label textarea{color:var(--ink);font-size:16px}
+.check{color:var(--ink);font-size:14px}
+.seg{border:1px solid var(--line);box-shadow:none;border-radius:14px;background:var(--card2)}.seg button{font-family:var(--ss);font-weight:700;text-transform:none;letter-spacing:0;font-size:14px;color:var(--mute)}.seg .on{background:var(--goldg)!important;color:#17120A!important}
+.sheet{border-radius:26px;border:1px solid var(--line2);box-shadow:0 40px 120px -30px rgba(0,0,0,.8);background:var(--card)}
+#modal{background:rgba(0,0,0,.62);backdrop-filter:blur(6px)}
+#toast{background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:14px;font-weight:600;box-shadow:0 20px 50px -20px #000}
+.empty{border:1px dashed var(--line);border-radius:20px;color:var(--mute);font-size:15px;text-align:center;justify-content:center;padding:20px}
+.steps i{background:var(--line);height:3px}.steps i.on{background:var(--goldg)}
+.qchip{border-radius:18px}.qchip.on{border-color:var(--gold);transform:none;box-shadow:0 0 0 4px var(--g2)!important}.qchip strong{font-size:17px}.qchip.on strong::before{content:"✓ ";color:var(--gold)}
+.onb{background:var(--bg)}.art{background:radial-gradient(80% 60% at 50% 30%,rgba(216,184,120,.14),transparent 70%),#07080A}
+:root[data-tema=light] .art{background:radial-gradient(80% 60% at 50% 30%,rgba(156,122,60,.14),transparent 70%),#EEEAE1}
+.gauge b{font-family:var(--sf);font-size:40px}
+.ring,.flame,.kpis,.hero{display:none}
+.tk{border-radius:20px;border:1px solid var(--line);background:var(--glass),var(--card);box-shadow:none}
+.who-card .av{background:var(--goldg);color:#17120A;box-shadow:none}
+#splash{background:var(--bg)!important}#splash .nm{font-family:var(--sf);font-weight:400;font-size:40px;color:var(--ink)}#splash .bar{background:var(--line)}#splash .bar i{background:var(--goldg)}
+/* números que sobem */
+.num{font-family:var(--sf);font-weight:400;line-height:1}
+.gold{background:var(--goldg);-webkit-background-clip:text;background-clip:text;color:transparent}
+.fade{animation:fadeUp .6s cubic-bezier(.2,.8,.2,1) both}.fade2{animation-delay:.08s}.fade3{animation-delay:.16s}.fade4{animation-delay:.24s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}}
+/* início */
+.hdr{display:flex;align-items:center;gap:12px;margin-bottom:22px}.hdr .hi{font-size:14px;color:var(--mute)}.hdr .hi b{display:block;color:var(--ink);font-size:17px}
+.shield{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--ok);border:1px solid rgba(70,217,155,.28);border-radius:99px;padding:6px 10px;white-space:nowrap}
+.value{position:relative;border-radius:28px;padding:24px 22px 20px;background:radial-gradient(120% 90% at 100% 0%,rgba(216,184,120,.16),transparent 55%),var(--glass),var(--card);border:1px solid var(--line2);overflow:hidden}
+.value .k{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.value .big{font-size:clamp(52px,12vw,76px);margin:8px 0 4px}
+.value .cap{color:var(--mute);font-size:14.5px;max-width:520px}
+.vgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:18px}
+.vgrid div{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:16px;padding:12px}
+:root[data-tema=light] .vgrid div{background:var(--card2)}
+.vgrid b{display:block;font-family:var(--sf);font-size:28px;font-weight:400;line-height:1.05}.vgrid span{font-size:11.5px;color:var(--mute);font-weight:600}
+.roi{margin-top:14px;display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--mute);border-top:1px solid var(--line);padding-top:14px}
+.roi b{color:var(--ink)}.roi .x{font-family:var(--sf);font-size:26px;line-height:1}
+.prog{height:6px;border-radius:9px;background:var(--line);overflow:hidden;margin:14px 0 6px}.prog i{display:block;height:100%;background:var(--goldg);border-radius:9px;transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+.progl{display:flex;justify-content:space-between;font-size:12.5px;color:var(--mute);font-weight:600}
+.next{margin-top:14px;border-radius:24px;padding:18px;border:1px solid var(--line);background:var(--glass),var(--card);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 14px;align-items:center}
+.next .lbl{font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+.next .nm{font-family:var(--sf);font-size:30px;line-height:1.05}.next .vl{font-family:var(--sf);font-size:30px;text-align:right}
+.next .acts2{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.quick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:18px 0 0}
+.quick .btn{flex-direction:column;gap:6px;min-height:76px;font-size:12.5px;justify-content:center;border-radius:18px}.quick .btn svg{width:22px;height:22px;color:var(--gold)}
+.quick .btn.pri svg{color:#17120A}
+.list{border:1px solid var(--line);border-radius:22px;background:var(--glass),var(--card);overflow:hidden}
+.li{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px 16px;cursor:pointer;transition:background .2s}
+.li+.li{border-top:1px solid var(--line)}.li:hover{background:rgba(255,255,255,.025)}
+.li .ic{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:var(--g2);color:var(--gold);font-weight:800;font-size:13px}
+.li .t{font-weight:700;font-size:15.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.li .s{font-size:13px;color:var(--mute)}
+.li .s .late{color:var(--badk);font-weight:700}.li .s .soon{color:var(--warnk);font-weight:700}
+.li .v{font-family:var(--sf);font-size:22px;text-align:right;white-space:nowrap}
+.setupc{margin-top:14px;border-radius:22px;border:1px solid var(--line);padding:16px 18px;background:var(--glass),var(--card)}
+.setupc .top2{display:flex;justify-content:space-between;align-items:baseline;gap:10px}.setupc .top2 b{font-family:var(--sf);font-size:26px;font-weight:400}
+.feat{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+.feat button{display:flex;align-items:center;gap:10px;text-align:left;background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:10px 12px;color:var(--ink);font:600 13.5px var(--ss);cursor:pointer;min-height:48px}
+.feat .ck{width:22px;height:22px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:12px;border:1px solid var(--line);color:var(--mute)}
+.feat .on .ck,.feat button.on .ck{background:var(--ok);border-color:var(--ok);color:#06150E}
+.feat button.on{color:var(--mute)}
+/* tour de boas-vindas */
+.tour{min-height:100vh;display:flex;flex-direction:column;justify-content:space-between;max-width:560px;margin:0 auto;padding:28px 22px calc(26px + env(safe-area-inset-bottom))}
+.tour .sl{flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px}
+.tour h1{font-size:clamp(40px,10vw,56px)}
+.tour p.lead{font-size:17px;color:var(--mute);max-width:440px}
+.tour .dots{display:flex;gap:6px;justify-content:center;margin:18px 0}.tour .dots i{width:7px;height:7px;border-radius:9px;background:var(--line)}.tour .dots i.on{width:26px;background:var(--goldg)}
+.mock{border-radius:22px;border:1px solid var(--line);background:var(--glass),var(--card);padding:14px;display:grid;gap:10px}
+.notif{display:flex;gap:12px;align-items:center;background:var(--card2);border:1px solid var(--line);border-radius:16px;padding:12px}
+.notif .ic{width:38px;height:38px;border-radius:11px;background:var(--goldg);display:grid;place-items:center;flex:none;color:#17120A}
+.notif b{display:block;font-size:14px}.notif span{font-size:12.5px;color:var(--mute)}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line2);color:var(--gd);border-radius:99px;padding:6px 12px;font-size:12.5px;font-weight:700}
+/* selo pago */
+#party{position:fixed;inset:0;z-index:70;display:grid;place-items:center;background:rgba(5,6,8,.78);backdrop-filter:blur(8px);cursor:pointer;animation:fadeIn .25s ease;text-align:center;padding:24px}
+:root[data-tema=light] #party{background:rgba(245,243,238,.86)}
+#party .seal{width:176px;height:176px;border-radius:50%;margin:0 auto 22px;display:grid;place-items:center;background:var(--goldg);box-shadow:0 30px 80px -20px rgba(216,184,120,.6);animation:sealIn .8s cubic-bezier(.2,.9,.2,1)}
+#party .seal div{width:150px;height:150px;border-radius:50%;border:1.5px dashed rgba(23,18,10,.45);display:grid;place-items:center;font-family:var(--sf);font-style:italic;font-size:40px;color:#17120A;line-height:1}
+#party .seal small{display:block;font-family:var(--ss);font-style:normal;font-size:10px;font-weight:800;letter-spacing:.3em;text-transform:uppercase;margin-top:6px}
+#party h2{display:block;font-family:var(--sf);font-weight:400;text-transform:none;letter-spacing:0;font-size:34px;color:var(--ink);margin:0 0 6px}
+#party p{color:var(--mute);font-size:15px}
+@keyframes sealIn{from{transform:scale(1.6) rotate(-25deg);opacity:0}60%{transform:scale(.95) rotate(3deg);opacity:1}to{transform:none}}@keyframes fadeIn{from{opacity:0}}
+/* marcos */
+.conq{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,170px),1fr));gap:10px}
+.cq{text-align:left;padding:14px;display:flex;gap:12px;align-items:center}.cq .md{width:40px;height:40px;margin:0;border-radius:12px;display:grid;place-items:center;background:var(--g2);border:1px solid var(--line2);color:var(--gold);font-family:var(--sf);font-size:19px;flex:none}
+.cq.off{opacity:.42}.cq.off .md{filter:grayscale(1);border-color:var(--line);background:transparent;color:var(--mute)}.cq strong{font-size:14px;display:block}.cq span{font-size:12px;color:var(--mute)}
+/* login */
+.art-x{width:min(400px,92%);display:grid;gap:12px;padding:20px}
+.art-x .hl{font-family:var(--sf);font-size:clamp(34px,4.6vw,48px);line-height:1.02;color:var(--ink);margin-bottom:8px}
+.art-x .hl em{font-style:italic}
+.art-x .mini-v{border-radius:22px;border:1px solid var(--line2);padding:16px;background:radial-gradient(120% 90% at 100% 0%,rgba(216,184,120,.18),transparent 60%),var(--card)}
+.art-x .mini-v span{font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+.art-x .mini-v b{display:block;font-family:var(--sf);font-weight:400;font-size:44px;line-height:1.05}
+.setup-hd{display:block;margin:4px 0 8px}.setup-hd .hero-bub{background:transparent;border:0;box-shadow:none;padding:0;color:var(--mute);font-size:16px;font-weight:500;margin:0}
+/* concierge */
+.cc-btn{position:fixed;right:16px;bottom:90px;z-index:30;display:flex;align-items:center;gap:10px;background:var(--card2);color:var(--ink);border:1px solid var(--line2);border-radius:40px;padding:0 18px 0 6px;height:54px;font:700 14px var(--ss);cursor:pointer;box-shadow:0 18px 40px -16px rgba(0,0,0,.7)}
+.cc-btn .em{width:42px;height:42px;border-radius:50%;background:var(--goldg);display:grid;place-items:center;color:#17120A}
+.cc-btn .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px rgba(70,217,155,.18)}
+.cc{position:fixed;z-index:60;right:0;top:0;bottom:0;width:min(430px,100%);background:var(--card);border-left:1px solid var(--line2);display:flex;flex-direction:column;transform:translateX(105%);transition:transform .38s cubic-bezier(.2,.8,.2,1);box-shadow:-40px 0 100px -40px #000}
+.cc.on{transform:none}
+.cc-hd{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.cc-hd .em{width:44px;height:44px;border-radius:50%;background:var(--goldg);display:grid;place-items:center;color:#17120A;flex:none}
+.cc-hd b{font-family:var(--sf);font-size:25px;font-weight:400;display:block;line-height:1}.cc-hd span{font-size:12px;font-weight:700;color:var(--ok)}
+.cc-hd button{margin-left:auto;background:none;border:0;font-size:28px;color:var(--mute);cursor:pointer;min-width:44px;min-height:44px}
+.cc-log{flex:1;overflow:auto;padding:18px 16px 8px}
+.msg{max-width:90%;margin:0 0 12px;padding:12px 14px;line-height:1.55;font-size:14.5px;border-radius:18px}
+.msg.bot{background:var(--card2);border:1px solid var(--line);border-top-left-radius:6px}.msg.me{margin-left:auto;background:var(--goldg);color:#17120A;font-weight:600;border-top-right-radius:6px}
+.msg .go{display:inline-flex;margin:10px 8px 0 0;font:700 13px var(--ss);color:var(--gold);cursor:pointer;background:var(--g2);border:1px solid var(--line2);border-radius:99px;padding:7px 12px}
+.msg.typing{color:var(--mute);font-style:italic}
+.cc-chips{display:flex;gap:8px;overflow-x:auto;padding:4px 16px 10px;scrollbar-width:none}.cc-chips button{flex:none;background:transparent;border:1px solid var(--line);border-radius:99px;padding:8px 14px;font:600 13px var(--ss);color:var(--ink);cursor:pointer;min-height:40px}
+.cc-in{display:flex;gap:8px;padding:12px 14px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}.cc-in input{flex:1;border-radius:99px;padding:0 16px;min-height:48px}
+.cc-in button{border-radius:99px;min-width:48px;padding:0 16px}
+@media(min-width:821px){.cc-btn{bottom:24px}}
+@media(max-width:600px){.vgrid b{font-size:23px}.quick{grid-template-columns:repeat(2,minmax(0,1fr))}.next .nm,.next .vl{font-size:25px}.cc-btn .lb{display:none}.cc-btn{padding:0 6px}}
+@media(prefers-reduced-motion:reduce){.fade,#party,#party .seal,.cc,.prog i{animation:none!important;transition:none!important}}
+.banner b{font-size:inherit;line-height:inherit;font-family:var(--ss)}
+.roi .x{flex:none;padding:2px 4px 4px 0}
+.vgrid span{display:block;line-height:1.3;margin-top:4px}
+.setupc .top2{flex-wrap:wrap}.setupc .top2 b{font-size:22px}
+#splash .ico,.logo i{background:transparent!important}
+@media(max-width:600px){.vgrid{gap:8px}.vgrid div{padding:10px}.vgrid b{font-size:20px}}
 </style>
+
+
 </head>
 <body>
-<div id="splash" aria-label="Lembra Aí"><div class="mk"><div class="ico" style="background:transparent;box-shadow:none;width:auto;height:auto"><svg class="lb-jump" width="120" height="120" viewBox="0 0 120 120" role="img" aria-label="Lembrinho" xmlns="http://www.w3.org/2000/svg"><circle cx="60" cy="19" r="5.5" fill="#B8461F"/><path d="M29 82c0-9 7-12 7-34a24 24 0 0 1 48 0c0 22 7 25 7 34z" fill="#E8643A"/><ellipse cx="45" cy="40" rx="5" ry="10" fill="#F69C7B" opacity=".8"/><rect x="23" y="78" width="74" height="13" rx="6.5" fill="#B8461F"/><circle cx="60" cy="99" r="8.5" fill="#B8461F"/><ellipse cx="42" cy="62" rx="5.5" ry="3.4" fill="#F7849A" opacity=".75"/><ellipse cx="78" cy="62" rx="5.5" ry="3.4" fill="#F7849A" opacity=".75"/><ellipse cx="50" cy="49" rx="6.5" ry="7.5" fill="#fff"/><ellipse cx="70" cy="49" rx="6.5" ry="7.5" fill="#fff"/><circle cx="51" cy="50" r="3.6" fill="#3A1A0E"/><circle cx="71" cy="50" r="3.6" fill="#3A1A0E"/><circle cx="52.6" cy="48" r="1.3" fill="#fff"/><circle cx="72.6" cy="48" r="1.3" fill="#fff"/><path d="M51 61q9 9 18 0" stroke="#3A1A0E" stroke-width="3.2" fill="none" stroke-linecap="round"/></svg></div><div class="nm" id="spname"></div><div class="bar"><i></i></div></div></div>
+<div id="splash" aria-label="Lembra Aí"><div class="mk"><div class="ico" style="background:transparent;box-shadow:none;width:auto;height:auto"><svg width="96" height="96" viewBox="0 0 48 48" aria-hidden="true"><defs><linearGradient id="egs" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F4DFAF"/><stop offset=".5" stop-color="#D8B878"/><stop offset="1" stop-color="#A8823F"/></linearGradient></defs><circle cx="24" cy="24" r="22.6" fill="none" stroke="url(#egs)" stroke-width="1.1"/><circle cx="24" cy="24" r="19.4" fill="none" stroke="url(#egs)" stroke-width=".45" opacity=".55"/><path d="M15.8 29.6c1.7-1.5 2.4-3.2 2.4-7.4a5.8 5.8 0 0 1 11.6 0c0 4.2.7 5.9 2.4 7.4z" fill="url(#egs)"/><path d="M21.5 32.2a2.6 2.6 0 0 0 5 0" stroke="url(#egs)" stroke-width="1.6" fill="none" stroke-linecap="round"/><circle cx="24" cy="14.4" r="1.25" fill="url(#egs)"/></svg></div><div class="nm" id="spname"></div><div class="bar"><i></i></div></div></div>
 <div id="root"></div>
 <div id="modal" hidden><div class="sheet" id="mbody"></div></div>
 <div id="toast"></div>
@@ -286,33 +357,17 @@ chart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="
 gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-2.9-1.2l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 3 15H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.2-2.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.7 1.7 0 0 0 9 3.1V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 2.9 1.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0 1.2 2.9H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>',
 mail:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>',
 cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg>',
+home:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>',
+plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+chat:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.6L18.5 9l-4.7 1.4L12 15l-1.8-4.6L5.5 9l4.7-1.4z"/><path d="M18 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg>',
+send:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
 wa:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21l1.7-5A8.5 8.5 0 1 1 8 19.3z"/></svg>'};
-function lembrinho(mood,size,cls){
-  mood=mood||'feliz';size=size||96;const D='#3A1A0E',C='#E8643A',CD='#B8461F';
-  const eyes={
-    feliz:`<ellipse cx="50" cy="49" rx="6.5" ry="7.5" fill="#fff"/><ellipse cx="70" cy="49" rx="6.5" ry="7.5" fill="#fff"/><circle cx="51" cy="50" r="3.6" fill="${D}"/><circle cx="71" cy="50" r="3.6" fill="${D}"/><circle cx="52.6" cy="48" r="1.3" fill="#fff"/><circle cx="72.6" cy="48" r="1.3" fill="#fff"/>`,
-    atento:`<ellipse cx="50" cy="50" rx="7" ry="8" fill="#fff"/><ellipse cx="70" cy="50" rx="7" ry="8" fill="#fff"/><circle cx="50" cy="50" r="3.8" fill="${D}"/><circle cx="70" cy="50" r="3.8" fill="${D}"/><circle cx="51.6" cy="48" r="1.3" fill="#fff"/><circle cx="71.6" cy="48" r="1.3" fill="#fff"/><path d="M43 38q7-5 13 0M64 38q7-5 13 0" stroke="${D}" stroke-width="2.6" fill="none" stroke-linecap="round"/>`,
-    preocupado:`<ellipse cx="50" cy="51" rx="6.5" ry="7" fill="#fff"/><ellipse cx="70" cy="51" rx="6.5" ry="7" fill="#fff"/><circle cx="51" cy="53" r="3.4" fill="${D}"/><circle cx="69" cy="53" r="3.4" fill="${D}"/><path d="M43 42l12-5M77 42l-12-5" stroke="${D}" stroke-width="2.8" fill="none" stroke-linecap="round"/><path d="M91 37q3.5 7 0 10q-3.5-3 0-10z" fill="#7FC8F0"/>`,
-    festa:`<path d="M44 51q6-8 12 0M64 51q6-8 12 0" stroke="${D}" stroke-width="3.4" fill="none" stroke-linecap="round"/>`,
-    sono:`<path d="M44 50q6 5 12 0M64 50q6 5 12 0" stroke="${D}" stroke-width="3" fill="none" stroke-linecap="round"/>`
-  };
-  const mouth={
-    feliz:`<path d="M51 61q9 9 18 0" stroke="${D}" stroke-width="3.2" fill="none" stroke-linecap="round"/>`,
-    atento:`<ellipse cx="60" cy="63" rx="4" ry="4.6" fill="${D}"/>`,
-    preocupado:`<path d="M51 66q9-7 18 0" stroke="${D}" stroke-width="3.2" fill="none" stroke-linecap="round"/>`,
-    festa:`<path d="M49 59q11 16 22 0z" fill="${D}"/><path d="M54 64q6 5 12 0q-6-3-12 0z" fill="#F7849A"/>`,
-    sono:`<path d="M56 63h8" stroke="${D}" stroke-width="3" stroke-linecap="round"/>`
-  };
-  const extra={
-    festa:`<path d="M33 64L17 44M87 64l16-20" stroke="${C}" stroke-width="7" stroke-linecap="round"/><circle cx="16" cy="42" r="6" fill="${C}"/><circle cx="104" cy="42" r="6" fill="${C}"/><path d="M14 22l3 6 6 1-5 4 1 6-5-3-5 3 1-6-5-4 6-1z" fill="#F5C33B"/><path d="M104 14l2 4 4 1-3 3 1 4-4-2-4 2 1-4-3-3 4-1z" fill="#7F77DD"/>`,
-    atento:`<path d="M96 34l9-5M98 44l10 0M96 54l9 5M24 34l-9-5M22 44l-10 0M24 54l-9 5" stroke="${C}" stroke-width="3" stroke-linecap="round"/>`,
-    sono:`<text x="88" y="30" font-family="Fredoka,sans-serif" font-weight="700" font-size="16" fill="${CD}">z</text><text x="98" y="18" font-family="Fredoka,sans-serif" font-weight="700" font-size="12" fill="${CD}">z</text>`,
-    feliz:'',preocupado:''
-  };
-  return `<svg class="${cls||''}" width="${size}" height="${size}" viewBox="0 0 120 120" role="img" aria-label="Lembrinho" xmlns="http://www.w3.org/2000/svg">${extra[mood]||''}<circle cx="60" cy="19" r="5.5" fill="${CD}"/><path d="M29 82c0-9 7-12 7-34a24 24 0 0 1 48 0c0 22 7 25 7 34z" fill="${C}"/><ellipse cx="45" cy="40" rx="5" ry="10" fill="#F69C7B" opacity=".8"/><rect x="23" y="78" width="74" height="13" rx="6.5" fill="${CD}"/><circle cx="60" cy="99" r="8.5" fill="${CD}"/><ellipse cx="42" cy="62" rx="5.5" ry="3.4" fill="#F7849A" opacity=".75"/><ellipse cx="78" cy="62" rx="5.5" ry="3.4" fill="#F7849A" opacity=".75"/>${eyes[mood]||eyes.feliz}${mouth[mood]||mouth.feliz}</svg>`;
-}
+let _em=0;
+function emblema(size,cls){const id='eg'+(++_em);size=size||40;return `<svg class="${cls||''}" width="${size}" height="${size}" viewBox="0 0 48 48" role="img" aria-label="Lembra Aí" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="${id}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F4DFAF"/><stop offset=".5" stop-color="#D8B878"/><stop offset="1" stop-color="#A8823F"/></linearGradient></defs><circle cx="24" cy="24" r="22.6" fill="none" stroke="url(#${id})" stroke-width="1.1"/><circle cx="24" cy="24" r="19.4" fill="none" stroke="url(#${id})" stroke-width=".45" opacity=".55"/><path d="M15.8 29.6c1.7-1.5 2.4-3.2 2.4-7.4a5.8 5.8 0 0 1 11.6 0c0 4.2.7 5.9 2.4 7.4z" fill="url(#${id})"/><path d="M21.5 32.2a2.6 2.6 0 0 0 5 0" stroke="url(#${id})" stroke-width="1.6" fill="none" stroke-linecap="round"/><circle cx="24" cy="14.4" r="1.25" fill="url(#${id})"/></svg>`}
+function lembrinho(m,size,cls){return emblema(Math.round((size||96)*.78),cls)}
 
-const logoSvg='<i class="lg">'+lembrinho('feliz',38)+'</i>';
+const logoSvg='<i class="lg">'+emblema(36)+'</i>';
 
 let S;
 const COLORS=['#e5484d','#f76b15','#f5b800','#30a46c','#0f9d6b','#0090ff','#8e4ec6','#d6409f','#8d8d8d'];
@@ -341,7 +396,7 @@ async function loadUser(){
   if(empty)S.needSetup=true;S.session=true;remember();loadFin();
 }
 const netMsg=e=>/fetch|network|Load failed/i.test(e&&e.message||'')?'Sem conexão com o servidor. Verifique a internet e tente de novo.':'';
-const getTheme=()=>{try{return localStorage.getItem('lembraai_theme')||'light'}catch(e){return 'light'}};
+const getTheme=()=>{try{return localStorage.getItem('lembraai_theme')||'dark'}catch(e){return 'dark'}};
 const setTheme=t=>{try{localStorage.setItem('lembraai_theme',t)}catch(e){}document.documentElement.dataset.tema=t;toast(t==='dark'?'Fundo preto ativado':'Fundo branco ativado')};
 document.documentElement.dataset.tema=getTheme();
 const pickAcc=id=>{ACC.last=id;saveAcc()};
@@ -416,24 +471,59 @@ function card(x){
   return `<article class="tk" style="--c:${cor}"><div><span class="tk-cat">${esc(x.cat)}</span><h3>${esc(x.nome)}${x.rec==='Parcelada'?` <small>${x.parc}/${x.parcTot}</small>`:''}</h3><p class="tk-when ${d<0?'bad':d<=1?'warn':''}">${when(x)}${x.forma?' · '+esc(x.forma):''}</p></div><b>${x.valor?brl(x.valor):'<span class="mut" style="font-size:14px">valor a definir</span>'}</b>
   <div class="tk-acts">${assin?`<button class="btn pri" data-pago="${x.id}">Ainda uso</button>${x.cancel?`<a class="btn" target="_blank" rel="noopener" href="${esc(x.cancel)}">Cancelar</a>`:''}`:`<button class="btn pri" data-pago="${x.id}">✓ Paguei</button>`}${x.pix?`<button class="btn" data-pix="${x.id}">Copiar Pix</button>`:''}<button class="btn ghost" data-det="${x.id}">Detalhes</button></div></article>`;
 }
-const emptyLb=(t,m)=>`<div class="empty">${lembrinho(m||'feliz',54)}<span>${t}</span></div>`;
+const emptyLb=(t,m)=>`<div class="empty"><span>${t}</span></div>`;
 const section=(t,arr,emp)=>`<h2>${t} <span class="tag soft">${arr.length}</span></h2>${arr.length?`<div class="grid">${arr.map(card).join('')}</div>`:emptyLb(emp)}`;
 const mini=x=>{const d=new Date(x.venc+'T12:00:00');return `<div class="mini" data-det="${x.id}" style="--c:${CATCOR[x.cat]||'#8C8A80'}"><span class="dt"><b>${d.getDate()}</b><small>${d.toLocaleDateString('pt-BR',{month:'short'}).replace('.','')}</small></span><div><strong>${esc(x.nome)}</strong><p>${esc(x.cat)} · ${when(x)}</p></div><b>${x.valor?brl(x.valor):''}</b></div>`};
 const FLAME=`<svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 2-5 3-6 0 2 1 3 2 3 0-4-1-6 1-9z" fill="#F2702E"/><path d="M12 13c1 2 3 3 3 5a3 3 0 0 1-6 0c0-2 2-3 3-5z" fill="#F5C33B"/></svg>`;
 
-function vHoje(){
-  const open=S.contas.filter(x=>x.status!=='Pago').sort((a,b)=>a.venc.localeCompare(b.venc)),st=estadoMes();
-  const agora=open.filter(x=>diff(x.venc)<=3),prox=open.filter(x=>diff(x.venc)>3&&diff(x.venc)<=30).slice(0,8);
-  const its=dayItems(today()).filter(t=>t.k==='e');checkConq(true);
-  return `<section class="hero"><div>${lembrinho(st.mood,108,st.mood==='festa'?'lb-jump':st.mood==='atento'?'lb-ring':'lb-bob')}</div><div class="hero-bub">${st.fala}<small>${new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'})}</small></div></section>
-  <div class="kpis"><div class="kpi"><div class="ring" style="--p:${st.pct}">${st.pct}%</div><div><b>${st.pct===100?'Tudo pago':st.pagas+' de '+(st.pagas+st.falta)}</b><span>${st.pct===100?'mês em dia':'contas do mês pagas'}</span></div></div>
-   <div class="kpi"><div class="flame ${st.streak?'':'off'}">${FLAME}</div><div><b>${st.streak} ${st.streak===1?'dia':'dias'}</b><span>sem atraso</span></div></div></div>
-  ${(()=>{const g=analiseGastos();return g.var!=null&&g.var>.15?`<a href="#resumo" class="box" style="display:block;margin-bottom:14px;border-color:var(--badk);color:inherit;text-decoration:none"><strong>Seus gastos do dia a dia subiram ${pct(g.var)} este mês.</strong><span class="mut"> Toque para ver o que aumentou.</span></a>`:''})()}
-  <div class="quick"><button class="btn pri" data-new-conta>+ Conta</button><button class="btn" data-new-ev>+ Compromisso</button></div>
-  <h2 style="margin-top:4px">Para resolver agora <span class="tag soft">${agora.length}</span></h2>${agora.length?`<div class="grid">${agora.map(card).join('')}</div>`:emptyLb('Nada para resolver nos próximos dias. Aproveita!','feliz')}
-  <h2>Hoje na agenda <span class="tag soft">${its.length}</span></h2>${its.length?its.map(t=>item(t,today())).join(''):emptyLb('Nenhum compromisso hoje.','sono')}
-  ${prox.length?`<h2>Próximos 30 dias</h2>${prox.map(mini).join('')}`:''}`;
+const saud=()=>{const h=new Date().getHours();return h<12?'Bom dia':h<18?'Boa tarde':'Boa noite'};
+function valorMes(){
+  const m=today().slice(0,7),pg=S.hist.filter(h=>h.tipo==='Pago'&&h.data.startsWith(m));
+  const open=S.contas.filter(x=>x.status!=='Pago'&&x.cat!=='Assinatura'&&x.venc.slice(0,7)<=m);
+  const pago=pg.reduce((s,h)=>s+(+h.valor||0),0),aberto=open.reduce((s,x)=>s+(+x.valor||0),0);
+  const juros=pg.filter(h=>h.onTime).reduce((s,h)=>s+(+h.valor||0),0)*0.03;
+  const min=(pg.length+open.length+S.evs.length)*5;
+  return {total:pago+aberto,pago,aberto,juros,min,atr:open.filter(x=>diff(x.venc)<0).length,n:pg.length+open.length};
 }
+const tempoTxt=min=>min>=60?Math.floor(min/60)+'h'+(min%60?String(min%60).padStart(2,'0'):''):min+' min';
+const liConta=x=>{const d=diff(x.venc),dt=new Date(x.venc+'T12:00:00');return `<div class="li" data-det="${x.id}"><span class="ic">${dt.getDate()}<br></span><div style="min-width:0"><div class="t">${esc(x.nome)}${x.rec==='Parcelada'?` <span class="mut" style="font-weight:500">${x.parc}/${x.parcTot}</span>`:''}</div><div class="s">${esc(x.cat)} · <span class="${d<0?'late':d<=1?'soon':''}">${when(x)}</span></div></div><div class="v">${x.valor?brl(x.valor):''}</div></div>`};
+function featList(){
+  const f=[['push','Notificações neste celular','Notification' in window&&Notification.permission==='granted'],
+    ['canais','Lembrete por e-mail',!!CH().email],['canais','Lembrete no WhatsApp',!!CH().whats]];
+  if(BIO_OK)f.splice(1,0,['bio','Entrar com '+bioNome,!!bioMap()[S.user.email]]);
+  f.push(['banco','Banco conectado',OF.items.length>0]);
+  return f;
+}
+function vHoje(){
+  const open=S.contas.filter(x=>x.status!=='Pago').sort((a,b)=>a.venc.localeCompare(b.venc)),st=estadoMes(),V=valorMes();
+  const nx=open.find(x=>x.cat!=='Assinatura')||open[0],resto=open.filter(x=>x!==nx);
+  const semana=resto.filter(x=>diff(x.venc)<=7),adiante=resto.filter(x=>diff(x.venc)>7&&diff(x.venc)<=30).slice(0,6);
+  const its=dayItems(today()).filter(t=>t.k==='e');checkConq(true);
+  const preco=+S.cfg.preco||14.9,vezes=V.total/preco,fl=featList(),ok=fl.filter(x=>x[2]).length,pc=Math.round(ok/fl.length*100);
+  const g=analiseGastos();
+  const valor=V.n?`<section class="value fade"><div class="k">Sob a guarda do Lembra Aí · ${new Date().toLocaleDateString('pt-BR',{month:'long'})}</div>
+    <div class="big num gold" data-count="${V.total.toFixed(2)}">${brl(V.total)}</div>
+    <p class="cap">em contas acompanhadas este mês. Cada uma com aviso antes do vencimento, pelo canal que você escolheu.</p>
+    <div class="vgrid"><div><b class="num" data-count="${V.juros.toFixed(2)}">${brl(V.juros)}</b><span>multa e juros evitados</span></div><div><b class="num">${tempoTxt(V.min)}</b><span>de tempo poupado*</span></div><div><b class="num" style="color:${V.atr?'var(--badk)':'var(--ok)'}">${V.atr}</b><span>${V.atr===1?'conta atrasada':'contas atrasadas'}</span></div></div>
+    <div class="prog"><i style="width:${st.pct}%"></i></div><div class="progl"><span>${st.pct===100?'Mês 100% em dia':st.pagas+' de '+(st.pagas+st.falta)+' contas do mês pagas'}</span><span>${st.pct}%</span></div>
+    ${vezes>=2?`<div class="roi"><span class="x gold">${vezes>=10?Math.round(vezes):vezes.toFixed(1).replace('.',',')}×</span><span>Você investe <b>${brl(preco)}/mês</b> para ter <b>${brl(V.total)}</b> em contas protegidas contra esquecimento.</span></div>`:''}
+    </section>`
+   :`<section class="value fade"><div class="k">Comece por aqui</div><div class="big num gold">R$ 0,00</div><p class="cap">Cadastre as contas que você paga todo mês. Em segundos você vê aqui quanto dinheiro o Lembra Aí está protegendo de multa e juros.</p><div style="margin-top:16px"><button class="btn pri" data-new-conta>Adicionar minha primeira conta</button></div></section>`;
+  const nxd=nx?diff(nx.venc):0;
+  const next=nx?`<section class="next fade fade2"><div><div class="lbl" style="color:${nxd<0?'var(--badk)':nxd<=1?'var(--warnk)':'var(--gold)'}">${nxd<0?'Atrasada · resolva hoje':nxd===0?'Vence hoje':nxd===1?'Vence amanhã':'Próxima conta'}</div><div class="nm">${esc(nx.nome)}</div><div class="mut" style="font-size:13.5px">${esc(nx.cat)} · ${when(nx)}${nx.forma?' · '+esc(nx.forma):''}</div></div><div class="vl">${nx.valor?brl(nx.valor):''}</div>
+    <div class="acts2">${nx.cat==='Assinatura'?`<button class="btn pri" data-pago="${nx.id}">Ainda uso</button>`:`<button class="btn pri" data-pago="${nx.id}">Já paguei</button>`}${nx.pix?`<button class="btn" data-pix="${nx.id}">Copiar Pix</button>`:''}<button class="btn ghost" data-det="${nx.id}">Detalhes</button></div></section>`:'';
+  const setup=pc<100?`<section class="setupc fade fade3"><div class="top2"><span style="font-weight:700">Seu Lembra Aí está</span><b class="gold">${pc}% configurado</b></div><div class="prog"><i style="width:${pc}%"></i></div><p class="mut" style="font-size:13px">Quanto mais completo, menos chance de uma conta passar.</p><div class="feat">${fl.map(([k,t,on])=>`<button type="button" class="${on?'on':''}" data-feat="${k}" ${on?'disabled':''}><span class="ck">${on?'✓':''}</span>${t}</button>`).join('')}</div></section>`:'';
+  return `<header class="hdr fade">${emblema(40)}<div class="hi">${saud()},<b>${esc(first(S.user.nome))}</b></div><span class="shield">● ${V.atr?'Atenção':'Tudo protegido'}</span></header>
+  ${valor}${next}
+  ${g.var!=null&&g.var>.15?`<a href="#patrimonio" class="banner" style="display:block;margin-top:14px;padding:14px 16px;text-decoration:none"><b>Seus gastos do dia a dia subiram ${pct(g.var)}</b><span class="mut"> este mês. Toque para ver o que aumentou.</span></a>`:''}
+  <div class="quick fade fade3"><button class="btn pri" data-new-conta>${ic.plus}Conta</button><button class="btn" data-new-ev>${ic.cal}Compromisso</button><a class="btn" href="#agenda">${ic.clock}Agenda</a><a class="btn" href="#contas">${ic.list}Todas as contas</a></div>
+  ${setup}
+  ${semana.length?`<h2>Esta semana <span class="tag soft">${semana.length}</span></h2><div class="list">${semana.map(liConta).join('')}</div>`:''}
+  <h2>Hoje na agenda <span class="tag soft">${its.length}</span></h2>${its.length?its.map(t=>item(t,today())).join(''):`<div class="empty">Agenda livre hoje. <button class="btn ghost" data-new-ev>Marcar compromisso</button></div>`}
+  ${adiante.length?`<h2>Mais adiante</h2><div class="list">${adiante.map(liConta).join('')}</div>`:''}
+  <p class="mut" style="font-size:12px;margin-top:22px">* Estimativa de 5 minutos por conta ou compromisso que você não precisou lembrar sozinho. Multa e juros calculados como 2% + 1% sobre contas pagas em dia.</p>`;
+}
+function countUp(){document.querySelectorAll('[data-count]').forEach(el=>{const v=+el.dataset.count;if(!v||matchMedia('(prefers-reduced-motion: reduce)').matches)return;const t0=performance.now(),D=1100;const f=t=>{const k=Math.min(1,(t-t0)/D),e=1-Math.pow(1-k,3);el.textContent=brl(v*e);if(k<1)requestAnimationFrame(f)};requestAnimationFrame(f)})}
 
 function trialDay(c){return Math.min(Math.max(1-diff(c.inicio),1),99)}
 function vClientes(){
@@ -499,13 +589,13 @@ function vConfig(){
   <div class="box" style="margin-top:14px;box-shadow:none"><h3>Notificações neste celular</h3><p class="mut" id="pushst" style="margin:4px 0 12px">${pushStatus()}</p><button type="button" class="btn pri" data-push>Ativar notificações aqui</button></div>
   <p class="mut" style="font-size:13px;margin-top:12px">Tudo é enviado sozinho, na hora certa, pelos canais marcados. Assinaturas são avisadas só pelo app, com a pergunta "você ainda usa?".</p></form>
   <div class="box" style="margin-top:12px"><h3>Entrar com ${bioNome}</h3><p class="mut" style="margin:4px 0 12px">${!BIO_OK?'Este aparelho ou navegador não tem leitura de rosto ou digital disponível.':bioMap()[S.user.email]?'Ativado neste aparelho ✓ Na tela de entrada, toque em "Entrar com '+bioNome+'".':'Entre sem digitar a senha, usando o '+bioNome+' deste aparelho.'}</p>${BIO_OK?(bioMap()[S.user.email]?'<button type="button" class="btn dang" data-biooff>Desativar neste aparelho</button>':`<button type="button" class="btn pri" data-bioon>Ativar ${bioNome}</button>`):''}</div>
-  <div class="box" style="margin-top:12px"><h3>Aparência</h3><p class="mut" style="margin:4px 0 14px">Escolha a cor do fundo do app.</p><div class="themes">${[['light','Fundo branco','padrão'],['dark','Fundo preto','']].map(([k,t,n])=>`<button type="button" class="theme-opt ${getTheme()===k?'on':''}" data-themeset="${k}" aria-pressed="${getTheme()===k}"><span class="prev ${k}"><i></i><i></i><i></i></span><strong>${t}</strong>${n?`<span class="mut" style="font-size:13px">${n}</span>`:''}</button>`).join('')}</div></div>
+  <div class="box" style="margin-top:12px"><h3>Aparência</h3><p class="mut" style="margin:4px 0 14px">Escolha a cor do fundo do app.</p><div class="themes">${[['dark','Fundo escuro','padrão'],['light','Fundo claro','']].map(([k,t,n])=>`<button type="button" class="theme-opt ${getTheme()===k?'on':''}" data-themeset="${k}" aria-pressed="${getTheme()===k}"><span class="prev ${k}"><i></i><i></i><i></i></span><strong>${t}</strong>${n?`<span class="mut" style="font-size:13px">${n}</span>`:''}</button>`).join('')}</div></div>
   <div class="box" style="margin-top:12px"><h3>Seus dados e privacidade</h3><p class="mut" style="margin:4px 0 12px">Leia como cuidamos das suas informações ou apague sua conta quando quiser.</p><div class="acts" style="border:0;padding:0"><a class="btn" href="#termos">Termos de Uso</a><a class="btn" href="#privacidade">Política de Privacidade</a><button type="button" class="btn dang" data-excluir>Excluir minha conta</button></div></div>
   <div class="box" style="margin-top:12px"><h3>Backup</h3><p class="mut" style="margin:4px 0 12px">Seus dados ficam salvos no servidor e aparecem em qualquer aparelho em que você entrar. O backup é uma cópia extra.</p><div class="acts" style="border:0;padding:0"><button class="btn" data-copy-bk>Copiar backup</button><button class="btn" data-imp>Importar backup</button><button class="btn" data-resetup>Refazer perguntas iniciais</button><button class="btn dang" data-wipe>Apagar tudo</button></div></div>`;
 }
 
 const O={step:0,v:{tipo:'Pessoa'},mode:''};
-const ART=`<div class="art-lb">${lembrinho('feliz',230,'lb-bob')}<div class="bb b1">💡 Luz vence amanhã<small>R$ 186,40</small></div><div class="bb b2">🎉 Mês 100% em dia!</div><div class="bb b3">🔥 12 dias sem atraso</div></div>`;
+const ART=`<div class="art-x"><div class="hl">Suas contas <em>em dia.</em><br>Sem precisar lembrar.</div><div class="mini-v"><span>Exemplo · protegido no mês</span><b class="gold">R$ 2.418,90</b><small class="mut">multa e juros evitados, tudo no automático</small></div><div class="notif"><span class="ic">${ic.bell}</span><div><b>Conta de luz vence amanhã</b><span>R$ 186,40 · Pix pronto para copiar</span></div></div><div class="notif"><span class="ic">${ic.bell}</span><div><b>IPVA · 2ª parcela em 3 dias</b><span>R$ 412,77</span></div></div></div>`;
 const STEPS=[
  ['nome','Como podemos te chamar?','Seu primeiro nome já basta.','text','Renato','name'],
  ['whats','Qual é o seu WhatsApp?','Coloque o DDD e o número. É para ele que os lembretes vão chegar.','tel','',''],
@@ -912,17 +1002,97 @@ async function ofConectar(){
 }
 async function ofSync(id){try{toast('Buscando seus dados no banco…');const r=await ofCall({acao:'sync',itemId:id});await loadFin();render();toast(`${r.banco||'Banco'} conectado: ${r.investimentos} investimentos e ${r.transacoes} movimentações`)}catch(e){toast('Erro ao atualizar: '+e.message)}}
 
-const NAV=[['hoje','Hoje',ic.bell],['agenda','Agenda',ic.cal],['contas','Contas',ic.list],['invest','Investir',ic.inv],['resumo','Resumo',ic.chart],['config','Config',ic.gear]];
+const TOUR={i:0};
+const tourVisto=()=>{try{return !!localStorage.getItem('lembraai_tour')}catch(e){return true}};
+const TOURS=[
+ ['Nunca mais pague <em>juros por esquecimento.</em>','IPTU, IPVA, cartão, luz, internet, parcelas e assinaturas. O Lembra Aí avisa antes de cada vencimento: no celular, no WhatsApp e no e-mail.',
+  `<div class="mock"><div class="notif"><span class="ic">${''}</span><div><b>Conta de luz vence amanhã</b><span>R$ 186,40 · toque para ver o Pix</span></div></div><div class="notif"><span class="ic"></span><div><b>IPVA · 2ª parcela em 3 dias</b><span>R$ 412,77</span></div></div><div class="notif"><span class="ic"></span><div><b>Dentista às 15h</b><span>em 1 hora · Rua das Flores, 120</span></div></div></div>`],
+ ['Veja, todo mês, <em>quanto você protegeu.</em>','Uma tela só: o valor das suas contas em dia, a multa e os juros evitados, seus investimentos e a saúde do seu dinheiro.',
+  `<div class="mock"><span class="pill">Exemplo</span><div class="num gold" style="font-size:52px">R$ 3.240,00</div><div class="mut" style="font-size:13px">em contas acompanhadas no mês</div><div class="prog"><i style="width:82%"></i></div></div>`],
+ ['Um concierge <em>24 horas</em> no seu bolso.','Dúvida sobre qualquer função? Pergunte a qualquer hora. Ele explica e já te leva até o lugar certo.',
+  `<div class="mock"><div class="msg bot" style="margin:0">Quanto eu tenho para pagar este mês?</div><div class="msg me" style="margin:0 0 0 auto">R$ 2.418,90 em 7 contas. A próxima é a luz, amanhã.</div></div><p class="mut" style="font-size:13px">14 dias grátis para testar tudo. Depois, ${brl(14.9)}/mês: menos do que a multa de um único atraso em muitas contas.</p>`]];
+function vTour(){
+  const [h,p,m]=TOURS[TOUR.i],last=TOUR.i===TOURS.length-1;
+  return `<div class="tour"><div style="display:flex;align-items:center;gap:10px">${emblema(34)}<span style="font-family:var(--sf);font-size:24px">Lembra Aí</span><a href="#" data-tourskip style="margin-left:auto;font-size:14px;font-weight:600">Já tenho conta</a></div>
+  <div class="sl fade" key="${TOUR.i}"><h1>${h}</h1><p class="lead">${p}</p>${m.replace(/<span class="ic"><\/span>/g,`<span class="ic">${ic.bell}</span>`)}</div>
+  <div><div class="dots">${TOURS.map((_,i)=>`<i class="${i===TOUR.i?'on':''}"></i>`).join('')}</div><button class="btn pri" data-tournext style="width:100%;min-height:56px;font-size:16px">${last?'Começar grátis por 14 dias':'Continuar'}</button></div></div>`;
+}
+
+/* ===== Concierge 24h ===== */
+const noAc=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+const CCKB=[
+ [['adicionar conta','nova conta','cadastrar conta','colocar conta','boleto','iptu','ipva'],'Para cadastrar uma conta, toque em <b>+ Conta</b> no Início. Coloque o nome, o valor, o dia do vencimento e se ela se repete (mensal, anual ou parcelada). Eu aviso antes do vencimento pelos canais que você escolheu.',[['Adicionar conta agora','conta']]],
+ [['paguei','marcar como paga','ja paguei','quitar'],'Quando pagar, toque em <b>Já paguei</b> na conta. Se ela é mensal, anual ou parcelada, eu já deixo a próxima agendada sozinho e você ganha o selo "Pago".',[['Ver minhas contas','#contas']]],
+ [['compromisso','agenda','evento','consulta','reuniao','calendario'],'Na <b>Agenda</b> você marca compromissos como no calendário do iPhone: dia, hora, local, repetição e até dois alertas. Toque em <b>+ Compromisso</b> no Início.',[['Novo compromisso','ev'],['Abrir agenda','#agenda']]],
+ [['notificacao','notificar','alarme','aviso no celular','push','som'],'As notificações chegam na tela do celular mesmo com o app fechado. No iPhone, primeiro adicione o Lembra Aí à Tela de Início (Compartilhar → Adicionar à Tela de Início) e abra pelo ícone.',[['Ativar notificações','push']]],
+ [['whatsapp','zap','mensagem'],'Você escolhe receber os lembretes no WhatsApp em <b>Ajustes → Como quer receber</b>. O número usado é o do seu cadastro, com DDD.',[['Abrir ajustes','#config']]],
+ [['email','e-mail'],'Para receber também por e-mail, marque "E-mail" em <b>Ajustes → Como quer receber</b>.',[['Abrir ajustes','#config']]],
+ [['face id','digital','biometria','rosto','entrar sem senha'],'Com o '+bioNome+' você entra sem digitar a senha, como no app do banco. Ative em Ajustes.',[['Ativar '+bioNome,'bio']]],
+ [['banco','open finance','conectar','extrato','investimento','patrimonio','saude'],'Em <b>Patrimônio</b> você conecta seu banco pelo Open Finance (com autorização do próprio banco, e você pode desconectar quando quiser). Eu mostro seus investimentos, a nota de saúde do seu dinheiro e quando os gastos sobem.',[['Abrir Patrimônio','#patrimonio'],['Conectar banco','banco']]],
+ [['gasto','gastos','aumento','subiu'],'Comparo seus gastos do mês com a média dos meses anteriores e aviso quando algo sobe mais de 15%. Fica em <b>Patrimônio</b>.',[['Ver meus gastos','#patrimonio']]],
+ [['assinatura','netflix','spotify','cancelar assinatura'],'Assinaturas eu aviso só pelo app, antes da renovação, perguntando se você ainda usa. Se não usa, coloque o link de cancelamento na conta e cancele com um toque.',[['Adicionar assinatura','conta']]],
+ [['preco','quanto custa','valor do app','plano','teste','gratis','pagar o app'],'Você tem <b>14 dias grátis</b> para testar tudo. Depois, o plano é '+brl(14.9)+' por mês.',[]],
+ [['senha','esqueci','trocar senha'],'Para trocar a senha, vá em <b>Ajustes → Minha conta</b>. Se esqueceu, na tela de entrada toque em "Esqueci minha senha" e eu mando um link para o seu e-mail.',[['Abrir ajustes','#config']]],
+ [['tema','escuro','claro','fundo','cor'],'Em <b>Ajustes → Aparência</b> você escolhe fundo escuro ou claro.',[['Abrir ajustes','#config']]],
+ [['excluir','apagar conta','deletar','privacidade','lgpd','dados'],'Seus dados ficam protegidos e você pode apagar sua conta a qualquer momento em <b>Ajustes → Seus dados e privacidade</b>. Lá também estão os Termos e a Política de Privacidade.',[['Abrir ajustes','#config'],['Privacidade','#privacidade']]],
+ [['multa','juros evitados','como calcula','tempo poupado'],'Multa e juros evitados = 2% de multa + 1% de juros sobre as contas que você pagou em dia neste mês. O tempo poupado é uma estimativa de 5 minutos por conta ou compromisso.',[]],
+ [['instalar','baixar','app store','play store','tela de inicio'],'O Lembra Aí não precisa de loja. No iPhone: Safari → Compartilhar → Adicionar à Tela de Início. No Android: Chrome → menu ⋮ → Instalar app.',[]],
+ [['contas salvas','trocar de conta','outra conta','sair'],'Você pode ter várias contas salvas neste aparelho. Para trocar, toque em <b>Sair</b> em Ajustes e escolha outra conta na tela de entrada.',[['Abrir ajustes','#config']]]];
+function ccDados(q){
+  const open=S.contas.filter(x=>x.status!=='Pago').sort((a,b)=>a.venc.localeCompare(b.venc)),m=today().slice(0,7);
+  if(/(quanto|total).*(pagar|devo|falta)|a pagar/.test(q)){const mes=open.filter(x=>x.venc.slice(0,7)<=m&&x.cat!=='Assinatura');return [mes.length?`Neste mês faltam <b>${brl(mes.reduce((s,x)=>s+x.valor,0))}</b> em ${mes.length} ${mes.length===1?'conta':'contas'}.`:'Você não tem mais nada para pagar este mês.',[['Ver contas','#contas']]]}
+  if(/proxim|vence|vencendo/.test(q)){const x=open[0];return [x?`A próxima é <b>${esc(x.nome)}</b>: ${brl(x.valor)}, ${when(x).toLowerCase()}.`:'Nenhuma conta em aberto. Tudo em dia!',x?[['Ver detalhes','det:'+x.id]]:[]]}
+  if(/atras/.test(q)){const a=open.filter(x=>diff(x.venc)<0);return [a.length?`Você tem ${a.length} ${a.length===1?'conta atrasada':'contas atrasadas'}: ${a.map(x=>'<b>'+esc(x.nome)+'</b>').join(', ')}.`:'Nenhuma conta atrasada. Parabéns!',a.length?[['Resolver agora','det:'+a[0].id]]:[]]}
+  if(/hoje.*(agenda|compromisso)|agenda.*hoje|compromisso.*hoje/.test(q)){const its=dayItems(today()).filter(t=>t.k==='e');return [its.length?`Hoje você tem ${its.length}: `+its.map(t=>'<b>'+esc(t.e.titulo)+'</b>').join(', ')+'.':'Nenhum compromisso hoje.',[['Abrir agenda','#agenda']]]}
+  return null;
+}
+function ccResp(txt){
+  const q=noAc(txt),d=ccDados(q);if(d)return d;
+  let best=null,sc=0;CCKB.forEach(([ks,a,go])=>{const s=ks.reduce((n,k)=>n+(q.includes(noAc(k))?k.length:0),0);if(s>sc){sc=s;best=[a,go]}});
+  return best||['Ainda não sei responder isso com certeza. Posso te ajudar com contas, agenda, notificações, WhatsApp, e-mail, '+bioNome+', banco e investimentos, gastos, assinaturas, senha e privacidade. Toque numa sugestão abaixo.',[]];
+}
+const CC={open:false,log:[]};
+const CCCHIPS=['Quanto falta pagar?','Qual a próxima conta?','Como adiciono uma conta?','Ativar notificações','Receber no WhatsApp','Conectar meu banco'];
+function ccMsg(who,html,go){CC.log.push([who,html,go||[]]);ccDraw()}
+function ccDraw(){const l=document.querySelector('.cc-log');if(!l)return;l.innerHTML=CC.log.map(([w,h,go])=>`<div class="msg ${w}">${h}${go.length?'<br>'+go.map(([t,a])=>`<button class="go" data-ccgo="${esc(a)}">${esc(t)} →</button>`).join(''):''}</div>`).join('');l.scrollTop=l.scrollHeight}
+function ccMount(){
+  const show=S.session&&!S.needSetup&&!REC;let b=document.querySelector('.cc-btn'),p=document.querySelector('.cc');
+  if(!show){b&&b.remove();p&&p.remove();return}
+  if(!b){b=document.createElement('button');b.className='cc-btn';b.type='button';b.dataset.cc='1';b.setAttribute('aria-label','Abrir concierge 24 horas');b.innerHTML=`<span class="em">${ic.chat}</span><span class="lb">Concierge</span><span class="dot"></span>`;document.body.appendChild(b)}
+  if(!p){p=document.createElement('aside');p.className='cc';p.setAttribute('aria-label','Concierge');p.innerHTML=`<div class="cc-hd"><span class="em">${ic.chat}</span><div><b>Concierge</b><span>● Disponível 24 horas</span></div><button type="button" data-ccx aria-label="Fechar">×</button></div><div class="cc-log" aria-live="polite"></div><div class="cc-chips">${CCCHIPS.map(c=>`<button type="button" data-ccq="${c}">${c}</button>`).join('')}</div><form class="cc-in" id="fcc"><input name="q" placeholder="Pergunte qualquer coisa" autocomplete="off" aria-label="Sua pergunta"><button class="btn pri" aria-label="Enviar">${ic.send}</button></form>`;document.body.appendChild(p)}
+}
+function ccAbrir(){CC.open=true;document.querySelector('.cc').classList.add('on');if(!CC.log.length)ccMsg('bot',`${saud()}, ${esc(first(S.user.nome))}. Sou o concierge do Lembra Aí. Pergunte sobre qualquer função, ou sobre as suas contas, que eu explico e te levo até lá.`);else ccDraw()}
+function ccFechar(){CC.open=false;document.querySelector('.cc')?.classList.remove('on')}
+function ccPerg(t){if(!t.trim())return;ccMsg('me',esc(t));const [a,go]=ccResp(t);setTimeout(()=>ccMsg('bot',a,go),350)}
+function ccGo(a){ccFechar();if(a.startsWith('#'))return location.hash=a.slice(1);if(a.startsWith('det:'))return abrirDet('#det-c-'+a.slice(4));
+  ({conta:()=>formConta(),ev:()=>formEv(),push:()=>ativarPush(),bio:()=>ativarBio(),banco:()=>ofConectar()})[a]?.()}
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-cc],[data-ccx],[data-ccq],[data-ccgo],[data-feat],[data-tournext],[data-tourskip]');if(!t)return;const d=t.dataset;
+  if(d.cc)return CC.open?ccFechar():ccAbrir();
+  if('ccx' in d)return ccFechar();
+  if(d.ccq)return ccPerg(d.ccq);
+  if(d.ccgo)return ccGo(d.ccgo);
+  if(d.feat)return d.feat==='canais'?(location.hash='config'):ccGo(d.feat);
+  if('tournext' in d){if(TOUR.i<TOURS.length-1){TOUR.i++;return render()}try{localStorage.setItem('lembraai_tour','1')}catch(x){}O.mode='novo';return render()}
+  if('tourskip' in d){e.preventDefault();try{localStorage.setItem('lembraai_tour','1')}catch(x){}O.mode='entrar';O.alt=true;return render()}
+});
+document.addEventListener('submit',e=>{if(e.target.id!=='fcc')return;e.preventDefault();e.stopPropagation();const i=e.target.q;ccPerg(i.value);i.value=''},true);
+
+const NAV=[['hoje','Início',ic.home],['patrimonio','Patrimônio',ic.inv],['config','Ajustes',ic.gear]];
+const vPatrimonio=()=>vInvest()+vResumo().replace('<h1>Resumo do mês</h1>','<h2 style="margin-top:40px">Resumo do mês</h2>');
 function render(){
   const r=(location.hash||'#hoje').slice(1);
   if(r==='termos'||r==='privacidade'){$('#root').innerHTML=vDoc(r);window.scrollTo(0,0);return}
   if(REC){$('#root').innerHTML=vNovaSenha();return}
+  ccMount();
+  if(!S.session&&!ACC.list.length&&!tourVisto()){$('#root').innerHTML=vTour();return}
   if(!S.session){$('#root').innerHTML=vLogin();const f=$('#root input');if(f&&f.focus)f.focus();return}
   if(S.needSetup){$('#root').innerHTML=vSetup();window.scrollTo(0,0);return}
-  const base=r.startsWith('cliente-')?'clientes':r;
-  const body=r.startsWith('cliente-')?vCliente(r.slice(8)):r==='clientes'?vClientes():r==='contas'?vContas():r==='resumo'?vResumo():r==='invest'?vInvest():r==='agenda'?vAgenda():r==='config'?vConfig():vHoje();
+  const base=['hoje','agenda','contas'].includes(r)?'hoje':['resumo','invest','patrimonio'].includes(r)?'patrimonio':r==='config'?'config':'hoje';
+  const body=r.startsWith('cliente-')?vCliente(r.slice(8)):r==='clientes'?vClientes():r==='contas'?vContas():r==='resumo'||r==='invest'||r==='patrimonio'?vPatrimonio():r==='agenda'?vAgenda():r==='config'?vConfig():vHoje();
   const nav=NAV.map(([h,t,i])=>`<a href="#${h}" class="${base===h?'on':''}">${i}${t}</a>`).join('');
   $('#root').innerHTML=`<div class="app"><aside><div class="logo">${logoSvg}Lembra Aí</div><nav>${nav}</nav></aside><main>${body}</main></div><nav class="mobnav">${nav}</nav>`;
+  ccMount();countUp();
 }
 const toast=t=>{const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),2200)};
 const openM=(html,onSubmit)=>{$('#mbody').innerHTML=html;$('#modal').hidden=false;const f=$('#mbody form');if(f)f.onsubmit=e=>{e.preventDefault();onSubmit(Object.fromEntries(new FormData(f)),f)};const inp=$('#mbody input,#mbody select');if(inp)inp.focus()};
@@ -954,30 +1124,29 @@ function formConta(x,cid){
   });
 }
 /* ===== Festa e conquistas ===== */
-const festaSom=()=>{try{if(!AC)AC=new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();const t0=AC.currentTime;[[523,0],[659,.09],[784,.18],[1047,.27],[1319,.42],[1568,.5]].forEach(([f,t])=>{const o=AC.createOscillator(),g=AC.createGain();o.type='square';o.frequency.value=f;o.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(0,t0+t);g.gain.linearRampToValueAtTime(.12,t0+t+.01);g.gain.exponentialRampToValueAtTime(.001,t0+t+.28);o.start(t0+t);o.stop(t0+t+.3)})}catch(e){}};
+const festaSom=()=>{try{if(!AC)AC=new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();const t0=AC.currentTime;[[523,0],[659,.09],[784,.18],[1047,.27],[1319,.42],[1568,.5]].forEach(([f,t])=>{const o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=f;o.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(0,t0+t);g.gain.linearRampToValueAtTime(.12,t0+t+.01);g.gain.exponentialRampToValueAtTime(.001,t0+t+.28);o.start(t0+t);o.stop(t0+t+.3)})}catch(e){}};
 function celebrar(titulo,sub){
-  document.getElementById('party')?.remove();const p=document.createElement('div');p.id='party';
-  const cores=['#E8643A','#F5C33B','#7F77DD','#17946C','#D4537E','#378ADD'];
-  p.innerHTML=Array.from({length:46},(_,i)=>`<i style="left:${Math.random()*100}%;background:${cores[i%6]};animation-duration:${1.6+Math.random()*1.6}s;animation-delay:${Math.random()*.4}s;transform:rotate(${Math.random()*180}deg)"></i>`).join('')+`<div class="msg">${lembrinho('festa',150,'lb-jump')}<h2>${titulo}</h2><p>${sub||''}</p></div>`;
-  document.body.appendChild(p);festaSom();if(navigator.vibrate)try{navigator.vibrate([40,40,80])}catch(_){}
-  const fim=()=>{p.remove()};p.onclick=fim;setTimeout(fim,2600);
+  document.getElementById('party')?.remove();const p=document.createElement('div');p.id='party';p.setAttribute('role','status');
+  p.innerHTML=`<div><div class="seal"><div>Pago<small>Lembra Aí</small></div></div><h2>${titulo}</h2><p>${sub||''}</p></div>`;
+  document.body.appendChild(p);festaSom();if(navigator.vibrate)try{navigator.vibrate([30,60,30])}catch(_){}
+  const fim=()=>{p.remove()};p.onclick=fim;setTimeout(fim,2400);
 }
 const CONQ=[
-  ['primeira','🌱','Primeira conta paga','Marque sua primeira conta como paga',()=>S.hist.some(h=>h.tipo==='Pago')],
-  ['organizado','🗂️','Tudo no lugar','Cadastre 5 contas',()=>S.contas.length>=5],
-  ['sete','🔥','Uma semana em dia','7 dias sem atraso',()=>S.hist.some(h=>h.tipo==='Pago')&&estadoMes().streak>=7],
-  ['trinta','🏆','Um mês sem atraso','30 dias sem atraso',()=>S.hist.some(h=>h.tipo==='Pago')&&estadoMes().streak>=30],
-  ['cem','💯','Mês 100%','Pague todas as contas do mês',()=>{const e=estadoMes();return e.pct===100&&e.pagas>=3}],
-  ['agenda','📅','Agenda cheia','Crie 3 compromissos',()=>S.evs.length>=3],
-  ['sino','🔔','Sempre avisado','Ative as notificações',()=>'Notification' in window&&Notification.permission==='granted'],
-  ['investidor','📈','Investidor','Acompanhe um investimento',()=>allInvs().length>0],
-  ['economia','🪙','Econômico','Gaste menos que no mês passado',()=>{const g=analiseGastos();return g.var!=null&&g.var<0}]];
+  ['primeira','I','Primeira conta paga','Marque sua primeira conta como paga',()=>S.hist.some(h=>h.tipo==='Pago')],
+  ['organizado','II','Tudo no lugar','Cadastre 5 contas',()=>S.contas.length>=5],
+  ['sete','III','Uma semana em dia','7 dias sem atraso',()=>S.hist.some(h=>h.tipo==='Pago')&&estadoMes().streak>=7],
+  ['trinta','IV','Um mês sem atraso','30 dias sem atraso',()=>S.hist.some(h=>h.tipo==='Pago')&&estadoMes().streak>=30],
+  ['cem','V','Mês 100%','Pague todas as contas do mês',()=>{const e=estadoMes();return e.pct===100&&e.pagas>=3}],
+  ['agenda','VI','Agenda cheia','Crie 3 compromissos',()=>S.evs.length>=3],
+  ['sino','VII','Sempre avisado','Ative as notificações',()=>'Notification' in window&&Notification.permission==='granted'],
+  ['investidor','VIII','Investidor','Acompanhe um investimento',()=>allInvs().length>0],
+  ['economia','IX','Econômico','Gaste menos que no mês passado',()=>{const g=analiseGastos();return g.var!=null&&g.var<0}]];
 function checkConq(silencioso){
   S.conq=S.conq||{};const novas=CONQ.filter(c=>!S.conq[c[0]]&&(()=>{try{return c[4]()}catch(e){return false}})());
   if(!novas.length)return [];novas.forEach(c=>S.conq[c[0]]=today());save();
-  if(!silencioso)return novas;setTimeout(()=>toast(`${novas[0][1]} Conquista nova: ${novas[0][2]}`),600);return novas;
+  if(!silencioso)return novas;setTimeout(()=>toast(`Novo marco: ${novas[0][2]}`),600);return novas;
 }
-const vConq=()=>{S.conq=S.conq||{};const n=CONQ.filter(c=>S.conq[c[0]]).length;return `<h2>Suas conquistas <span class="tag soft">${n} de ${CONQ.length}</span></h2><div class="conq">${CONQ.map(c=>`<div class="cq ${S.conq[c[0]]?'':'off'}"><div class="md">${c[1]}</div><strong>${c[2]}</strong><span>${S.conq[c[0]]?'Conquistada em '+fmtD(S.conq[c[0]]):c[3]}</span></div>`).join('')}</div>`};
+const vConq=()=>{S.conq=S.conq||{};const n=CONQ.filter(c=>S.conq[c[0]]).length;return `<h2>Seus marcos <span class="tag soft">${n} de ${CONQ.length}</span></h2><div class="conq">${CONQ.map(c=>`<div class="cq ${S.conq[c[0]]?'':'off'}"><div class="md">${c[1]}</div><div><strong>${c[2]}</strong><span>${S.conq[c[0]]?'Alcançado em '+fmtD(S.conq[c[0]]):c[3]}</span></div></div>`).join('')}</div>`};
 
 function pagar(id){
   if(!$('#modal').hidden)closeM();const x=conta(id);if(!x)return;const on=diff(x.venc)>=0;
@@ -988,7 +1157,7 @@ function pagar(id){
   else x.status='Pago';
   save();const novas=checkConq(false),st=estadoMes();render();
   if(x.cat==='Assinatura'&&x.status!=='Pago')return toast('Combinado! Te aviso de novo antes da próxima renovação.');
-  celebrar(st.pct===100?'Mês 100% em dia!':novas.length?`${novas[0][1]} ${novas[0][2]}!`:'Conta paga!',st.pct===100?'Você pagou tudo deste mês. Que orgulho!':`${st.streak} ${st.streak===1?'dia':'dias'} sem atraso · ${x.status==='Pago'?'conta quitada':'próxima em '+fmtD(x.venc)}`);
+  celebrar(st.pct===100?'Mês 100% em dia.':novas.length?`Novo marco: ${novas[0][2]}`:'Conta paga.',st.pct===100?'Todas as contas do mês quitadas, sem atraso.':`${st.streak} ${st.streak===1?'dia':'dias'} sem atraso · ${x.status==='Pago'?'conta quitada':'próxima em '+fmtD(x.venc)}`);
 }
 function avisar(id){const x=conta(id);if(!x)return;x.status='Avisado';S.hist.push({id:uid(),contaId:x.id,cid:x.cid,nome:x.nome,tipo:tipoAviso(x),valor:x.valor,data:today()});save();setTimeout(render,400)}
 async function copy(t,ok){try{await navigator.clipboard.writeText(t);toast(ok)}catch(e){openM(`<div><h3>Copie o texto abaixo</h3><textarea rows="6" style="margin:12px 0" readonly>${esc(t)}</textarea><button class="btn" data-close>Fechar</button></div>`)}}
