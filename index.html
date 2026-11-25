@@ -322,6 +322,23 @@ main>*{animation:up2 .6s var(--spring) both}main>*:nth-child(2){animation-delay:
 .ajuda:hover{background:var(--inv);color:var(--onInv)}
 .lp-ring{position:fixed;z-index:90;width:54px;height:54px;margin:-27px 0 0 -27px;border-radius:50%;pointer-events:none;border:3px solid var(--g);animation:lp .5s linear forwards}
 @keyframes lp{from{transform:scale(.3);opacity:.2}to{transform:scale(1);opacity:1}}
+.hero2{cursor:pointer}.hero2 .ttl{font:800 clamp(26px,6vw,34px)/1.05 var(--ff);letter-spacing:-.035em;margin-top:8px;color:#fff}
+.hero2 .big{margin:10px 0 6px}
+.hero2.bad .k{color:#FF9B8F}.hero2.warn .k{color:#FFD27A}
+.hero2.bad::before{background:conic-gradient(from 0deg,rgba(255,80,60,0),rgba(255,80,60,.45),rgba(255,160,60,.3),rgba(255,80,60,0) 60%)}
+.hero2.warn::before{background:conic-gradient(from 0deg,rgba(255,190,60,0),rgba(255,190,60,.4),rgba(0,195,137,.3),rgba(255,190,60,0) 60%)}
+.hacts{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.btn.lt{background:#fff;color:#0B0B0C;border-color:#fff}.btn.dk{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.35);box-shadow:none}
+.hero2 .mais{margin-top:12px;font-size:13px;color:rgba(255,255,255,.6);font-weight:700}
+.stripv{display:flex;align-items:center;gap:10px;margin-top:12px;padding:14px 16px;border-radius:18px;background:var(--card);box-shadow:var(--sh2);border:1px solid var(--line);text-decoration:none;color:var(--ink);font:600 14px var(--ff);width:100%;text-align:left;cursor:pointer;transition:transform .3s var(--spring)}
+.stripv:hover{transform:translateY(-2px)}.stripv>span:first-child{flex:1}.stripv i{font-style:normal;font-weight:800}
+.prog.sm{width:70px;height:6px;margin:0;flex:none}
+.quick.q3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.orb.mini{width:22px;height:22px}
+.subtabs{display:flex;gap:6px;overflow-x:auto;padding:4px 2px 12px;margin:0 0 6px;scrollbar-width:none}.subtabs::-webkit-scrollbar{display:none}
+.subtabs a{flex:none;padding:10px 16px;border-radius:99px;font:800 13.5px var(--ff);text-decoration:none;color:var(--mute);background:var(--card);box-shadow:var(--sh2);transition:transform .3s var(--spring)}
+.subtabs a.on{background:var(--inv);color:var(--onInv)}.subtabs a:active{transform:scale(.94)}
+.stats{grid-template-columns:repeat(auto-fill,minmax(min(46%,200px),1fr))!important;gap:10px!important}.stat{padding:14px!important}.stat b,.stat .v{font-family:var(--fn)}
 @media(min-width:821px){.cc-btn{bottom:24px}}
 body:has(#modal:not([hidden])) .cc-btn,body:has(#party) .cc-btn{opacity:0;pointer-events:none;transform:scale(.6)}
 /* plano */
@@ -514,7 +531,7 @@ function valorMes(){
   return {total:pago+aberto,pago,aberto,juros,min,atr:open.filter(x=>diff(x.venc)<0).length,n:pg.length+open.length};
 }
 const tempoTxt=min=>min>=60?Math.floor(min/60)+'h'+(min%60?String(min%60).padStart(2,'0'):''):min+' min';
-const liConta=x=>{const d=diff(x.venc),dt=new Date(x.venc+'T12:00:00');return `<div class="li" data-det="${x.id}"><span class="ic">${dt.getDate()}<br></span><div style="min-width:0"><div class="t">${esc(x.nome)}${x.rec==='Parcelada'?` <span class="mut" style="font-weight:500">${x.parc}/${x.parcTot}</span>`:''}</div><div class="s">${esc(x.cat)} · <span class="${d<0?'late':d<=1?'soon':''}">${when(x)}</span></div></div><div class="v">${x.valor?brl(x.valor):''}</div></div>`};
+const liConta=x=>{const d=diff(x.venc),dt=new Date(x.venc+'T12:00:00');return `<div class="li" data-det="${x.id}"><span class="ic">${dt.getDate()}<br></span><div style="min-width:0"><div class="t">${esc(x.nome)}${x.rec==='Parcelada'?` <span class="mut" style="font-weight:500">${x.parc}/${x.parcTot}</span>`:''}</div><div class="s">${esc(x.cat)} · <span class="${d<0?'late':d<=1?'soon':''}">${when(x)}</span></div></div><div class="v">${x.valor?brl(x.valor):'<span class="mut" style="font-size:13px">sem valor</span>'}</div></div>`};
 function featList(){
   const f=[['push','Notificações neste celular','Notification' in window&&Notification.permission==='granted'],
     ['canais','Lembrete por e-mail',!!CH().email],['canais','Lembrete no WhatsApp',!!CH().whats]];
@@ -523,34 +540,33 @@ function featList(){
   return f;
 }
 function vHoje(){
-  const open=S.contas.filter(x=>x.status!=='Pago').sort((a,b)=>a.venc.localeCompare(b.venc)),st=estadoMes(),V=valorMes();
-  const nx=open.find(x=>x.cat!=='Assinatura')||open[0],resto=open.filter(x=>x!==nx);
-  const semana=resto.filter(x=>diff(x.venc)<=7),adiante=resto.filter(x=>diff(x.venc)>7&&diff(x.venc)<=30).slice(0,6);
-  const its=dayItems(today()).filter(t=>t.k==='e');checkConq(true);
-  const preco=+S.cfg.preco||14.9,vezes=V.total/preco,fl=featList(),ok=fl.filter(x=>x[2]).length,pc=Math.round(ok/fl.length*100);
-  const g=analiseGastos();
-  const valor=V.n?`<section class="value fade"><div class="k">Sob a guarda do Lembra Aí · ${new Date().toLocaleDateString('pt-BR',{month:'long'})}</div>
-    <div class="big num gold" data-count="${V.total.toFixed(2)}">${brl(V.total)}</div>
-    <p class="cap">em contas acompanhadas este mês. Cada uma com aviso antes do vencimento, pelo canal que você escolheu.</p>
-    <div class="vgrid"><div><b class="num" data-count="${V.juros.toFixed(2)}">${brl(V.juros)}</b><span>multa e juros evitados</span></div><div><b class="num">${tempoTxt(V.min)}</b><span>de tempo poupado*</span></div><div><b class="num" style="color:${V.atr?'var(--badk)':'var(--ok)'}">${V.atr}</b><span>${V.atr===1?'conta atrasada':'contas atrasadas'}</span></div></div>
-    <div class="prog"><i style="width:${st.pct}%"></i></div><div class="progl"><span>${st.pct===100?'Mês 100% em dia':st.pagas+' de '+(st.pagas+st.falta)+' contas do mês pagas'}</span><span>${st.pct}%</span></div>
-    ${vezes>=2?`<div class="roi"><span class="x gold">${vezes>=10?Math.round(vezes):vezes.toFixed(1).replace('.',',')}×</span><span>Você investe <b>${brl(preco)}/mês</b> para ter <b>${brl(V.total)}</b> em contas protegidas contra esquecimento.</span></div>`:''}
-    </section>`
-   :`<section class="value fade"><div class="k">Comece por aqui</div><div class="big num gold">R$ 0,00</div><p class="cap">Cadastre as contas que você paga todo mês. Em segundos você vê aqui quanto dinheiro o Lembra Aí está protegendo de multa e juros.</p><div style="margin-top:16px"><button class="btn pri" data-new-conta>Adicionar minha primeira conta</button></div></section>`;
-  const nxd=nx?diff(nx.venc):0;
-  const next=nx?`<section class="next fade fade2"><div><div class="lbl" style="color:${nxd<0?'var(--badk)':nxd<=1?'var(--warnk)':'var(--gold)'}">${nxd<0?'Atrasada · resolva hoje':nxd===0?'Vence hoje':nxd===1?'Vence amanhã':'Próxima conta'}</div><div class="nm">${esc(nx.nome)}</div><div class="mut" style="font-size:13.5px">${esc(nx.cat)} · ${when(nx)}${nx.forma?' · '+esc(nx.forma):''}</div></div><div class="vl">${nx.valor?brl(nx.valor):''}</div>
-    ${custoChips(nx)}<div class="acts2">${nx.cat==='Assinatura'?`<button class="btn pri" data-pago="${nx.id}">Ainda uso</button>`:`<button class="btn pri" data-pago="${nx.id}">Já paguei</button>`}${nx.pix?`<button class="btn" data-pix="${nx.id}">Copiar código</button>`:''}<button class="btn ghost" data-det="${nx.id}">Detalhes</button></div></section>`:'';
-  const setup=pc<100?`<section class="setupc fade fade3"><div class="top2"><span style="font-weight:700">Seu Lembra Aí está</span><b class="gold">${pc}% configurado</b></div><div class="prog"><i style="width:${pc}%"></i></div><p class="mut" style="font-size:13px">Quanto mais completo, menos chance de uma conta passar.</p><div class="feat">${fl.map(([k,t,on])=>`<button type="button" class="${on?'on':''}" data-feat="${k}" ${on?'disabled':''}><span class="ck">${on?'✓':''}</span>${t}</button>`).join('')}</div></section>`:'';
-  return `<header class="hdr fade">${emblema(40)}<div class="hi">${saud()},<b>${esc(first(S.user.nome))}</b></div><span class="shield">● ${V.atr?'Atenção':'Tudo protegido'}</span></header>
-  ${trialBar()}${valor}${next}
-  ${g.var!=null&&g.var>.15?`<a href="#patrimonio" class="banner" style="display:block;margin-top:14px;padding:14px 16px;text-decoration:none"><b>Seus gastos do dia a dia subiram ${pct(g.var)}</b><span class="mut"> este mês. Toque para ver o que aumentou.</span></a>`:''}
-  <div class="quick fade fade3"><button class="btn pri" data-new-conta>${ic.plus}Conta</button><button class="btn" data-new-ev>${ic.cal}Compromisso</button><a class="btn" href="#agenda">${ic.clock}Agenda</a><a class="btn" href="#contas">${ic.list}Todas as contas</a></div>
-  ${setup}
-  ${semana.length?`<h2>Esta semana <span class="tag soft">${semana.length}</span></h2><div class="list">${semana.map(liConta).join('')}</div>`:''}
-  <h2>Hoje na agenda <span class="tag soft">${its.length}</span></h2>${its.length?its.map(t=>item(t,today())).join(''):`<div class="empty">Agenda livre hoje. <button class="btn ghost" data-new-ev>Marcar compromisso</button></div>`}
-  ${adiante.length?`<h2>Mais adiante</h2><div class="list">${adiante.map(liConta).join('')}</div>`:''}
-  <p class="mut" style="font-size:12px;margin-top:22px">* Estimativa de 5 minutos por conta ou compromisso que você não precisou lembrar sozinho. Multa e juros calculados como 2% + 1% sobre contas pagas em dia.</p>`;
+  const open=S.contas.filter(x=>x.status!=='Pago').sort((a,b)=>a.venc.localeCompare(b.venc)),pagaveis=open.filter(x=>x.cat!=='Assinatura');
+  const late=pagaveis.filter(x=>diff(x.venc)<0),V=valorMes(),preco=+S.cfg.preco||14.9,fl=featList(),falta=fl.filter(x=>!x[2]).length;
+  const x=late[0]||pagaveis[0]||open[0],d=x?diff(x.venc):0,its=dayItems(today()).filter(t=>t.k==='e');checkConq(true);
+  let hero;
+  if(!x)hero=`<section class="value hero2"><div class="k">Comece por aqui</div><div class="ttl">Cole seu primeiro boleto.</div><p class="cap">Eu leio valor, vencimento e banco sozinha, e te aviso antes de vencer, já com o código para pagar.</p><div class="hacts"><button class="btn lt" data-new-conta>${ic.plus}Adicionar conta</button></div></section>`;
+  else{
+    const assin=x.cat==='Assinatura',agora=valorEm(x,0),em30=valorEm(x,Math.max(30,-d+30)),cd=custoDia(x);
+    const k=d<0?`Atrasada há ${-d} ${d===-1?'dia':'dias'} · resolva hoje`:d===0?'Vence hoje':d===1?'Vence amanhã':d<=3?`Vence em ${d} dias`:'Tudo em dia ✓ · próxima conta';
+    const tom=d<0?'bad':d<=1?'warn':d<=3?'warn':'ok';
+    hero=`<section class="value hero2 ${tom}" data-det="${x.id}"><div class="k">${k}</div><div class="ttl">${esc(x.nome)}</div>
+    <div class="big num" data-count="${agora.toFixed(2)}">${brl(agora)}</div>
+    <p class="cap">${assin?'Renova sozinha. Você ainda usa?':d<0?`Já tem ${brl(agora-x.valor)} de multa e juros. Cada dia a mais custa ${brl(cd)}.`:d<=3?`Se atrasar um mês, vira ${brl(em30)}. Pague agora e não perca nada.`:`${longD(x.venc)}. Eu te aviso antes, com o código pronto.`}</p>
+    <div class="hacts" data-stop>${assin?`<button class="btn lt" data-pago="${x.id}">Ainda uso</button>`:`${x.pix?`<button class="btn lt" data-pix="${x.id}">Copiar código</button>`:`<button class="btn lt" data-det="${x.id}">Como pagar</button>`}<button class="btn dk" data-pago="${x.id}">✓ Já paguei</button>`}</div>
+    ${late.length>1?`<p class="mais">+${late.length-1} ${late.length===2?'outra atrasada':'outras atrasadas'}</p>`:''}</section>`;
+  }
+  const semana=open.filter(y=>y!==x&&diff(y.venc)<=7).slice(0,4),depois=open.filter(y=>y!==x&&diff(y.venc)>7).length;
+  return `<header class="hdr">${emblema(40)}<div class="hi">${saud()},<b>${esc(first(S.user.nome))}</b></div><span class="shield">${late.length?'Atenção':'Tudo protegido'}</span></header>
+  ${trialBar()}${hero}
+  ${V.n?`<a class="stripv" href="#dinheiro-mes"><span><b>${brl(V.total)}</b> sob controle este mês</span>${V.total/preco>=2?`<span class="tag">${Math.round(V.total/preco)}× o valor do plano</span>`:''}<i>→</i></a>`:''}
+  <div class="quick q3"><button class="btn pri" data-new-conta>${ic.plus}Conta</button><button class="btn" data-new-ev>${ic.cal}Compromisso</button><button class="btn" data-cc="1"><span class="orb mini"></span>Lia</button></div>
+  ${falta?`<button type="button" class="stripv sp" data-setup><span>Faltam <b>${falta}</b> ${falta===1?'passo':'passos'} para te proteger 100%</span><span class="prog sm"><i style="width:${Math.round((fl.length-falta)/fl.length*100)}%"></i></span><i>→</i></button>`:''}
+  <h2>Esta semana <span class="tag soft">${semana.length}</span></h2>${semana.length?`<div class="list">${semana.map(liConta).join('')}</div>`:`<div class="empty">Nada mais vence nos próximos 7 dias.</div>`}
+  ${depois?`<p style="margin-top:10px"><a class="btn ghost" href="#contas">Ver todas as contas (${open.length})</a></p>`:''}
+  <h2>Hoje na agenda <span class="tag soft">${its.length}</span></h2>${its.length?its.map(t=>item(t,today())).join(''):`<div class="empty">Agenda livre hoje. <button class="btn ghost" data-new-ev>Marcar compromisso</button></div>`}`;
 }
+function abrirSetup(){const fl=featList();openM(`<div><h3 style="font-size:22px;letter-spacing:-.03em">Deixe o app 100%</h3><p class="mut" style="margin:4px 0 14px">Quanto mais completo, menos chance de uma conta passar.</p><div class="feat">${fl.map(([k,t,on])=>`<button type="button" class="${on?'on':''}" data-feat="${k}" ${on?'disabled':''}><span class="ck">${on?'✓':''}</span>${t}</button>`).join('')}</div><div class="acts" style="border:0;padding:0;margin-top:16px"><button class="btn" data-close>Fechar</button></div></div>`)}
+
 function countUp(){document.querySelectorAll('[data-count]').forEach(el=>{const v=+el.dataset.count;if(!v||matchMedia('(prefers-reduced-motion: reduce)').matches)return;const t0=performance.now(),D=1100;const f=t=>{const k=Math.min(1,(t-t0)/D),e=1-Math.pow(1-k,3);el.textContent=brl(v*e);if(k<1)requestAnimationFrame(f)};requestAnimationFrame(f)})}
 
 function trialDay(c){return Math.min(Math.max(1-diff(c.inicio),1),99)}
@@ -600,7 +616,7 @@ function vResumo(){
   const open=S.contas.filter(x=>x.status!=='Pago'&&diff(x.venc)<=30),cat={};open.forEach(x=>cat[x.cat]=(cat[x.cat]||0)+x.valor);
   const mx=Math.max(1,...Object.values(cat)),subs=S.contas.filter(x=>x.cat==='Assinatura'&&x.status!=='Pago').sort((a,b)=>a.venc.localeCompare(b.venc));
   return `<div class="top"><div><h1>Resumo do mês</h1><p class="sub">O valor que o Lembra Aí está entregando</p></div></div>
-  <div class="stats">${[['A pagar em 30 dias',brl(open.reduce((s,x)=>s+x.valor,0)),open.length+' contas'],['Assinaturas',brl(subs.reduce((s,x)=>s+x.valor,0))+'/mês',subs.length+' ativas'],['Lembretes no mês',av.length,brl(lemb)+' em contas lembradas'],['Juros evitados',brl(juros),'2% multa + 1% juros, contas pagas em dia'],['Tempo poupado',min>=60?Math.floor(min/60)+'h '+(min%60)+'min':min+' min','5 min por conta lembrada']].map(([a,b,c])=>`<div class="box stat"><p class="mut">${a}</p><b>${b}</b><p class="mut" style="font-size:13px">${c}</p></div>`).join('')}</div>
+  <div class="stats">${[['A pagar em 30 dias',brl(open.reduce((s,x)=>s+x.valor,0)),open.length+' contas'],['Assinaturas',brl(subs.reduce((s,x)=>s+x.valor,0))+'/mês',subs.length+' ativas'],['Juros evitados',brl(juros),'2% multa + 1% juros, contas pagas em dia']].map(([a,b,c])=>`<div class="box stat"><p class="mut">${a}</p><b>${b}</b><p class="mut" style="font-size:13px">${c}</p></div>`).join('')}</div>
   ${vGastos()}
   <h2>Contas dos próximos 30 dias, por categoria</h2><div class="box">${Object.keys(cat).length?Object.entries(cat).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="bar"><span>${esc(k)}</span><i style="width:${Math.max(4,v/mx*100)}%"></i><span>${brl(v)}</span></div>`).join(''):'<p class="mut">Sem contas.</p>'}</div>
   ${vConq()}
@@ -1128,7 +1144,7 @@ const precoDia=v=>brl(v/30).replace(/\s/g,' ');
 function vPlano(){
   const V=valorMes(),preco=+(PL&&PL.valor)||14.9,venceu=!acesso(),d=diasTeste(),fim=PL?new Date(PL.teste_fim):null;
   const nC=S.contas.filter(x=>x.status!=='Pago').length,nE=S.evs.length;
-  const inclui=['Avisos de todas as contas antes do vencimento','Notificação no celular, WhatsApp e e-mail','Agenda completa com alertas','Patrimônio: banco conectado, investimentos e saúde do dinheiro','Alerta quando seus gastos sobem','Concierge 24 horas','Entrar com '+bioNome+' e várias contas no mesmo aparelho'];
+  const inclui=['Avisos de todas as contas antes do vencimento','Notificação no celular, WhatsApp e e-mail','Agenda completa com alertas','Cadastro colando o código do boleto ou Pix','Custo de esperar, envelope do salário e ordem de pagamento','Lia, sua assistente 24 horas','Entrar com '+bioNome+' e várias contas no mesmo aparelho'];
   return `<div class="plano">
   <div class="hdr">${emblema(40)}<div class="hi">Lembra Aí<b>Plano mensal</b></div>${venceu?'':`<span class="shield">● ${d} ${d===1?'dia':'dias'} de teste</span>`}</div>
   <h1>${venceu?'Seus avisos estão <em>pausados.</em>':'Fique protegido <em>todo mês.</em>'}</h1>
@@ -1240,25 +1256,32 @@ function prioridade(x){const n=noAc(x.nome);let p=40,porq='Atrasar gera multa e 
   else if(/internet|telefone|celular|claro|vivo|tim|oi/.test(n)){p=50;porq='Pode haver bloqueio da linha.'}
   else if(x.cat==='Assinatura'){p=5;porq='Dá para pausar ou cancelar sem prejuízo.'}
   if(diff(x.venc)<0)p+=8;return {p:p+Math.min(10,custoDia(x)),porq}}
-function vDinheiro(){
+function vDinheiro(sec){
+  sec=sec||'salario';
   const sl=S.cfg.salario||{},hj=today(),p1=proxPagto(hj),p2=p1?proxPagto(p1):null;
   const abertas=S.contas.filter(x=>x.status!=='Pago'&&x.valor);
   const ate=p1||addM(hj,1),agora=abertas.filter(x=>x.venc<ate),depois=p2?abertas.filter(x=>x.venc>=p1&&x.venc<p2):[];
   const tA=agora.reduce((s,x)=>s+valorEm(x,0),0),tD=depois.reduce((s,x)=>s+(+x.valor||0),0),sal=+sl.valor||0,sobra=sal-tD;
   const DIN=S.cfg.tenho??'';const tenho=+DIN||0;
   const rk=agora.map(x=>({x,...prioridade(x),v:valorEm(x,0)})).sort((a,b)=>b.p-a.p);let resto=tenho;rk.forEach(r=>{r.cabe=tenho>0&&r.v<=resto+.001;if(r.cabe)resto-=r.v});
-  return `<div class="top"><div><h1>Seu <em>dinheiro</em></h1><p class="sub">O que pagar agora, com qual salário, e o que sobra.</p></div></div>
-  <section class="env"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span class="tag">Envelope do salário</span><button type="button" class="ajuda" data-lia="envelope">?</button></div>
-  ${p1?`<p class="mut" style="margin-top:12px;font-weight:700">Até o próximo salário (${fmtD(p1)})</p><div class="big2" data-count="${tA.toFixed(2)}">${brl(tA)}</div><p class="mut">em ${agora.length} ${agora.length===1?'conta para pagar':'contas para pagar'} com o dinheiro que você tem agora.</p>
-   ${p2?`<p class="mut" style="margin-top:16px;font-weight:700">Com o salário de ${fmtD(p1)}${sal?` (${brl(sal)})`:''}</p><div class="bar2">${sal?`<i style="width:${Math.min(100,tD/sal*100)}%;background:var(--ink)"></i><i style="width:${Math.max(0,Math.min(100,sobra/sal*100))}%;background:var(--g)"></i>`:''}</div><div class="lgd"><span style="--c:var(--ink)">Contas ${brl(tD)}</span>${sal?`<span style="--c:var(--g)">${sobra>=0?'Sobra '+brl(sobra):'Faltam '+brl(-sobra)}</span>`:''}</div>`:''}`
-  :`<p style="margin:12px 0">Me diga quando você recebe e eu separo as contas por salário.</p>`}
-  <form id="fsal" class="two" style="margin-top:16px"><label>Dia do pagamento<input name="dia" type="number" min="1" max="31" value="${esc(sl.dia||'')}" placeholder="Ex.: 5"></label><label>Valor que cai (R$)<input name="valor" type="number" step="0.01" min="0" inputmode="decimal" value="${esc(sl.valor||'')}" placeholder="Ex.: 3200"></label><label>2º pagamento (opcional)<input name="dia2" type="number" min="1" max="31" value="${esc(sl.dia2||'')}" placeholder="Ex.: 20"></label><label style="display:flex;align-items:flex-end"><button class="btn pri" style="width:100%">Salvar</button></label></form></section>
-  <h2>Não dá para pagar tudo? <button type="button" class="ajuda" data-lia="prioridade">?</button></h2>
+  const PRIO=`  <p class="mut" style="margin-bottom:12px">Diga quanto você tem e eu monto a ordem do que pagar primeiro. <button type="button" class="ajuda" data-lia="prioridade">?</button></p>
   <section class="env"><form id="ftenho" style="display:flex;gap:8px;align-items:flex-end"><label style="flex:1;margin:0">Quanto você tem agora para contas?<input name="tenho" type="number" step="0.01" min="0" inputmode="decimal" value="${esc(DIN)}" placeholder="R$"></label><button class="btn pri">Calcular</button></form>
   ${rk.length?`<p class="mut" style="margin:14px 0 8px;font-size:13.5px">${tenho?`Com ${brl(tenho)}, pague nesta ordem. ${resto>0.009?'Ainda sobram '+brl(resto)+'.':''}`:'Ordem do que custa mais caro atrasar:'}</p><div class="list rank">${rk.map((r,i)=>`<div class="li ${tenho&&!r.cabe?'fora':''}" data-det="${r.x.id}"><span class="ic">${i+1}</span><div style="min-width:0"><div class="t">${esc(r.x.nome)}</div><div class="s">${tenho?(r.cabe?'<b style="color:var(--gd)">Pagar</b> · ':'Depois · '):''}${r.porq}</div></div><div class="v">${brl(r.v)}</div></div>`).join('')}</div>
    ${tenho&&rk.some(r=>!r.cabe)?`<p class="mut" style="font-size:13px;margin-top:12px">Para as que ficarem para depois: ligue antes do vencimento e peça para parcelar ou mudar a data. A Lia te ajuda com o que falar.</p><button class="btn" style="margin-top:8px" data-lia="negociar">Como negociar</button>`:''}`
    :'<div class="empty" style="margin-top:12px">Nenhuma conta para pagar antes do próximo salário. 🎉</div>'}</section>
-  ${vPatrimonio()}`;
+`;
+  const tabs=[['salario','Salário'],['prioridade','Não dá p/ pagar tudo'],['mes','Mês'],['invest','Investimentos']];
+  const hd=`<div class="top"><div><h1>Seu <em>dinheiro</em></h1></div></div><nav class="subtabs">${tabs.map(([k,t])=>`<a href="#dinheiro${k==='salario'?'':'-'+k}" class="${sec===k?'on':''}">${t}</a>`).join('')}</nav>`;
+  if(sec==='mes')return hd+vResumo().replace(/<div class="top">[\s\S]*?<\/div><\/div>/,'');
+  if(sec==='invest')return hd+vInvest().replace(/<div class="top">[\s\S]*?<\/div><\/div>/,'');
+  if(sec==='prioridade')return hd+PRIO;
+  return hd+`<section class="env"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span class="tag">Envelope do salário</span><button type="button" class="ajuda" data-lia="envelope">?</button></div>
+  ${p1?`<p class="mut" style="margin-top:12px;font-weight:700">Até o próximo salário (${fmtD(p1)})</p><div class="big2" data-count="${tA.toFixed(2)}">${brl(tA)}</div><p class="mut">em ${agora.length} ${agora.length===1?'conta para pagar':'contas para pagar'} com o dinheiro que você tem agora.</p>
+   ${p2?`<p class="mut" style="margin-top:16px;font-weight:700">Com o salário de ${fmtD(p1)}${sal?` (${brl(sal)})`:''}</p><div class="bar2">${sal?`<i style="width:${Math.min(100,tD/sal*100)}%;background:var(--ink)"></i><i style="width:${Math.max(0,Math.min(100,sobra/sal*100))}%;background:var(--g)"></i>`:''}</div><div class="lgd"><span style="--c:var(--ink)">Contas ${brl(tD)}</span>${sal?`<span style="--c:var(--g)">${sobra>=0?'Sobra '+brl(sobra):'Faltam '+brl(-sobra)}</span>`:''}</div>`:''}`
+  :`<p style="margin:12px 0">Me diga quando você recebe e eu separo as contas por salário.</p>`}
+  <form id="fsal" class="two" style="margin-top:16px"><label>Dia do pagamento<input name="dia" type="number" min="1" max="31" value="${esc(sl.dia||'')}" placeholder="Ex.: 5"></label><label>Valor que cai (R$)<input name="valor" type="number" step="0.01" min="0" inputmode="decimal" value="${esc(sl.valor||'')}" placeholder="Ex.: 3200"></label><label>2º pagamento (opcional)<input name="dia2" type="number" min="1" max="31" value="${esc(sl.dia2||'')}" placeholder="Ex.: 20"></label><label style="display:flex;align-items:flex-end"><button class="btn pri" style="width:100%">Salvar</button></label></form></section>
+`;
+
 }
 
 /* ===================== LIA · assistente 24h ===================== */
@@ -1282,12 +1305,12 @@ const LIA_LOCAL=[
  [['nao da','não dá','apertado','sem dinheiro','prioridade','qual pagar primeiro','ordem'],LIA_TOP.prioridade,[['Montar minha ordem','#dinheiro']]],
  [['negociar','parcelar','renegociar','ligar'],LIA_TOP.negociar,[]],
  [['pagar','como pago','banco','pix'],'Abra a conta e toque em <b>Copiar código</b>. Depois, no app do seu banco: Pagar → Boleto (ou Pix copia e cola) → colar. Voltou? Toque em "Já paguei" que eu cuido do resto.',[]],
- [['segunda via','2 via','2a via','vencido','vencida'],'Boleto vencido? Muitos bancos aceitam pagar com os juros na hora. Se não aceitar, abra a conta e toque em <b>Pegar 2ª via atualizada</b>.',[]],
+ [['segunda via','2 via','2a via','vencido','vencida','venceu','boleto atrasado','atrasou','passou do dia'],'Boleto vencido? Muitos bancos aceitam pagar com os juros na hora. Se não aceitar, abra a conta e toque em <b>Pegar 2ª via atualizada</b>.',[]],
  [['notifica','aviso','alerta'],'Eu aviso antes de cada vencimento, no celular, no e-mail ou no WhatsApp, e o aviso já vem com o valor. Tocando nele, você paga na hora.',[['Ativar no celular','push']]],
  [['agenda','compromisso','consulta','reuniao'],'Na Agenda você marca compromissos com hora, local e alerta, como no calendário do iPhone.',[['Novo compromisso','ev'],['Abrir agenda','#agenda']]],
  [['humana','robo','robô','voce e real','pessoa de verdade'],'Sou a Lia, uma assistente virtual. Não sou uma pessoa, mas fui feita para falar como gente e te ajudar a qualquer hora. 😉',[]]];
-function liaLocal(t){const q=noAc(t);if(/nao da|apertad|sem dinheiro|nao consigo pagar|qual pago primeiro/.test(q))return [LIA_TOP.prioridade+' Quer que eu monte a sua ordem agora?',[['Montar minha ordem','#dinheiro']]];const d=ccDados(q);if(d)return d;let best=null,sc=0;LIA_LOCAL.forEach(([ks,a,go])=>{const s=ks.reduce((n,k)=>n+(q.includes(noAc(k))?k.length:0),0);if(s>sc){sc=s;best=[a,go]}});
-  if(best)return best;const r=ccResp(t);return r}
+function liaLocal(t){const q=noAc(t);if(/nao da|apertad|sem dinheiro|nao consigo pagar|qual pago primeiro/.test(q))return [LIA_TOP.prioridade+' Quer que eu monte a sua ordem agora?',[['Montar minha ordem','#dinheiro']]];let best=null,sc=0;LIA_LOCAL.forEach(([ks,a,go])=>{const s=ks.reduce((n,k)=>n+(q.includes(noAc(k))?k.length:0),0);if(s>sc){sc=s;best=[a,go]}});
+  if(best&&sc>=5)return best;const d=ccDados(q);if(d)return d;if(best)return best;const r=ccResp(t);return r}
 function liaContexto(){const ab=S.contas.filter(x=>x.status!=='Pago').sort((a,b)=>a.venc.localeCompare(b.venc)).slice(0,25);
   return {hoje:today(),nome:first(S.user.nome),salario:S.cfg.salario||null,contas:ab.map(x=>({nome:x.nome,cat:x.cat,valor:x.valor,venc:x.venc,atrasada:diff(x.venc)<0,valor_hoje:+valorEm(x,0).toFixed(2),tem_codigo:!!x.pix})),compromissos_hoje:dayItems(today()).filter(t=>t.k==='e').map(t=>({titulo:t.e.titulo,hora:t.e.allDay?'dia todo':t.e.ini.slice(11,16)}))}}
 const LIA={hist:[],ia:null};
@@ -1316,7 +1339,8 @@ document.addEventListener('pointerdown',e=>{const b=e.target.closest('.btn');if(
 
 /* eventos das novas funções */
 document.addEventListener('click',e=>{
-  const t=e.target.closest('[data-colar],[data-scan],[data-scanstop],[data-manual],[data-addcod],[data-lia]');if(!t)return;const d=t.dataset;
+  const t=e.target.closest('[data-colar],[data-scan],[data-scanstop],[data-manual],[data-addcod],[data-lia],[data-setup]');if(!t)return;const d=t.dataset;
+  if('setup' in d)return abrirSetup();
   if('colar' in d)return colarCodigo();
   if('scan' in d)return escanear();
   if('scanstop' in d){pararScan();return novaConta()}
@@ -1345,8 +1369,8 @@ function render(){
   if(r==='plano-ok'){$('#root').innerHTML=`<div class="plano" style="text-align:center;padding-top:20vh">${emblema(64)}<h1 style="margin-top:18px">Confirmando seu <em>pagamento…</em></h1><p class="sub">Leva só alguns segundos.</p></div>`;if(!render.conf){render.conf=1;confirmarPlano(0)}return}
   if(/^(pago|pagar)-c-/.test(r)){const id=r.replace(/^(pago|pagar)-c-/,''),pg=r.startsWith('pago');history.replaceState(null,'','#hoje');render();if(conta(id)){if(pg){pagar(id)}else abrirConta(id,'pagar')}return}
   if(r==='plano'||(!acesso()&&r!=='config')){$('#root').innerHTML=vPlano();document.querySelectorAll('.cc-btn,.cc').forEach(e=>e.remove());window.scrollTo(0,0);return}
-  const base=['hoje','contas'].includes(r)?'hoje':r==='agenda'?'agenda':['dinheiro','resumo','invest','patrimonio'].includes(r)?'dinheiro':r==='config'?'config':'hoje';
-  const body=r.startsWith('cliente-')?vCliente(r.slice(8)):r==='clientes'?vClientes():r==='contas'?vContas():r==='dinheiro'||r==='resumo'||r==='invest'||r==='patrimonio'?vDinheiro():r==='agenda'?vAgenda():r==='config'?vConfig():vHoje();
+  const base=['hoje','contas'].includes(r)?'hoje':r==='agenda'?'agenda':(r.startsWith('dinheiro')||['resumo','invest','patrimonio'].includes(r))?'dinheiro':r==='config'?'config':'hoje';
+  const body=r.startsWith('cliente-')?vCliente(r.slice(8)):r==='clientes'?vClientes():r==='contas'?vContas():r.startsWith('dinheiro')?vDinheiro(r.split('-')[1]):r==='resumo'?vDinheiro('mes'):r==='invest'||r==='patrimonio'?vDinheiro('invest'):r==='agenda'?vAgenda():r==='config'?vConfig():vHoje();
   const nav=NAV.map(([h,t,i])=>`<a href="#${h}" class="${base===h?'on':''}">${i}${t}</a>`).join('');
   $('#root').innerHTML=`<div class="app"><aside><div class="logo">${logoSvg}Lembra Aí</div><nav>${nav}</nav></aside><main>${body}</main></div><nav class="mobnav">${nav}</nav>`;
   ccMount();countUp();
