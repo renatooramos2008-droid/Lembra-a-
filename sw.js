@@ -13,7 +13,7 @@ self.addEventListener('push', (e) => {
     tag: d.tag || undefined,
     renotify: true,
     vibrate: [120, 60, 120, 60, 240],
-    data: { url: d.url || '#hoje' },
+    data: { url: d.url || '#inicio' },
   };
   e.waitUntil((async () => {
     await self.registration.showNotification(title, opts);
@@ -25,7 +25,7 @@ self.addEventListener('push', (e) => {
 
 self.addEventListener('notificationclick', (e) => {
   e.notification.close();
-  const url = (e.notification.data && e.notification.data.url) || '#hoje';
+  const url = (e.notification.data && e.notification.data.url) || '#inicio';
   e.waitUntil((async () => {
     const list = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
     for (const c of list) {
