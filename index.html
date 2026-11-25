@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Lembra Aí</title>
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#F7F7F5">
+<meta name="theme-color" content="#1D4A5E">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Lembra Aí">
 <link rel="apple-touch-icon" href="icon-180.png">
@@ -365,6 +365,107 @@ body:has(#modal:not([hidden])) .cc-btn,body:has(#party) .cc-btn{opacity:0;pointe
 .pastebox{border:2px dashed var(--line2);border-radius:22px;padding:16px;text-align:center;transition:border-color .2s,background .2s}.pastebox.ok{border-color:var(--g);background:var(--g2)}
 @media(max-width:600px){.vgrid b{font-size:21px}.quick{grid-template-columns:repeat(2,minmax(0,1fr))}.next .nm,.next .vl{font-size:23px}.cc-btn .lb{display:none}.cc-btn{padding:0 6px}.feat{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+/* ============ MISTURA — verde e petróleo (ref. 2) + blocos e calendário (ref. 1) + movimento (Lembra Aí) ============ */
+:root,:root[data-tema=light]{color-scheme:light;--bg:#F4F8F6;--card:#FFFFFF;--card2:#EEF5F2;--ink:#14293A;--mute:#66778A;--line:#E2EBE7;--line2:#C9DAD3;--g:#1E8E6A;--gd:#16714F;--g2:#E3F2EC;--pet:#1D4A5E;--pet2:#123344;--mint:#CFE8DE;--red:#E5484D;--warn:#FFF3D6;--warnk:#9A6400;--bad:#FDECEC;--badk:#D0353A;--sh:0 10px 22px -12px rgba(20,41,58,.35);--sh2:0 14px 34px -22px rgba(20,41,58,.28);--sh3:0 30px 70px -30px rgba(20,41,58,.45);--inv:#1E8E6A;--onInv:#fff}
+:root[data-tema=dark]{color-scheme:dark;--bg:#0B1A20;--card:#11252D;--card2:#183039;--ink:#E7F1EE;--mute:#8FA6AE;--line:rgba(255,255,255,.07);--line2:rgba(255,255,255,.16);--g:#2FBF8F;--gd:#5FD6AC;--g2:rgba(47,191,143,.14);--pet:#1D4A5E;--pet2:#0E2A36;--mint:#1F3F3A;--red:#FF6B6F;--warn:rgba(255,196,87,.12);--warnk:#FFC457;--bad:rgba(255,107,94,.14);--badk:#FF8A86;--sh:0 10px 22px -12px rgba(0,0,0,.7);--sh2:0 14px 34px -22px rgba(0,0,0,.8);--sh3:0 30px 70px -30px #000;--inv:#2FBF8F;--onInv:#06231A}
+body::before{background:radial-gradient(45% 35% at 100% 0%,rgba(30,142,106,.10),transparent 70%),radial-gradient(40% 40% at 0% 100%,rgba(29,74,94,.08),transparent 70%)}
+h1{color:var(--ink);letter-spacing:-.035em}
+h1 em,.serif{background:none;-webkit-text-fill-color:var(--g);color:var(--g);animation:none}
+h2{color:var(--mute);letter-spacing:.12em}
+/* botões no estilo da referência 2, com o flutuar do Lembra Aí */
+.btn{border:1.5px solid var(--line2);border-radius:14px;box-shadow:var(--sh);color:var(--ink);background:var(--card)}
+.btn:hover{border-color:var(--g);box-shadow:0 16px 28px -14px rgba(30,142,106,.45)}
+.btn.pri{background:var(--g);border-color:var(--g);color:#fff;box-shadow:0 12px 26px -12px rgba(30,142,106,.65)}
+.btn.ok,.btn.wa{background:var(--g);border-color:var(--g);color:#fff}
+.btn.ghost{color:var(--g);text-decoration:none;font-weight:800;box-shadow:none}
+.btn.dang{border-color:rgba(208,53,58,.35)}
+/* navegação: só ícones fortes, ativo em verde (ref. 2) */
+nav a.on{background:var(--g)!important;color:#fff!important}
+.mobnav{background:var(--card);border-top:1px solid var(--line);box-shadow:0 -12px 30px -24px rgba(20,41,58,.4)}
+.mobnav a{color:var(--mute);font-size:10.5px}.mobnav a.on{background:var(--g2)!important;color:var(--g)!important;box-shadow:none}
+.mobnav a.on svg{transform:translateY(-1px) scale(1.12);transition:transform .35s var(--spring)}
+aside{background:var(--card)}
+/* campos: cartão branco com borda (ref. 2) */
+input,select,textarea{background:var(--card);border:1.5px solid var(--line);border-radius:14px}
+input:focus,select:focus,textarea:focus{border-color:var(--g);box-shadow:0 0 0 4px var(--g2)}
+label{color:var(--mute)}
+/* interruptores (ref. 1) */
+input[type=checkbox]{appearance:none;-webkit-appearance:none;width:46px!important;height:28px!important;min-height:0!important;border-radius:99px;background:var(--line2);position:relative;flex:none;cursor:pointer;transition:background .25s;border:0;padding:0;margin:0}
+input[type=checkbox]::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:transform .35s var(--spring)}
+input[type=checkbox]:checked{background:var(--g)}input[type=checkbox]:checked::after{transform:translateX(18px)}
+/* cabeçalho em bloco de cor (ref. 1) com o cartão do Lembra Aí */
+.topband{margin:calc(-1*clamp(18px,4vw,44px)) calc(-1*clamp(16px,4vw,36px)) 0;padding:clamp(18px,4vw,40px) clamp(16px,4vw,36px) 74px;background:linear-gradient(160deg,var(--pet) 0%,var(--pet2) 100%);color:#fff;border-radius:0 0 34px 34px;position:relative;overflow:hidden}
+.topband::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(207,232,222,.10)}
+.topband .hdr .hi{color:rgba(255,255,255,.7)}.topband .hdr .hi b{color:#fff}.topband .hdr svg{color:#fff!important}
+.topband .shield{background:rgba(255,255,255,.12);color:#9CF0CF}
+.topband .trial{background:rgba(255,255,255,.08);box-shadow:none;color:rgba(255,255,255,.75);margin:0 0 14px}.topband .trial b{color:#fff}.topband .trial.urg{background:rgba(255,196,87,.18);color:#fff}
+.wk7{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;position:relative;z-index:1}
+.wk7 a{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 0 10px;border-radius:14px;color:rgba(255,255,255,.75);text-decoration:none;font-weight:700;transition:background .2s,transform .3s var(--spring)}
+.wk7 a small{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;opacity:.75}.wk7 a b{font:700 19px var(--fn)}
+.wk7 a i{width:6px;height:6px;border-radius:50%;background:transparent}.wk7 a i.c{background:#9CF0CF}.wk7 a i.l{background:#FF8A86}
+.wk7 a.hj{background:#fff;color:var(--pet);box-shadow:0 14px 26px -12px rgba(0,0,0,.5);transform:translateY(-2px)}.wk7 a.hj i.c{background:var(--g)}
+.wk7 a:active{transform:scale(.92)}
+.puxa{margin-top:-58px;position:relative;z-index:2}
+/* cartão principal: petróleo com aurora verde */
+.value{background:linear-gradient(160deg,#173F51,#0F2B38);box-shadow:var(--sh3)}
+.value::before{background:conic-gradient(from 0deg,rgba(30,142,106,0),rgba(47,191,143,.5),rgba(120,200,255,.25),rgba(30,142,106,0) 60%)}
+.value::after{background:radial-gradient(120% 80% at 100% 0%,transparent 40%,#0F2B38 82%)}
+.value .k{color:#9CF0CF}.hero2.ok .k{color:#9CF0CF}
+.btn.lt{background:#fff;color:var(--pet);border-color:#fff}
+.btn.dk{background:var(--g);border-color:var(--g);color:#fff}
+.roi .x{color:#9CF0CF;-webkit-text-fill-color:#9CF0CF}
+/* listas: data grande com barra (ref. 1) + círculo menta e seta (ref. 2) */
+.list{background:transparent;box-shadow:none;border:0;display:grid;gap:10px;overflow:visible}
+.li{background:var(--card);border-radius:18px;box-shadow:var(--sh2);border:1px solid var(--line);grid-template-columns:auto auto minmax(0,1fr) auto auto;gap:12px;padding:12px 14px}
+.li+.li{border-top:1px solid var(--line)}
+.li .bar1{width:4px;align-self:stretch;border-radius:4px;background:var(--g)}.li .bar1.l{background:var(--red)}.li .bar1.s{background:#F5A524}
+.li .dt{display:flex;flex-direction:column;align-items:center;min-width:40px;line-height:1}.li .dt b{font:700 24px var(--fn);color:var(--ink)}.li .dt small{font-size:11px;font-weight:800;color:var(--mute);text-transform:uppercase;margin-top:3px}
+.li .chev{color:var(--line2);font-size:20px;font-weight:400}
+.li .ic{background:var(--g2);color:var(--g);box-shadow:none}
+/* abas com sublinhado (ref. 2) */
+.subtabs{gap:0;border-bottom:1.5px solid var(--line);padding:0;margin-bottom:16px}
+.subtabs a{background:none;box-shadow:none;border-radius:0;padding:12px 14px;color:var(--mute);position:relative}
+.subtabs a.on{background:none;color:var(--g)}.subtabs a.on::after{content:"";position:absolute;left:10px;right:10px;bottom:-1.5px;height:3px;border-radius:3px;background:var(--g);animation:grow .35s var(--spring)}
+@keyframes grow{from{transform:scaleX(0)}}
+.seg{border:1.5px solid var(--line);box-shadow:none}.seg .on{background:var(--g)!important;color:#fff!important}
+/* calendário (ref. 1) */
+.mcal button{border-radius:12px;border-color:var(--line);transition:transform .25s var(--spring)}.mcal button:active{transform:scale(.92)}
+.mcal button.td b{background:var(--g);color:#fff}.mcal button.sel{outline:2px solid var(--g)}
+.cal button{border-radius:12px;border-color:var(--line)}.cal button.has{background:var(--g2);color:var(--gd)}.cal button.sel{background:var(--g);border-color:var(--g)}.cal button.td{outline:2px solid var(--pet)}
+.mcal .dots i,.dots i{background:var(--g)}
+/* cartões, pílulas e etiquetas */
+.box,.bill,.row,.it,.stat,.cq,.qchip,.theme-opt,.env,.next,.setupc,.stripv,.price,.mock,.notif{border-color:var(--line);box-shadow:var(--sh2)}
+.tag{background:var(--g2);color:var(--gd)}
+.stripv .tag{background:var(--g2);color:var(--gd)}
+.quick .btn{border-radius:18px}.quick .btn svg{color:var(--g)}.quick .btn.pri svg{color:#fff}
+.li .ic,.notif .ic,.cq .md{background:var(--g2);color:var(--g)}
+.notif .ic svg{color:var(--g)}
+.shield::before{background:#2FBF8F}
+.prog i{background:linear-gradient(90deg,var(--g),#5FD6AC);box-shadow:none}
+.bar2 i:first-child{background:var(--pet)!important}
+.lgd span:first-child{--c:var(--pet)!important}
+/* Lia */
+.cc-btn{background:var(--pet);color:#fff}
+.msg.me{background:var(--g);color:#fff}
+.msg .go{border-color:var(--g);color:var(--g)}
+.cc-hd span{color:var(--g)}
+/* sucesso: círculo verde com check (ref. 2) + carimbo e confete (Lembra Aí) */
+#party .seal{background:var(--g);box-shadow:0 24px 60px -20px rgba(30,142,106,.7),0 0 0 10px var(--g2)}
+#party .seal div{border-color:rgba(255,255,255,.55)}
+#party .seal svg{width:66px;height:66px;stroke:#fff;stroke-width:3.2;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:40;animation:tick .5s .35s ease-out forwards}
+@keyframes tick{to{stroke-dashoffset:0}}
+#party .seal::after{display:none}
+#party .seal small{color:#fff;opacity:.85}
+#splash .ico{background:var(--g)!important}
+.tour .dots i.on{background:var(--g)}
+.steps i.on{background:var(--g)}
+.feat button.on .ck{background:var(--g);border-color:var(--g);color:#fff}
+.art{background:linear-gradient(160deg,var(--pet),var(--pet2))}.art-x .hl{color:#fff}.art-x .hl em{color:#9CF0CF}
+.art-x .mini-v{background:linear-gradient(160deg,#173F51,#0F2B38)}
+.trial{border:1px solid var(--line)}
+.subtabs a.on{background:none!important;color:var(--g)!important;box-shadow:none!important}
+.rank .li,.li:not(:has(.dt)){grid-template-columns:auto minmax(0,1fr) auto}
+@media(min-width:821px){.topband{margin-top:0;border-radius:34px}}
 </style>
 
 
@@ -531,7 +632,12 @@ function valorMes(){
   return {total:pago+aberto,pago,aberto,juros,min,atr:open.filter(x=>diff(x.venc)<0).length,n:pg.length+open.length};
 }
 const tempoTxt=min=>min>=60?Math.floor(min/60)+'h'+(min%60?String(min%60).padStart(2,'0'):''):min+' min';
-const liConta=x=>{const d=diff(x.venc),dt=new Date(x.venc+'T12:00:00');return `<div class="li" data-det="${x.id}"><span class="ic">${dt.getDate()}<br></span><div style="min-width:0"><div class="t">${esc(x.nome)}${x.rec==='Parcelada'?` <span class="mut" style="font-weight:500">${x.parc}/${x.parcTot}</span>`:''}</div><div class="s">${esc(x.cat)} · <span class="${d<0?'late':d<=1?'soon':''}">${when(x)}</span></div></div><div class="v">${x.valor?brl(x.valor):'<span class="mut" style="font-size:13px">sem valor</span>'}</div></div>`};
+const MESC=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+const liConta=x=>{const d=diff(x.venc),dt=new Date(x.venc+'T12:00:00');return `<div class="li" data-det="${x.id}"><span class="bar1 ${d<0?'l':d<=2?'s':''}"></span><span class="dt"><b>${dt.getDate()}</b><small>${MESC[dt.getMonth()]}</small></span><div style="min-width:0"><div class="t">${esc(x.nome)}${x.rec==='Parcelada'?` <span class="mut" style="font-weight:500">${x.parc}/${x.parcTot}</span>`:''}</div><div class="s">${esc(x.cat)} · <span class="${d<0?'late':d<=1?'soon':''}">${when(x)}</span></div></div><div class="v">${x.valor?brl(x.valor):'<span class="mut" style="font-size:13px">sem valor</span>'}</div><span class="chev">›</span></div>`};
+function semana7(){const out=[],ab=S.contas.filter(x=>x.status!=='Pago');
+  for(let i=0;i<7;i++){const k=addD(i);const dt=new Date(k+'T12:00:00'),cs=ab.filter(x=>x.venc===k),late=i===0&&ab.some(x=>diff(x.venc)<0),ev=dayItems(k).some(t=>t.k==='e');
+    out.push(`<a href="#agenda" data-wk="${k}" class="${i===0?'hj':''}"><small>${i===0?'Hoje':['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'][dt.getDay()]}</small><b>${dt.getDate()}</b><i class="${late?'l':cs.length||ev?'c':''}"></i></a>`)}
+  return `<div class="wk7">${out.join('')}</div>`}
 function featList(){
   const f=[['push','Notificações neste celular','Notification' in window&&Notification.permission==='granted'],
     ['canais','Lembrete por e-mail',!!CH().email],['canais','Lembrete no WhatsApp',!!CH().whats]];
@@ -556,8 +662,8 @@ function vHoje(){
     ${late.length>1?`<p class="mais">+${late.length-1} ${late.length===2?'outra atrasada':'outras atrasadas'}</p>`:''}</section>`;
   }
   const semana=open.filter(y=>y!==x&&diff(y.venc)<=7).slice(0,4),depois=open.filter(y=>y!==x&&diff(y.venc)>7).length;
-  return `<header class="hdr">${emblema(40)}<div class="hi">${saud()},<b>${esc(first(S.user.nome))}</b></div><span class="shield">${late.length?'Atenção':'Tudo protegido'}</span></header>
-  ${trialBar()}${hero}
+  return `<div class="topband"><header class="hdr">${emblema(40)}<div class="hi">${saud()},<b>${esc(first(S.user.nome))}</b></div><span class="shield">${late.length?'Atenção':'Tudo protegido'}</span></header>
+  ${trialBar()}${semana7()}</div><div class="puxa">${hero}</div>
   ${V.n?`<a class="stripv" href="#dinheiro-mes"><span><b>${brl(V.total)}</b> sob controle este mês</span>${V.total/preco>=2?`<span class="tag">${Math.round(V.total/preco)}× o valor do plano</span>`:''}<i>→</i></a>`:''}
   <div class="quick q3"><button class="btn pri" data-new-conta>${ic.plus}Conta</button><button class="btn" data-new-ev>${ic.cal}Compromisso</button><button class="btn" data-cc="1"><span class="orb mini"></span>Lia</button></div>
   ${falta?`<button type="button" class="stripv sp" data-setup><span>Faltam <b>${falta}</b> ${falta===1?'passo':'passos'} para te proteger 100%</span><span class="prog sm"><i style="width:${Math.round((fl.length-falta)/fl.length*100)}%"></i></span><i>→</i></button>`:''}
@@ -1339,7 +1445,8 @@ document.addEventListener('pointerdown',e=>{const b=e.target.closest('.btn');if(
 
 /* eventos das novas funções */
 document.addEventListener('click',e=>{
-  const t=e.target.closest('[data-colar],[data-scan],[data-scanstop],[data-manual],[data-addcod],[data-lia],[data-setup]');if(!t)return;const d=t.dataset;
+  const t=e.target.closest('[data-colar],[data-scan],[data-scanstop],[data-manual],[data-addcod],[data-lia],[data-setup],[data-wk]');if(!t)return;const d=t.dataset;
+  if(d.wk){A.sel=A.cur=d.wk;A.view='dia';return}
   if('setup' in d)return abrirSetup();
   if('colar' in d)return colarCodigo();
   if('scan' in d)return escanear();
@@ -1409,7 +1516,7 @@ const festaSom=()=>{try{if(!AC)AC=new (window.AudioContext||window.webkitAudioCo
 function celebrar(titulo,sub,_x,selo){
   document.getElementById('party')?.remove();const p=document.createElement('div');p.id='party';p.setAttribute('role','status');
   const cores=['#00C389','#0B0B0C','#7CF5C9','#1E5BFF','#FFC457'],cf=Array.from({length:26},(_,i)=>{const a=i/26*6.283,r=120+Math.random()*90;return `<i class="cf" style="--x:${Math.cos(a)*r}px;--y:${Math.sin(a)*r}px;--r:${Math.random()*540}deg;background:${cores[i%5]};animation-delay:${.25+Math.random()*.1}s"></i>`}).join('');
-  p.innerHTML=`<div style="position:relative"><div class="seal"><div>${selo||'Pago'}<small>Lembra Aí</small></div></div>${cf}<h2>${titulo}</h2><p>${sub||''}</p></div>`;
+  p.innerHTML=`<div style="position:relative"><div class="seal"><div><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg><small>${selo||'Pago'}</small></div></div>${cf}<h2>${titulo}</h2><p>${sub||''}</p></div>`;
   document.body.appendChild(p);festaSom();if(navigator.vibrate)try{navigator.vibrate([30,60,30])}catch(_){}
   const fim=()=>{p.remove()};p.onclick=fim;setTimeout(fim,2600);
 }
