@@ -13,7 +13,8 @@ self.addEventListener('push', (e) => {
     tag: d.tag || undefined,
     renotify: true,
     vibrate: [120, 60, 120, 60, 240],
-    data: { url: d.url || '#inicio' },
+    data: { url: d.url || '#hoje', conta: d.conta || null },
+    actions: d.conta ? [{ action: 'pagar', title: 'Pagar agora' }, { action: 'pago', title: 'Já paguei' }] : [],
   };
   e.waitUntil((async () => {
     await self.registration.showNotification(title, opts);
@@ -25,7 +26,10 @@ self.addEventListener('push', (e) => {
 
 self.addEventListener('notificationclick', (e) => {
   e.notification.close();
-  const url = (e.notification.data && e.notification.data.url) || '#inicio';
+  const dd = e.notification.data || {};
+  let url = dd.url || '#hoje';
+  if (dd.conta && e.action === 'pago') url = '#pago-c-' + dd.conta;
+  else if (dd.conta) url = '#pagar-c-' + dd.conta;
   e.waitUntil((async () => {
     const list = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
     for (const c of list) {
